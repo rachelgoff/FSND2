@@ -328,6 +328,12 @@ def show_venue(venue_id):
         }
         past_shows.append(past_shows_item)
       print(past_shows_count)
+
+  genres_list = []
+  new_genres = venue.genres[1:-1].split(",")
+  for genre in new_genres:
+      genres_list.append(genre)
+
   data = {
     "id": venue_id,
     "name": venue.name,
@@ -335,7 +341,7 @@ def show_venue(venue_id):
     "state": venue.state,
     "phone": venue.phone,
     "address": venue.address,
-    "genres": venue.genres,
+    "genres": genres_list,
     "website": venue.website,
     "facebook_link": venue.facebook_link,
     "seeking_talent": venue.seeking_talent,
@@ -403,8 +409,8 @@ def create_venue_submission():
   # e.g., flash('An error occurred. Venue ' + data.name + ' could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
       #return render_template('pages/home.html')
-      for genre in genres:
-        print('POST' + genre)
+      # for genre in genres:
+      #   print('POST' + genre)
       return redirect('/venues/' + str(venue.id))
 
 @app.route('/venues/<venue_id>', methods=['DELETE'])
@@ -649,6 +655,11 @@ def show_artist(artist_id):
     artist.seeking_venue = True
   elif artist.seeking_venue == 'False':
     artist.seeking_venue = False
+  
+  genres_list = []
+  new_genres = artist.genres[1:-1].split(",")
+  for genre in new_genres:
+      genres_list.append(genre)
 
   data = {
     "id": artist_id,
@@ -656,7 +667,7 @@ def show_artist(artist_id):
     "city": artist.city,
     "state": artist.state,
     "phone": artist.phone,
-    "genres": artist.genres,
+    "genres": genres_list,
     "seeking_venue": artist.seeking_venue,
     "seeking_description": artist.seeking_description,
     "image_link": artist.image_link,
