@@ -290,7 +290,6 @@ def show_venue(venue_id):
   # }
   #data = list(filter(lambda d: d['id'] == venue_id, [data1, data2, data3]))[0]
   venue = Venue.query.get(venue_id)
-  #shows = Show.query.filter_by(venue_id=venue.id).all()
   shows = venue.shows
   upcoming_shows_count = 0
   past_shows_count = 0
@@ -301,26 +300,24 @@ def show_venue(venue_id):
   for show in shows:
     if show.start_time > datetime.utcnow():
       upcoming_shows_count += 1
-      artists = Artist.query.filter_by(id=show.venue_id).all()
-      for artist in artists:
-        upcoming_shows_item = {
-          "artist_id": artist.id,
-          "artist_name": artist.name,
-          "artist_image_link": artist.image_link or default_artist_image_link,
-          "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        upcoming_shows.append(upcoming_shows_item)
+      artist = show.artist
+      upcoming_shows_item = {
+        "artist_id": artist.id,
+        "artist_name": artist.name,
+        "artist_image_link": artist.image_link or default_artist_image_link,
+        "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
+      }
+      upcoming_shows.append(upcoming_shows_item)
     else:
       past_shows_count += 1
-      artists = Artist.query.filter_by(id=show.venue_id).all()
-      for artist in artists:
-        past_shows_item = {
-          "artist_id": artist.id,
-          "artist_name": artist.name,
-          "artist_image_link": artist.image_link or default_artist_image_link,
-          "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        past_shows.append(past_shows_item)
+      artist = show.artist
+      past_shows_item = {
+        "artist_id": artist.id,
+        "artist_name": artist.name,
+        "artist_image_link": artist.image_link or default_artist_image_link,
+        "start_time": show.start_time.strftime('%Y-%m-%d %H:%M:%S')
+      }
+      past_shows.append(past_shows_item)
 
   genres_list = []
   new_genres = venue.genres[1:-1].split(",")
@@ -742,8 +739,8 @@ def edit_artist_submission(artist_id):
       error = True
       db.session.rollback()
       print(sys.exc_info())
-  # finally:
-  #     db.session.close()
+  finally:
+      db.session.close()
   if error:
       return abort(400)
 
@@ -819,8 +816,8 @@ def edit_venue_submission(venue_id):
     error = True
     db.session.rollback()
     print(sys.exc_info())
-  # finally:
-  #     db.session.close()
+  finally:
+      db.session.close()
   if error:
     return abort(400)
   else:    
@@ -873,9 +870,7 @@ def shows():
   shows = Show.query.all()
   show_list = []
   for show in shows:
-    #venue = Venue.query.filter_by(id=show.venue_id).first()
     venue = show.venue
-    #artist = Artist.query.filter_by(id=show.artist_id).first()
     artist = show.artist
     show_item = {
       "venue_id": show.venue_id,
@@ -910,6 +905,9 @@ def create_show_submission():
     
     db.session.add(new_show)
     db.session.commit()
+  
+  # Get new show id after commiting to DB
+    new_show_id = new_show.id
   except:
     error = True
     db.session.rollback()
@@ -920,14 +918,13 @@ def create_show_submission():
     flash('An error occurred. Show could not tbe listed.')
     return abort(400)
   else:
-
   # on successful db insert, flash success
     flash('Show was successfully listed!')
   # TODO: on unsuccessful db insert, flash an error instead.
   # e.g., flash('An error occurred. Show could not be listed.')
   # see: http://flask.pocoo.org/docs/1.0/patterns/flashing/
-    return render_template('pages/home.html')
-    #return redirect('/shows/' + str(new_show.id))
+    #return render_template('pages/home.html')
+    return redirect('/shows/' + str(new_show_id))
 
 @app.route('/shows/<int:show_id>')
 def show_showitem(show_id):
