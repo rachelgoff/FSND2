@@ -99,7 +99,6 @@ app.jinja_env.filters['datetime'] = format_datetime
 def index():
   return render_template('pages/home.html')
 
-
 #  Venues
 #  ----------------------------------------------------------------
 
@@ -272,7 +271,6 @@ def create_venue_submission():
     db.session.add(venue)
     db.session.commit()
     venue_id = venue.id
-
   except:
     error = True
     db.session.rollback()
@@ -335,9 +333,7 @@ def create_artist_submission():
     artist = Artist(name=name, city=city, state=state, phone=phone, genres=genres, facebook_link=facebook_link, image_link=image_link, website=website,venue_image_link=venue_image_link, seeking_venue=seeking_venue, seeking_description=seeking_description)
     db.session.add(artist)
     db.session.commit()
-
     artist_id = artist.id
-
   except:
     error = True
     db.session.rollback()
@@ -525,7 +521,6 @@ def edit_artist_submission(artist_id):
     artist = Artist(name=artist.name, city=artist.city, state=artist.state, phone=artist.phone, genres=artist.genres, facebook_link=artist.facebook_link, image_link=artist.image_link, website=artist.website,venue_image_link=artist.venue_image_link, seeking_venue=artist.seeking_venue, seeking_description=artist.seeking_description)
     db.session.add(artist)
     db.session.commit()
-
   except:
     error = True
     db.session.rollback()
@@ -597,7 +592,6 @@ def edit_venue_submission(venue_id):
     venue = Venue(name=venue.name, city=venue.city, state=venue.state, address=venue.address, phone=venue.phone, genres=venue.genres, facebook_link=venue.facebook_link, image_link=venue.image_link, website=venue.website, seeking_talent=venue.seeking_talent, seeking_description=venue.seeking_description)
     db.session.add(venue)
     db.session.commit()
-
   except:
     error = True
     db.session.rollback()
@@ -654,12 +648,10 @@ def create_show_submission():
     artist_id = request.form.get('artist_id', '')
     venue_id = request.form.get('venue_id', '')
     start_time = request.form.get('start_time', '')
-
     new_show = Show(artist_id=artist_id, venue_id=venue_id, start_time=start_time)
     
     db.session.add(new_show)
     db.session.commit()
-  
   # Get new show id after commiting to DB
     new_show_id = new_show.id
   except:
