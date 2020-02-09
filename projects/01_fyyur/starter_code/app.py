@@ -74,7 +74,6 @@ class Artist(db.Model):
     website = db.Column(db.String(120))
     seeking_venue = db.Column(db.Boolean)
     seeking_description = db.Column(db.String(500))
-    venues = db.relationship("Venue", secondary="shows", backref=db.backref('artists', lazy=True))
     shows = db.relationship("Show", backref=db.backref('artist', lazy=True))
 
 #----------------------------------------------------------------------------#
@@ -102,6 +101,7 @@ def index():
 #  Venues
 #  ----------------------------------------------------------------
 
+# Display a list of venues
 @app.route('/venues')
 def venues():
   data = []
@@ -110,14 +110,14 @@ def venues():
   try:
     venues = Venue.query.with_entities(Venue.id, Venue.name, Venue.city, Venue.state).all()
 
-    # Get a list of cities per city and state
+    # Get a list of cities per city and state and group the venues
     for venue in venues:
       city_state = venue.city + ',' + venue.state
       if not city_state in venue_cities:
         venue_cities[city_state]=[]
       venue_cities[city_state].append(venue)
 
-    # Format city, state and venues value in a way that is required by data
+    # Format city, state and venues value in a way that is served as data
     for key in venue_cities.keys():
       city_state = key.split(',')
       city_venue= {
@@ -142,7 +142,7 @@ def search_venues():
   data = []
   error = False
   try:
-    # Implement search on artists with partial string search. Ensure it is case-insensitive.
+    # Implement search on venues with partial string search. Ensure it is case-insensitive.
     search_term = request.form.get('search_term')
     search_results = Venue.query.filter(Venue.name.ilike("%" + search_term + "%"))
     num_results = search_results.count()
@@ -168,6 +168,7 @@ def search_venues():
   else: 
     return render_template('pages/search_venues.html', results=response, search_term=search_term)
 
+# Display the sepicified venue page
 @app.route('/venues/<int:venue_id>')
 def show_venue(venue_id):
   upcoming_shows_count = 0
@@ -192,7 +193,7 @@ def show_venue(venue_id):
         }
         upcoming_shows.append(upcoming_shows_item)
       else:
-        # past shows
+        # caculate past shows
         past_shows_count += 1
         artist = show.artist
         past_shows_item = {
@@ -284,6 +285,7 @@ def create_venue_submission():
     flash('Venue ' + request.form.get('name') + ' was successfully listed!')
     return redirect('/venues/' + str(venue_id))
 
+# Delete a specific venue entry
 @app.route('/venues/<venue_id>', methods=['DELETE'])
 def delete_venue(venue_id):
   try:
@@ -296,9 +298,6 @@ def delete_venue(venue_id):
     db.session.rollback()
   finally:
     db.session.close()
-
-  # BONUS CHALLENGE: Implement a button to delete a Venue on a Venue Page, have it so that
-  # clicking that button delete it from the db then redirect the user to the homepage
   return redirect('/')
 
 #  Create Artist
@@ -354,6 +353,7 @@ def artists():
   data = Artist.query.all()
   return render_template('pages/artists.html', artists=data)
 
+#Implement search on artists with partial string search.
 @app.route('/artists/search', methods=['POST'])
 def search_artists():
   data = []
@@ -462,6 +462,7 @@ def show_artist(artist_id):
 
 #  Update
 #  ----------------------------------------------------------------
+# edit artist page
 @app.route('/artists/<int:artist_id>/edit', methods=['GET'])
 def edit_artist(artist_id):
   error = False
@@ -605,7 +606,7 @@ def edit_venue_submission(venue_id):
 
 #  Shows
 #  ----------------------------------------------------------------
-
+# Display a list of shows
 @app.route('/shows')
 def shows():
   show_list = []
