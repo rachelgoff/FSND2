@@ -254,13 +254,19 @@ def create_app(test_config=None):
       previous_questions = body.get('previous_questions')
       quiz_category = body.get('quiz_category')
 
-      next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random())
+      next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
       formatted_next_questions = [question.format() for question in next_questions]
 
-      return jsonify({
-        'success': True,
-        'new_question': formatted_next_questions[0]
-        })
+      if len(formatted_next_questions) > 0:
+        return jsonify({
+          'success': True,
+          'new_question': formatted_next_questions
+          })
+      else:
+        return jsonify({
+          'success': False
+          })
+
     except:
       abort(400)
 
