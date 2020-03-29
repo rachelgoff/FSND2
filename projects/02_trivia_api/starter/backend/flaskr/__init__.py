@@ -12,21 +12,35 @@ def create_app(test_config=None):
   # create and configure the app
   app = Flask(__name__)
   setup_db(app)
-  
+
   '''
   @TODO: Set up CORS. Allow '*' for origins. Delete the sample route after completing the TODOs
   '''
 
+  CORS(app, resource={r"*/api/*": {"origins": "*"}})
+
   '''
   @TODO: Use the after_request decorator to set Access-Control-Allow
   '''
+  # @app.after_request
+  # def after_request(response):
+  #   response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization,true')
+  #   response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  #   return response
 
   '''
   @TODO: 
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
-
+  @app.route('/categories')
+  def get_categories():
+    categories = Category.query.all()
+    formatted_categories = [category.format() for category in categories]
+    return jsonify({
+      'success': True,
+      'categories': formatted_categories
+      })
 
   '''
   @TODO: 
@@ -35,11 +49,45 @@ def create_app(test_config=None):
   This endpoint should return a list of questions, 
   number of total questions, current category, categories. 
 
+
   TEST: At this point, when you start the application
   you should see questions and categories generated,
   ten questions per page and pagination at the bottom of the screen for three pages.
   Clicking on the page numbers should update the questions. 
   '''
+
+  @app.route('/questions')
+  def get_questions():
+    category_list = []
+    category_type = ''
+    page = request.args.get('page', 1, type=int)
+    start = (page - 1) * QUESTIONS_PER_PAGE
+    end = start + QUESTIONS_PER_PAGE
+
+    try:
+      questions = Question.query.order_by('id').all()
+    except:
+      abort(400)
+
+    formatted_questions = [question.format() for question in questions]
+
+    print(len(formatted_questions[start:end]))
+
+    if len(formatted_questions[start:end]) == 0:
+      print("before 404")
+      abort(404)
+      print("after")
+    else:
+      categories = Category.query.all()
+      for category in categories:
+        category_list.append(category.type)
+      return jsonify({
+        'success': True,
+        'questions': formatted_questions[start:end],
+        'number of total questions': len(formatted_questions),
+        'current category': '',
+        'categories': category_list
+        })
 
   '''
   @TODO: 
@@ -98,6 +146,32 @@ def create_app(test_config=None):
   Create error handlers for all expected errors 
   including 404 and 422. 
   '''
+
+  @app.errorhandler(404)
+  def not_found(error):
+      return jsonify({
+        "success": False,
+        "error": 404,
+        "message": "Resource not found"
+        }), 404
+
+  @app.errorhandler(400)
+  def bad_request(error):
+      return jsonify({
+          "success": False,
+          "error": 400,
+          "message": "Bad request"
+      }), 400
+
+
+
+
+
+
+
+
+
+
   
   return app
 
