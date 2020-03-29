@@ -113,17 +113,14 @@ def create_app(test_config=None):
   def delete_question(question_id):
     try:
       question = Question.query.get(question_id)
-      print(question)
-
       if question is None:
-          print('No such a question.')
+        return jsonify({
+          "success": False
+          })
       
       question.delete()
-      print("deleting")
       questions = Question.query.order_by('id').all()
-      print(questions)
       current_questions = paginated_questions(request, questions)
-      print(current_questions)
 
       return jsonify({
           "success": True,
@@ -278,27 +275,27 @@ def create_app(test_config=None):
 
   @app.errorhandler(404)
   def not_found(error):
-      return jsonify({
-        "success": False,
-        "error": 404,
-        "message": "Resource not found"
-        }), 404
+    return jsonify({
+      "success": False,
+      "error": 404,
+      "message": "Resource not found"
+      }), 404
 
   @app.errorhandler(400)
   def bad_request(error):
-      return jsonify({
-          "success": False,
-          "error": 400,
-          "message": "Bad request"
+    return jsonify({
+      "success": False,
+      "error": 400,
+      "message": "Bad request"
       }), 400
 
   @app.errorhandler(422)
   def unprocessable_entity(error):
-      return jsonify({
-        "success": False,
-        "error": 422,
-        "message": "Unprocessable entity"
-        }), 422
+    return jsonify({
+      "success": False,
+      "error": 422,
+      "message": "Unprocessable entity"
+      }), 422
 
 
 
