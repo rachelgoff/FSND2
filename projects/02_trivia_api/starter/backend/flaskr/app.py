@@ -37,7 +37,7 @@ def create_app(test_config=None):
 
     formatted_questions = [question.format() for question in questions]
     current_questions = formatted_questions[start:end]
-    print(current_questions)
+    #print(current_questions)
 
     return current_questions
 
@@ -97,8 +97,8 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'questions': current_questions,
-        'number of total questions': len(current_questions),
-        'current category': '',
+        'totalQuestions': len(current_questions),
+        'currentCategory': '',
         'categories': category_list
         })
 
@@ -126,7 +126,7 @@ def create_app(test_config=None):
           "success": True,
           "deleted question id": question_id,
           "current questions": current_questions,
-          "total questions": len(questions)
+          "totalQuestions": len(questions)
           })
     except:
       abort(404)
@@ -141,7 +141,7 @@ def create_app(test_config=None):
   of the questions list in the "List" tab.  
   '''
 
-  @app.route('/questions/', methods=['POST'])
+  @app.route('/questions', methods=['POST'])
   def create_question():
     body = request.get_json()
 
@@ -152,6 +152,7 @@ def create_app(test_config=None):
 
     try:
       new_question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
+      print(new_question)
       new_question.insert()
       questions = Question.query.order_by('id').all()
       current_questions = paginated_questions(request, questions)
@@ -159,8 +160,13 @@ def create_app(test_config=None):
       return jsonify({
           "success": True,
           "question id": new_question.id,
-          "current questions": current_questions,
-          "total questions": len(questions)
+          "question": new_question.question,
+          "answer": new_question.answer,
+          "category": new_question.category,
+          "difficulty": new_question.difficulty,
+          "questions": current_questions
+          # "totalQuestions": len(questions),
+          # "currentCategory": ''
         })
     except:
       abort(422)
@@ -179,23 +185,28 @@ def create_app(test_config=None):
   def search_questions():
     try:
       body = request.get_json()
-      searchTerm = body.get('searchTerm')
-      search_results = Question.query.filter(Question.question.ilike("%" + searchTerm + "%"))
+      print(body)
+      search = body.get('searchTerm')
+      print(search)
+      search_results = Question.query.filter(Question.question.ilike("%" + search + "%"))
       formatted_matched_questions = [search_result.format() for search_result in search_results]
 
       questions = Question.query.order_by('id').all()
       formatted_total_questions = [question.format() for question in questions]
 
-      result = {
-          "questions": formatted_matched_questions,
-          "total_questions": formatted_total_questions,
-          "current category": formatted_matched_questions[0]['category'],
-          "current question":formatted_matched_questions[0]
-      }
+      # result = {
+      #     "questions": formatted_matched_questions,
+      #     "total_questions": formatted_total_questions,
+      #     "current category": formatted_matched_questions[0]['category'],
+      #     "current question":formatted_matched_questions[0]
+      # }
 
       return jsonify({
-          'success': True,
-          'result': result
+          "success": True,
+          "questions": formatted_matched_questions,
+          "total_questions": formatted_total_questions,
+          "current_category": formatted_matched_questions[0]['category'],
+          "current_question":formatted_matched_questions[0]
         })
     except:
       abort(400)
@@ -219,16 +230,13 @@ def create_app(test_config=None):
           total_questions = Question.query.order_by('id').all()
           formatted_total_questions = [question.format() for question in total_questions]
 
-          result = {
-              "questions": formatted_questions_by_categories,
-              "total_questions": formatted_total_questions,
-              "current category": formatted_questions_by_categories[0]['category']
-          }
-
           return jsonify({
-            'success': True,
-            'result': result
+            "success": True,
+            "questions": formatted_questions_by_categories,
+            "total_questions": formatted_total_questions,
+            "current_category": formatted_questions_by_categories[0]['category']
             })
+
       except:
         abort(400)
 
