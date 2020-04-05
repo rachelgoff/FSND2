@@ -21,6 +21,7 @@ def create_app(test_config=None):
 
   CORS(app, resource={r"*/api/*": {"origins": "*"}})
 
+
   '''
   @TODO: Use the after_request decorator to set Access-Control-Allow
   '''
@@ -28,6 +29,7 @@ def create_app(test_config=None):
   def after_request(response):
       response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
       response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+      response.headers.add('Access-Control-Allow-Credentials', 'true')
       return response
 
   def paginated_questions(request, questions):
@@ -37,7 +39,6 @@ def create_app(test_config=None):
 
     formatted_questions = [question.format() for question in questions]
     current_questions = formatted_questions[start:end]
-    #print(current_questions)
 
     return current_questions
 
@@ -52,10 +53,12 @@ def create_app(test_config=None):
   Create an endpoint to handle GET requests 
   for all available categories.
   '''
+  @app.route('/categories/')
   @app.route('/categories')
   def get_categories():
     categories = Category.query.all()
     formatted_categories = [category.format() for category in categories]
+
     return jsonify({
       'success': True,
       'categories': formatted_categories
@@ -194,13 +197,6 @@ def create_app(test_config=None):
       questions = Question.query.order_by('id').all()
       formatted_total_questions = [question.format() for question in questions]
 
-      # result = {
-      #     "questions": formatted_matched_questions,
-      #     "total_questions": formatted_total_questions,
-      #     "current category": formatted_matched_questions[0]['category'],
-      #     "current question":formatted_matched_questions[0]
-      # }
-
       return jsonify({
           "success": True,
           "questions": formatted_matched_questions,
@@ -257,6 +253,7 @@ def create_app(test_config=None):
     try:
       body = request.get_json()
       previous_questions = body.get('previous_questions')
+
       quiz_category = body.get('quiz_category')
 
       next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
@@ -265,7 +262,10 @@ def create_app(test_config=None):
       if len(formatted_next_questions) > 0:
         return jsonify({
           'success': True,
-          'new_question': formatted_next_questions
+          'question': formatted_next_questions[0], # the first element from the question list
+          'previousQuestions': previous_questions,
+          'guess': '',
+          'showAnswer': False
           })
       else:
         return jsonify({
@@ -305,14 +305,13 @@ def create_app(test_config=None):
       "message": "Unprocessable entity"
       }), 422
 
-
-
-
-
-
-
-
-
+  @app.errorhandler(500)
+  def internal_server_error(error):
+    return jsonify({
+      "success": False,
+      "error": 500,
+      "message": "Internal server error"
+      }), 500
 
   
   return app
