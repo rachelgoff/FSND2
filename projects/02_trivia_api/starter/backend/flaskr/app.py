@@ -86,6 +86,7 @@ def create_app(test_config=None):
 
     try:
       questions = Question.query.order_by('id').all()
+      formatted_total_questions = [question.format() for question in questions]
       current_questions = paginated_questions(request, questions)
     except:
       abort(400)
@@ -100,9 +101,9 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'questions': current_questions,
-        'totalQuestions': len(current_questions),
-        'currentCategory': '',
-        'categories': category_list
+        #'current_category': '',
+        'categories': category_list,
+        'total_questions': len(questions)
         })
 
   '''
@@ -127,9 +128,9 @@ def create_app(test_config=None):
 
       return jsonify({
           "success": True,
-          "deleted question id": question_id,
-          "current questions": current_questions,
-          "totalQuestions": len(questions)
+          "deleted_question_id": question_id,
+          "current_questions": current_questions,
+          "total_questions": len(questions)
           })
     except:
       abort(404)
@@ -155,21 +156,22 @@ def create_app(test_config=None):
 
     try:
       new_question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
-      print(new_question)
+
       new_question.insert()
       questions = Question.query.order_by('id').all()
       current_questions = paginated_questions(request, questions)
+      categories = Category.query.all()
+      formatted_categories = [category.format() for category in categories]
 
       return jsonify({
           "success": True,
-          "question id": new_question.id,
           "question": new_question.question,
           "answer": new_question.answer,
-          "category": new_question.category,
+          "current_category": new_question.category,
           "difficulty": new_question.difficulty,
-          "questions": current_questions
-          # "totalQuestions": len(questions),
-          # "currentCategory": ''
+          "questions": current_questions,
+          "total_questions": len(questions),
+          "categories" : formatted_categories
         })
     except:
       abort(422)
