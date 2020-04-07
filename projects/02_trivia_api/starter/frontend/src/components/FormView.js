@@ -3,6 +3,8 @@ import $ from 'jquery';
 
 import '../stylesheets/FormView.css';
 
+const ServerURL = 'http://127.0.0.1:5000';
+
 class FormView extends Component {
   constructor(props){
     super();
@@ -17,7 +19,7 @@ class FormView extends Component {
 
   componentDidMount(){
     $.ajax({
-      url: `http://127.0.0.1:5000/categories`, //TODO: update request URL
+      url: ServerURL + `/categories`, //TODO: update request URL
       type: "GET",
       success: (result) => {
         this.setState({ categories: result.categories })
@@ -34,7 +36,7 @@ class FormView extends Component {
   submitQuestion = (event) => {
     event.preventDefault();
     $.ajax({
-      url: 'http://127.0.0.1:5000/questions', //TODO: update request URL
+      url: ServerURL + '/questions', //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',

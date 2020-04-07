@@ -5,6 +5,8 @@ import Question from './Question';
 import Search from './Search';
 import $ from 'jquery';
 
+const ServerURL = 'http://127.0.0.1:5000';
+
 class QuestionView extends Component {
   constructor(){
     super();
@@ -23,7 +25,7 @@ class QuestionView extends Component {
 
   getQuestions = () => {
     $.ajax({
-      url: `http://127.0.0.1:5000/questions?page=${this.state.page}`, //TODO: update request URL
+      url: ServerURL + `/questions?page=${this.state.page}`, //TODO: update request URL
       type: "GET",
       success: (result) => {
         this.setState({
@@ -47,6 +49,7 @@ class QuestionView extends Component {
   createPagination(){
     let pageNumbers = [];
     let maxPage = Math.ceil(this.state.totalQuestions / 10)
+
     for (let i = 1; i <= maxPage; i++) {
       pageNumbers.push(
         <span
@@ -60,7 +63,7 @@ class QuestionView extends Component {
 
   getByCategory= (id) => {
     $.ajax({
-      url: `http://127.0.0.1:5000/categories/${id}/questions`, //TODO: update request URL
+      url: ServerURL + `/categories/${id}/questions`, //TODO: update request URL
       type: "GET",
       success: (result) => {
         this.setState({
@@ -78,7 +81,7 @@ class QuestionView extends Component {
 
   submitSearch = (searchTerm) => {
     $.ajax({
-      url: `http://127.0.0.1:5000/questions/search`, //TODO: update request URL
+      url: ServerURL + `/questions/search`, //TODO: update request URL
       type: "POST",
       dataType: 'json',
       contentType: 'application/json',
@@ -136,7 +139,7 @@ class QuestionView extends Component {
         </div>
         <div className="questions-list">
           <h2>Questions</h2>
-          {this.state.questions.map((q, ind) => (
+          {this.state.questions.map((q, id) => (
             <Question
               key={q.id}
               question={q.question}
