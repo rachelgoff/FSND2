@@ -24,6 +24,13 @@ class TriviaTestCase(unittest.TestCase):
             self.db.init_app(self.app)
             # create all tables
             self.db.create_all()
+        
+        self.new_question = {
+            'question': 'Test questions',
+            'category': 3,
+            'answer': 'Answer to test questions',
+            'difficulty': 1
+        }
     
     def tearDown(self):
         """Executed after reach test"""
@@ -36,7 +43,6 @@ class TriviaTestCase(unittest.TestCase):
     def test_get_categories(self):
         res = self.client().get("/categories")
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['categories'])
@@ -45,7 +51,6 @@ class TriviaTestCase(unittest.TestCase):
     def test_get_paginated_questions(self):
         res = self.client().get("/questions")
         data = json.loads(res.data)
-
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
         self.assertTrue(data['questions'])
@@ -57,6 +62,57 @@ class TriviaTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'Resource not found')
+
+    def test_get_questions_by_category(self):
+        category_id = 4
+        res = self.client().get('/categories/' + str(category_id) + '/questions')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_400_get_questions_not_in_category(self):
+        category_id = 8
+        res = self.client().get('/categories/' + str(category_id) + '/questions')
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 400)
+        self.assertEqual(data['success'], False)
+
+    def test_add_questions(self):
+        res = self.client().post('/questions', json=self.new_question)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+        self.assertTrue(data['questions'])
+        self.assertTrue(len(data['questions']))
+
+    def test_405_add_questions_not_allowed(self):
+        question_id = 1000
+        res = self.client().post('/questions/' + str(question_id), json=self.new_question)
+        data = json.loads(res.data)
+        print(data)
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+
+    def test_404_delete_question_not_exist(self):
+        questions_id = 999
+        res = self.client().delete('/questions/' + str(questions_id))
+        data = json.loads(res.data)
+        print(data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+
+    # def test_delete_question(self):
+    #     questions_id = 18
+    #     res = self.client().delete('/questions/' + str(questions_id))
+    #     data = json.loads(res.data)
+    #     question = Question.query.get(questions_id)
+    #     self.assertEqual(res.status_code, 200)
+    #     self.assertEqual(data['success'], True)
+    #     self.assertTrue(data['total_questions'])
+    #     self.assertEqual(data['deleted_question_id'], questions_id)
+    #     self.assertEqual(question, None)
+
 
 
 # Make the tests conveniently executable
