@@ -27,25 +27,26 @@ def create_app(test_config=None):
   '''
   @app.after_request
   def after_request(response):
-      response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
-      response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
-      response.headers.add('Access-Control-Allow-Credentials', 'true')
-      return response
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
+    
+    return response
 
   def paginated_questions(request, questions):
     page = request.args.get('page', 1, type=int)
     start = (page - 1) * QUESTIONS_PER_PAGE
     end = start + QUESTIONS_PER_PAGE
-
+    
     formatted_questions = [question.format() for question in questions]
     current_questions = formatted_questions[start:end]
-
+    
     return current_questions
 
   def get_questions_by_category(category_id):
     questions_by_categories = Question.query.filter_by(category=category_id).all()
     formatted_questions_by_categories = [question.format() for question in questions_by_categories]
-
+    
     return formatted_questions_by_categories
 
   '''
@@ -58,7 +59,7 @@ def create_app(test_config=None):
   def get_categories():
     categories = Category.query.all()
     formatted_categories = [category.format() for category in categories]
-
+    
     return jsonify({
       'success': True,
       'categories': formatted_categories
@@ -101,7 +102,6 @@ def create_app(test_config=None):
       return jsonify({
         'success': True,
         'questions': current_questions,
-        #'current_category': '',
         'categories': category_list,
         'total_questions': len(questions)
         })
@@ -146,7 +146,6 @@ def create_app(test_config=None):
   @app.route('/questions', methods=['POST'])
   def create_question():
     body = request.get_json()
-
     new_question = body.get('question')
     new_answer = body.get('answer')
     new_category = body.get('category')
@@ -253,23 +252,21 @@ def create_app(test_config=None):
     try:
       body = request.get_json()
       previous_questions = body.get('previous_questions')
-
       quiz_category = body.get('quiz_category')
-
       next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
       formatted_next_questions = [question.format() for question in next_questions]
 
       if len(formatted_next_questions) > 0:
         return jsonify({
-          'success': True,
-          'question': formatted_next_questions[0], # the first element from the question list
-          'previousQuestions': previous_questions,
-          'guess': '',
-          'showAnswer': False
+          "success": True,
+          "question": formatted_next_questions[0], # the first element from the question list
+          "previousQuestions": previous_questions,
+          "guess": '',
+          "showAnswer": False
           })
       else:
         return jsonify({
-          'success': False
+          "success": False
           })
 
     except:
