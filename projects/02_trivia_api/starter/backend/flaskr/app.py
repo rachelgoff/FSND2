@@ -118,9 +118,7 @@ def create_app(test_config=None):
     try:
       question = Question.query.get(question_id)
       if question is None:
-        return jsonify({
-          "success": False
-          })
+        abort(404)
       
       question.delete()
       questions = Question.query.order_by('id').all()
@@ -314,6 +312,14 @@ def create_app(test_config=None):
       "error": 500,
       "message": "Internal server error"
       }), 500
+
+  @app.errorhandler(405)
+  def method_not_allowed(error):
+    return jsonify({
+      "success": False,
+      "error": 405,
+      "message": "Method not allowed"
+      }), 405
 
   
   return app
