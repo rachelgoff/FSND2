@@ -187,9 +187,7 @@ def create_app(test_config=None):
   def search_questions():
     try:
       body = request.get_json()
-      print(body)
       search = body.get('searchTerm')
-      print(search)
       search_results = Question.query.filter(Question.question.ilike("%" + search + "%"))
       formatted_matched_questions = [search_result.format() for search_result in search_results]
 
@@ -253,7 +251,10 @@ def create_app(test_config=None):
       body = request.get_json()
       previous_questions = body.get('previous_questions')
       quiz_category = body.get('quiz_category')
-      next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
+      if quiz_category == 0: # When ALL is select, start next question from a random category
+        next_questions = Question.query.filter(Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
+      else:
+        next_questions = Question.query.filter(Question.category == quiz_category, Question.id.notin_(previous_questions)).order_by(func.random()).limit(1)
       formatted_next_questions = [question.format() for question in next_questions]
 
       if len(formatted_next_questions) > 0:
