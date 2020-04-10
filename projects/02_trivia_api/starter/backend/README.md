@@ -87,6 +87,37 @@ GET '/categories'
 '5' : "Entertainment",
 '6' : "Sports"}
 
+GET '/questions'
+- Fetches a dictionary of questions in which the keys are the ids, question, answer and difficulty 
+- Request arguments: None
+- Returns: An object with id, question, category and difficulty key: value pairs.
+
+DELETE '/questions/<int:question_id>'
+- Delete a specified question based on the question_id
+- Request arguments: <int:question_id>
+- Returns: An object with a successful message
+
+POST '/questions'
+- Add a new question to the existing question collection
+- Request arguments: None
+- Returns: An object with id, question, category and difficulty key: value pairs.
+
+POST '/questions/search'
+- Search one or a group of questions via any search phrase
+- Request arguments: None
+- Returns: An object with matched question, total questions, current category and current question.
+
+GET '/categories/<int:category_id>/questions'
+- Fetches a list of questions based on the category
+- Request arguments: category_id
+- Returns: An object with matched questions, total questions and current category
+
+POST '/quizzes'
+- Fetch a random question within the given category based on the category and previous questions
+- Request arguments: None
+- Returns: An object with the next question with a show answer switch
+
+
 ```
 
 
