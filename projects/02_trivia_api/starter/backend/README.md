@@ -80,6 +80,7 @@ GET '/categories'
 - Fetches a dictionary of categories in which the keys are the ids and the value is the corresponding string of the category
 - Request Arguments: None
 - Returns: An object with a single key, categories, that contains a object of id: category_string key:value pairs. 
+Example as:
 {'1' : "Science",
 '2' : "Art",
 '3' : "Geography",
@@ -90,36 +91,157 @@ GET '/categories'
 GET '/questions'
 - Fetches a dictionary of questions in which the keys are the ids, question, answer and difficulty 
 - Request arguments: None
-- Returns: An object with id, question, category and difficulty key: value pairs.
+- Returns: A list of objects with id, question, category and difficulty key: value pairs.
+Example as:
+{
+    "categories": [
+        "Science",
+        "Art",
+        "Geography",
+        "History",
+        "Entertainment",
+        "Sports"
+    ],
+    "questions": [
+        {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+        },
+       ...
+    ],
+    "success": true
 
 DELETE '/questions/<int:question_id>'
 - Delete a specified question based on the question_id
 - Request arguments: <int:question_id>
 - Returns: An object with a successful message
+Example as:
+{
+    "success": false
+}
 
 POST '/questions'
 - Add a new question to the existing question collection
 - Request arguments: None
 - Returns: An object with id, question, category and difficulty key: value pairs.
+Example as:
+{
+    "answer": "George Washington 2",
+    "current_category": 5,
+    "difficulty": 2,
+    "question": "Who invented Peanut Butter 2?",
+    "questions": [
+        {
+            "answer": "Apollo 13",
+            "category": 5,
+            "difficulty": 4,
+            "id": 2,
+            "question": "What movie earned Tom Hanks his third straight Oscar nomination, in 1996?"
+        },
+        ...
+    ],
+    "success": true
+}
 
 POST '/questions/search'
 - Search one or a group of questions via any search phrase
 - Request arguments: None
 - Returns: An object with matched question, total questions, current category and current question.
+Example as:
+
+{
+    "current_category": 4,
+    "current_question": {
+        "answer": "Maya Angelou",
+        "category": 4,
+        "difficulty": 2,
+        "id": 5,
+        "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+    },
+    "questions": [
+        {
+            "answer": "Maya Angelou",
+            "category": 4,
+            "difficulty": 2,
+            "id": 5,
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },
+        {
+            "answer": "Edward Scissorhands",
+            "category": 5,
+            "difficulty": 3,
+            "id": 6,
+            "question": "What was the title of the 1990 fantasy directed by Tim Burton about a young man with multi-bladed appendages?"
+        }
+    ],
+    "success": true
+}
 
 GET '/categories/<int:category_id>/questions'
 - Fetches a list of questions based on the category
 - Request arguments: category_id
 - Returns: An object with matched questions, total questions and current category
+Example as:
+{
+    "current_category": 4,
+    "questions": [
+        {
+            "answer": "Maya Angelou",
+            "category": 4,
+            "difficulty": 2,
+            "id": 5,
+            "question": "Whose autobiography is entitled 'I Know Why the Caged Bird Sings'?"
+        },
+        {
+            "answer": "Muhammad Ali",
+            "category": 4,
+            "difficulty": 1,
+            "id": 9,
+            "question": "What boxer's original name is Cassius Clay?"
+        },
+        {
+            "answer": "George Washington Carver",
+            "category": 4,
+            "difficulty": 2,
+            "id": 12,
+            "question": "Who invented Peanut Butter?"
+        },
+        {
+            "answer": "Scarab",
+            "category": 4,
+            "difficulty": 4,
+            "id": 23,
+            "question": "Which dung beetle was worshipped by the ancient Egyptians?"
+        }
+    ],
+    "success": true
+ }
+
 
 POST '/quizzes'
 - Fetch a random question within the given category based on the category and previous questions
 - Request arguments: None
 - Returns: An object with the next question with a show answer switch
+Example as:
 
+{
+    "guess": "",
+    "previousQuestions": [],
+    "question": {
+        "answer": null,
+        "category": null,
+        "difficulty": null,
+        "id": 26,
+        "question": null
+    },
+    "showAnswer": false,
+    "success": true
+}
 
 ```
-
 
 ## Testing
 To run the tests, run

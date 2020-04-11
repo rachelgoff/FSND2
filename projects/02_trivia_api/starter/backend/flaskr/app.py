@@ -110,10 +110,7 @@ def create_app(test_config=None):
       current_questions = paginated_questions(request, questions)
 
       return jsonify({
-          "success": True,
-          "deleted_question_id": question_id,
-          "current_questions": current_questions,
-          "total_questions": len(questions)
+          "success": True
           })
     except:
       abort(404)
@@ -132,7 +129,6 @@ def create_app(test_config=None):
 
     try:
       new_question = Question(question=new_question, answer=new_answer, category=new_category, difficulty=new_difficulty)
-
       new_question.insert()
       questions = Question.query.order_by('id').all()
       current_questions = paginated_questions(request, questions)
@@ -146,8 +142,8 @@ def create_app(test_config=None):
           "current_category": new_question.category,
           "difficulty": new_question.difficulty,
           "questions": current_questions,
-          "total_questions": len(questions),
-          "categories" : formatted_categories
+          # "total_questions": len(questions),
+          # "categories" : formatted_categories
         })
     except:
       abort(422)
