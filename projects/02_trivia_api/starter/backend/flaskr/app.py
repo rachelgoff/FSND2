@@ -110,7 +110,8 @@ def create_app(test_config=None):
       current_questions = paginated_questions(request, questions)
 
       return jsonify({
-          "success": True
+          "success": True,
+          "delete_question_id": question_id
           })
     except:
       abort(404)
