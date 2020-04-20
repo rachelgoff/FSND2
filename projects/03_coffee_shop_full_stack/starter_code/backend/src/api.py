@@ -59,7 +59,8 @@ def get_drinks(token):
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks-detail', methods=['GET'])
-def get_drinks_detail():
+@requires_auth("get:drinks-detail")
+def get_drinks_detail(token):
 
     all_drinks = Drink.query.order_by('id').all()
     drinks = [drink.long() for drink in all_drinks]
@@ -80,9 +81,29 @@ def get_drinks_detail():
 '''
 
 @app.route('/drinks', methods=['POST'])
-def create_drink():
+@requires_auth("post:drinks")
+def create_drink(token):
     body = request.get_json()
-    new_title = body.get('title')
+    title = body.get('title')
+    recipe = body.get('recipe')
+    parts = body.get('parts')
+    color = body.get('color')
+    name = body.get('name')
+
+    print(body)
+    print(title)
+    print(recipe)
+
+    # new_drink = Drink(title=title, recipe=recipe)
+    # #drink = new_drink.long()
+
+    # print(new_drink)
+
+
+    return jsonify({
+        "success": True,
+        #"drinks": drink
+        })
 
 '''
 @TODO implement endpoint
