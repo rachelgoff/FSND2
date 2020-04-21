@@ -86,23 +86,22 @@ def create_drink(token):
     body = request.get_json()
     title = body.get('title')
     recipe = body.get('recipe')
-    parts = body.get('parts')
-    color = body.get('color')
-    name = body.get('name')
+    #parts = recipe['parts']
+    #color = recipe['color']
+    #name = recipe['name']
 
-    print(body)
-    print(title)
-    print(recipe)
+    if (title is None) or (recipe is None):
+        abort(422)
 
-    # new_drink = Drink(title=title, recipe=recipe)
-    # #drink = new_drink.long()
+    new_drink = Drink(title=title, recipe=json.dumps(recipe))
+    new_drink.insert()
 
-    # print(new_drink)
-
+    all_drinks = Drink.query.all()
+    drinks = [drink.long() for drink in all_drinks]
 
     return jsonify({
         "success": True,
-        #"drinks": drink
+        "drinks": drinks
         })
 
 '''
