@@ -235,3 +235,11 @@ def unauthorized_error(error):
 @TODO implement error handler for AuthError
     error handler should conform to general task above 
 '''
+
+@app.errorhandler(AuthError)
+def auth_error(error):
+    return jsonify({
+        "success": False, 
+        "error": AuthError.status_code,
+        "message": "authentification failed"
+        }), 401
