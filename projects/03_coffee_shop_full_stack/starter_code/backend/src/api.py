@@ -240,6 +240,6 @@ def unauthorized_error(error):
 def auth_error(error):
     return jsonify({
         "success": False, 
-        "error": AuthError.status_code,
-        "message": "authentification failed"
+        "error": 401,
+        "message": "AuthError"
         }), 401
