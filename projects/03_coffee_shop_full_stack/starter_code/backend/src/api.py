@@ -95,9 +95,12 @@ def create_drink(token):
 
     new_drink = Drink(title=title, recipe=json.dumps(recipe))
     new_drink.insert()
+    print(new_drink.id)
 
     all_drinks = Drink.query.all()
     drinks = [drink.long() for drink in all_drinks]
+    drink = Drink.query.get(1)
+    print(drink.long())
 
     return jsonify({
         "success": True,
@@ -114,8 +117,28 @@ def create_drink(token):
         it should contain the drink.long() data representation
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
-'''
+# '''
+@app.route('/drinks/<int:id>', methods=['PATCH'])
+@requires_auth("patch:drinks")
+def update_drink(token, id):
+    body = request.get_json()
+    new_title = body.get('title')
+    new_recipe = body.get('recipe')
 
+    drink = Drink.query.get(id)
+    if drink == None:
+        abort(404)
+    if new_title != None:
+        drink.title = new_title
+    if new_recipe != None:
+        drink.recipe = new_recipe
+
+    drink.update()
+
+    return jsonify({
+        "success": True,
+        "drinks": drink.long()
+    })
 
 '''
 @TODO implement endpoint
@@ -128,6 +151,19 @@ def create_drink(token):
         or appropriate status code indicating reason for failure
 '''
 
+@app.route('/drinks/<int:id>', methods=['DELETE'])
+@requires_auth("delete:drinks")
+def delete_drink(toke, id):
+    delete_id = id
+    drink = Drink.query.get(id)
+    if drink == None:
+        abort(404)
+    drink.delete()
+
+    return jsonify({
+        "success": True,
+        "delete": delete_id
+    })
 
 ## Error Handling
 '''
