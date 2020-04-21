@@ -98,7 +98,7 @@ def create_drink(token):
         if (title is None) or (recipe is None):
             abort(422)
 
-        new_drink = Drink(title=title, recipe=json.dumps(recipe))
+        new_drink = Drink(title=title, recipe=json.dumps([recipe]))
         new_drink.insert()
         print(new_drink.id)
 
