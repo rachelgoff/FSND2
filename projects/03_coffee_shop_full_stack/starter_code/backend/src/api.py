@@ -83,9 +83,6 @@ def create_drink(token):
         body = request.get_json()
         title = body.get('title')
         recipe = body.get('recipe')
-        # parts = recipe['parts']
-        # color = recipe['color']
-        # name = recipe['name']
 
         if (title is None) or (recipe is None):
             abort(422)
