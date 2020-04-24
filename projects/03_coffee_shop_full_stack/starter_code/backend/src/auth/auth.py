@@ -8,22 +8,27 @@ AUTH0_DOMAIN = 'dev-auth2.auth0.com'
 ALGORITHMS = ['RS256']
 API_AUDIENCE = 'coffee'
 
-## AuthError Exception
+
 '''
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
-## Auth Header
+
+# Auth Header
 
 '''
 get_token_auth_header() method
 
 '''
+
+
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
     """
@@ -51,18 +56,22 @@ def get_token_auth_header():
 
     token = parts[1]
     return token
+
+
 '''
 check_permissions(permission, payload) method
 @INPUTS
     permission: string permission (i.e. 'post:drink')
     payload: decoded jwt payload
 '''
+
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
-                        raise AuthError({
-                            'code': 'invalid_claims',
-                            'description': 'Permissions not included in JWT.'
-                        }, 400)
+        raise AuthError({
+            'code': 'invalid_claims',
+            'description': 'Permissions not included in JWT.'
+        }, 400)
 
     if permission not in payload['permissions']:
         raise AuthError({
@@ -71,11 +80,14 @@ def check_permissions(permission, payload):
         }, 403)
     return True
 
+
 '''
 verify_decode_jwt(token) method
 @INPUTS
     token: a json web token (string)
 '''
+
+
 def verify_decode_jwt(token):
     jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
     jwks = json.loads(jsonurl.read())
@@ -115,7 +127,8 @@ def verify_decode_jwt(token):
         except jwt.JWTClaimsError:
             raise AuthError({
                 'code': 'invalid_claims',
-                'description': 'Incorrect claims. Please, check the audience and issuer.'
+                'description':
+                    'Incorrect claims. Please, check the audience and issuer.'
             }, 401)
         except Exception:
             raise AuthError({
@@ -127,11 +140,14 @@ def verify_decode_jwt(token):
                 'description': 'Unable to find the appropriate key.'
             }, 400)
 
+
 '''
 @requires_auth(permission) decorator method
 @INPUTS
     permission: string permission (i.e. 'post:drink')
 '''
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
