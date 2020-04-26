@@ -45,7 +45,7 @@ def get_drinks():
             "success": True,
             "drinks": drinks
             })
-    except 404:
+    except IndexError:
         abort(404)
 
 
@@ -65,7 +65,7 @@ def get_drinks_detail(token):
             "success": True,
             "drinks": drinks
             })
-    except 404:
+    except IndexError:
         abort(404)
 
 
@@ -100,7 +100,7 @@ def create_drink(token):
             "success": True,
             "drinks": drinks
             })
-    except 422:
+    except IndexError:
         abort(422)
 
 
@@ -153,7 +153,7 @@ def delete_drink(toke, id):
             "success": True,
             "delete": delete_id
         })
-    except 404:
+    except IndexError:
         abort(404)
 
 # Error Handling
