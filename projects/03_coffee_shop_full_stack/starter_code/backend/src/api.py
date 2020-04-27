@@ -39,14 +39,17 @@ data representation
 def get_drinks():
     try:
         all_drinks = Drink.query.order_by('id').all()
-        drinks = [drink.short() for drink in all_drinks]
-
-        return jsonify({
-            "success": True,
-            "drinks": drinks
-            })
-    except IndexError:
+        if all_drinks:
+            drinks = [drink.short() for drink in all_drinks]
+        else:
+            drinks = []
+    except Exception as e:
+        print(e)
         abort(404)
+    return jsonify({
+        "success": True,
+        "drinks": drinks
+        })
 
 
 '''
@@ -87,7 +90,7 @@ def create_drink(token):
         if (title is None) or (recipe is None):
             abort(422)
 
-        new_drink = Drink(title=title, recipe=json.dumps([recipe]))
+        new_drink = Drink(title=title, recipe=json.dumps(recipe))
         new_drink.insert()
         print(new_drink.id)
 
