@@ -117,7 +117,7 @@ data representation
 def update_drink(token, id):
     body = request.get_json()
     new_title = body.get('title')
-    new_recipe = body.get('recipe')
+    new_recipe = json.dumps(body.get('recipe'))
 
     drink = Drink.query.get(id)
     if drink is None:
