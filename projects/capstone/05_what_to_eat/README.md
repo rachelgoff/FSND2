@@ -1,6 +1,6 @@
 # Welcome to What To Eat Backend
 
-This app works as a meal planner for users. It gives users suggestions based on their previous favorite take-out food items from various restaurants. It saves users time and energy to plan their meals. Especially when the restaurants are not fully opened with its sitting down area and you will spend lots of time eating at home. What to eat app will plan your meals with the food you used to love. Using What to eat, your favorite food is just one button away.
+This app works as a meal planner for users. It gives users suggestions based on their previous favorite take-out food items from various restaurants. It saves users time and energy to plan their meals. Especially when the restaurants are not fully opened with their sitting down area during this particular situation, you will spend lots of time on eating at home. What to eat app will plan your meals with the food you used to love. Using What to eat, your favorite food is just one button away.
 
 ## Virtual environment is recommended.
 
