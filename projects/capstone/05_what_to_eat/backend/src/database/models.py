@@ -3,9 +3,10 @@ from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 import json
 
-database_filename = "dish"
+database_name = "dish"
 project_dir = os.path.dirname(os.path.abspath(__file__))
-database_path = "postgresql://{}/{}".format(os.path.join(project_dir, database_filename))
+#database_path = "postgresql://{}/{}".format(os.path.join(project_dir, database_name))
+database_path = "postgresql://{}/{}".format('localhost:5000', database_name)
 
 db = SQLAlchemy()
 
@@ -21,15 +22,15 @@ class Dish(db.Model):
     __tablename__ = "dishes"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    restaurant_id = Column(Integer)
-    category = Column(String)
+    name = Column(String(120))
+    restaurant_id = Column(Integer, db.ForeignKey('restaurants.id'), nullable=False)
+    category_id = Column(Integer, db.ForeignKey('categories.id'), nullable=False)
     rating = Column(Integer)
 
-    def __init__(self, name, restaurant_id, category, rating):
+    def __init__(self, name, restaurant_id, category_id, rating):
         self.name = name
         self.restaurant_id = restaurant_id
-        self.category = category
+        self.category_id = category_id
         self.rating = rating
 
     def insert(self):
@@ -48,7 +49,7 @@ class Dish(db.Model):
             'id': self.id,
             'name': self.name,
             'restaurant_id': self.restaurant_id,
-            'category': self.category,
+            'category_id': self.category_id,
             'rating': self.rating
         }
 
@@ -70,11 +71,11 @@ class Category(db.Model):
 class Restaurant(db.Model):
     __tablename__ = "restaurants"
     id = Column(Integer, primary_key=True)
-    name = Column(String)
-    city = Column(String)
-    state = Column(String)
-    address = Column(String)
-    website = Column(String)
+    name = Column(String(120))
+    city = Column(String(120))
+    state = Column(String(120))
+    address = Column(String(180))
+    website = Column(String(120))
 
     def __init__(self, name, city, state, website):
         self.name = name
