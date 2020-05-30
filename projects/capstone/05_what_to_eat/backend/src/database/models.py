@@ -5,8 +5,8 @@ import json
 
 database_name = "dish"
 project_dir = os.path.dirname(os.path.abspath(__file__))
-#database_path = "postgresql://{}/{}".format(os.path.join(project_dir, database_name))
-database_path = "postgresql://{}/{}".format('localhost:5000', database_name)
+# database_path = "postgresql://{}/{}".format(os.path.join(project_dir, database_name))
+database_path = "postgresql://{}/{}".format('localhost:5432', database_name)
 
 db = SQLAlchemy()
 
@@ -15,8 +15,7 @@ def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db.create_all()
-
+    db.create_all() # XXX this hangs since the DB isn't yet setup properly?
 
 class Dish(db.Model):
     __tablename__ = "dishes"
