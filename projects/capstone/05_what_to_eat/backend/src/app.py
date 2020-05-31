@@ -47,6 +47,28 @@ def create_app():
             "success": True,
             "dishes": formatted_all_dishes
         })
+
+    @app.route('/dishes', methods=['POST'])
+    def create_dish():
+        body = request.get_json()
+        new_name = body.get('name')
+        new_restaurant_id = body.get('restaurant_id')
+        new_category_id = body.get('category_id')
+        new_rating = body.get('rating')
+        new_price = body.get('price')
+        new_image_link = body.get('image_link')
+        
+        new_dish = Dish(name=new_name, restaurant_id=new_restaurant_id, category_id=new_category_id, rating=new_rating, price=new_price, image_link=new_image_link)
+        new_dish.insert()
+
+        all_dishes = Dish.query.order_by('id').all()
+        formatted_all_dishes = [dish.format() for dish in all_dishes]
+
+        return jsonify({
+            "success": True,
+            "new_dish": new_dish.format(),
+            "dishes": formatted_all_dishes
+        })
     
     @app.route('/categories', methods=['GET'])
     def get_categories():
