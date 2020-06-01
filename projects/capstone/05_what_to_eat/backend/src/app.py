@@ -7,6 +7,7 @@ from flask_cors import CORS
 
 from .database.models import setup_db, Dish, Restaurant, Category
 # from .database import models
+import random
 
 # debug
 print("Imported database from models")
@@ -205,7 +206,7 @@ def create_app():
             "dishes": dishes
         })
     
-    @app.route('/categories/<int:category_id>/dishes')
+    @app.route('/categories/<int:category_id>/dishes', methods=['GET'])
     def dishes_by_categories(category_id):
         dishes_by_categories = []
         try:
@@ -224,7 +225,33 @@ def create_app():
             "success": True,
             "dishes_by_categories": dishes_by_categories
         })
+    
+    @app.route('/dishes/try', methods=['POST'])
+    def try_new_dishes():
+        dishes_to_try = []
+        try:
+            body = request.get_json()
+            previous_dishes = body.get('previous_dishes')
+            new_category = body.get('new_category')
+            if new_category is not None:
+                if new_category == 0:
+                    dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
+                    for d in dishes:
+                        dish = get_formatted_dish(d.id)
+                        dishes_to_try.append(dish)
+                else:
+                    dishes = Dish.query.filter(Dish.category_id==new_category, Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
+                    for d in dishes:
+                        dish = get_formatted_dish(d.id)
+                        dishes_to_try.append(dish)
 
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "dish to try": dishes_to_try[0]
+        })
 
     @app.route('/categories', methods=['GET'])
     def get_categories():
@@ -239,6 +266,39 @@ def create_app():
             "categories": formatted_all_categories
         })
 
+    @app.route('/categories', methods=['POST'])
+    def create_category():
+        try:
+            body = request.get_json()
+            new_category = body.get('category')
+
+            category = Category(category=new_category)
+            category.insert()
+            categories = Category.query.order_by('id').all()
+            formatted_all_categories = [category.format() for category in categories]
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "categories": formatted_all_categories
+        })
+
+    @app.route('/categories/<int:category_id>', methods=['GET'])
+    def get_category_by_id(category_id):
+        try:
+            category = Category.query.get(category_id)
+            print(category_id)
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "category": category.format()
+        })
+
+
+
     @app.route('/restaurants', methods=['GET'])
     def get_restaurants():
         try:
@@ -252,6 +312,19 @@ def create_app():
             "restaurants": formatted_all_restaurants
         })
 
+    
+    # Error Handling
+
+
+    @app.errorhandler(422)
+    def unprocessable(error):
+        return jsonify({
+            "success": False,
+            "error": 422,
+            "message": "unprocessable"
+            }), 422
+
+
     @app.errorhandler(404)
     def resource_not_found(error):
         return jsonify({
@@ -259,6 +332,33 @@ def create_app():
             "error": 404,
             "message": "Resource not found"
             }), 404
+
+
+    @app.errorhandler(500)
+    def internal_server_error(error):
+        return jsonify({
+        "success": False,
+        "error": 500,
+        "message": "Internal server error"
+        }), 500
+
+
+    @app.errorhandler(405)
+    def method_not_allowed(error):
+        return jsonify({
+        "success": False,
+        "error": 405,
+        "message": "Method not allowed"
+        }), 405
+
+
+    @app.errorhandler(401)
+    def unauthorized_error(error):
+        return jsonify({
+            "success": False,
+            "error": 401,
+            "message": "Unauthorized error"
+            }), 401
 
     if __name__ == '__main__':
         port = int(os.environ.get('PORT', 5000))
