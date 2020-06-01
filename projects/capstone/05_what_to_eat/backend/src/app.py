@@ -186,6 +186,44 @@ def create_app():
         except IndexError:
              abort(404)
 
+    @app.route('/dishes/search', methods=['POST'])
+    def search_dish():
+        dishes = []
+        try:
+            body = request.get_json()
+            search = body.get('search_term')
+            if search is not None:
+                search_results = Dish.query.filter(Dish.name.ilike("%" + search + "%"))
+                for result in search_results:
+                    dish = get_formatted_dish(result.id)
+                    dishes.append(dish)
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "dishes": dishes
+        })
+    
+    @app.route('/categories/<int:category_id>/dishes')
+    def dishes_by_categories(category_id):
+        dishes_by_categories = []
+        try:
+            dishes = Dish.query.filter_by(category_id=category_id).all()
+            if dishes is not None:
+                for d in dishes:
+                    # dish = get_formatted_dish(d.id)
+                    # dishes.append(dish)
+                    print(d.id)
+                    dish = get_formatted_dish(d.id)
+                    dishes_by_categories.append(dish)
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "dishes_by_categories": dishes_by_categories
+        })
 
 
     @app.route('/categories', methods=['GET'])
