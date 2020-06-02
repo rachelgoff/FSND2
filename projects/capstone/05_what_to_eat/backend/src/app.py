@@ -407,7 +407,35 @@ def create_app():
             "updated_restaurant": restaurant.format()
         })
 
+    @app.route('/restaurants/<int:restaurant_id>', methods=['GET'])
+    def get_restaurant_by_id(restaurant_id):
+        try:
+            restaurant = Restaurant.query.get(restaurant_id)
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "restaurant_by_id": restaurant.format()
+        })
 
+    @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
+    def delete_restaurant_by_id(restaurant_id):
+        try:
+            restaurant = Restaurant.query.get(restaurant_id)
+            deleted_id = restaurant_id
+            restaurant.delete()
+
+            all_restaurants = Restaurant.query.order_by('id').all()
+            formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
+        except Exception as e:
+            print(e)
+            abort(404)
+        return jsonify({
+            "success": True,
+            "deleted_restaurant_id": deleted_id,
+            "formatted_all_restaurants": formatted_all_restaurants
+        })
     
     # Error Handling
 
