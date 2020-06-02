@@ -70,6 +70,17 @@ class Category(db.Model):
     def __init__(self, category):
         self.category = category
     
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def update(self):
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+    
     def format(self):
         return {
             "id": self.id,
@@ -87,10 +98,11 @@ class Restaurant(db.Model):
     r_image_link = Column(String(500))
     dishes = db.relationship("Dish", backref=db.backref('restaurant', lazy=True))
 
-    def __init__(self, name, city, state, website, r_image_link):
+    def __init__(self, name, city, state, address, website, r_image_link):
         self.name = name
         self.city = city
         self.state = state
+        self.address = address
         self.website = website
         self.r_image_link = r_image_link
 
@@ -111,6 +123,7 @@ class Restaurant(db.Model):
             'name': self.name,
             'city': self.city,
             'state': self.state,
+            'address': self.address,
             'website': self.website,
             'r_image_link': self.r_image_link or default_restaurant_image_link
         }
