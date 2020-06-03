@@ -6,6 +6,7 @@ from sqlalchemy.sql import func
 from flask_cors import CORS
 
 from .database.models import setup_db, Dish, Restaurant, Category
+from .auth.auth import AuthError, requires_auth
 # from .database import models
 import random
 
@@ -79,7 +80,8 @@ def create_app():
         })
 
     @app.route('/dishes', methods=['POST'])
-    def create_dish():
+    @requires_auth("post:dishes")
+    def create_dish(token):
         body = request.get_json()
         new_name = body.get('name')
         new_restaurant_id = body.get('restaurant_id')
@@ -132,7 +134,8 @@ def create_app():
             })
 
     @app.route('/dishes/<int:dish_id>', methods=['PATCH'])
-    def update_dish(dish_id):
+    @requires_auth("patch:dishes")
+    def update_dish(token, dish_id):
         body = request.get_json()
         new_name = body.get('name')
         new_restaurant_id = body.get('restaurant_id')
@@ -168,7 +171,8 @@ def create_app():
             })
 
     @app.route('/dishes/<int:dish_id>', methods=['DELETE'])
-    def delete_dish(dish_id):
+    @requires_auth("delete:dishes")
+    def delete_dish(token, dish_id):
         try:
             delete_dish_id = dish_id
             dish = Dish.query.get(dish_id)
@@ -267,7 +271,8 @@ def create_app():
         })
 
     @app.route('/categories', methods=['POST'])
-    def create_category():
+    @requires_auth("post:categories")
+    def create_category(token):
         try:
             body = request.get_json()
             new_category = body.get('category')
@@ -298,7 +303,8 @@ def create_app():
         })
 
     @app.route('/categories/<int:category_id>', methods=['DELETE'])
-    def delete_category(category_id):
+    @requires_auth("delete:categories")
+    def delete_category(token, category_id):
         try:
             category = Category.query.get(category_id)
             delete_id = category_id
@@ -350,7 +356,8 @@ def create_app():
         })
     
     @app.route('/restaurants', methods=['POST'])
-    def create_restaurant():
+    @requires_auth("post:restaurants")
+    def create_restaurant(token):
         try:
             body = request.get_json()
             new_name = body.get('name')
@@ -372,7 +379,8 @@ def create_app():
         })
     
     @app.route('/restaurants/<int:restaurant_id>', methods=['PATCH'])
-    def update_restaurant(restaurant_id):
+    @requires_auth("patch:restaurants")
+    def update_restaurant(token, restaurant_id):
         try:
             body = request.get_json()
             new_name = body.get('name')
@@ -420,7 +428,8 @@ def create_app():
         })
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
-    def delete_restaurant_by_id(restaurant_id):
+    @requires_auth("delete:restaurants")
+    def delete_restaurant_by_id(token, restaurant_id):
         try:
             restaurant = Restaurant.query.get(restaurant_id)
             deleted_id = restaurant_id
