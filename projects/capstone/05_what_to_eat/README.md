@@ -42,3 +42,6 @@ PGGSSENCMODE=disable FLASK_APP=./src/app.py FLASK_DEBUG=TRUE flask run
 
 ./src/auth/auth.py
 ./src/app.py
+
+### Auth0 link:
+dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
