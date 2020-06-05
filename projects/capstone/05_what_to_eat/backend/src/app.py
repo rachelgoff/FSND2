@@ -105,6 +105,8 @@ def create_app():
     @app.route('/dishes/<int:dish_id>', methods=['GET'])
     def get_dish_item(dish_id):        
         formatted_dish = get_formatted_dish(dish_id)
+        if len(formatted_dish) is 0:
+            resource_not_found(e) 
         # formatted_dish = {}
         # try:
         #     dish = Dish.query.get(dish_id)
@@ -289,14 +291,41 @@ def create_app():
             "categories": formatted_all_categories
         })
 
-    @app.route('/categories/<int:category_id>', methods=['GET'])
-    def get_category_by_id(category_id):
+    @app.route('/categories/<int:category_id>', methods=['PATCH'])
+    @requires_auth("patch:categories")
+    def update_category(token, category_id):
         try:
-            category = Category.query.get(category_id)
-            print(category_id)
+            body = request.get_json()
+            new_category = body.get('category')
+
+            category_item = Category.query.get(category_id)
+
+            if new_category is not None:
+                category_item.category = new_category
+            
+            updated_category = Category.query.get(category_id)
+            
+            updated_category.update()
+
         except Exception as e:
             print(e)
-            abort(404)
+            abort(500)
+        return jsonify({
+            "success": True,
+            "updated category": updated_category.format()
+        })
+
+
+    @app.route('/categories/<int:category_id>', methods=['GET'])
+    def get_category_by_id(category_id):
+        # try:
+        category = Category.query.get(category_id)
+        print(category_id)
+        if category is None:
+            return resource_not_found(404)
+        # except Exception as e:
+        #     print(e)
+        #     abort(404)
         return jsonify({
             "success": True,
             "category": category.format()
@@ -312,9 +341,10 @@ def create_app():
 
             categories = Category.query.order_by('id').all()
             formatted_all_categories = [category.format() for category in categories]
+            
         except Exception as e:
             print(e)
-            abort(404)
+            resource_not_found(404)
         return jsonify({
             "success": True,
             "delete_id": delete_id,
