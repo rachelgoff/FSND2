@@ -303,16 +303,15 @@ def create_app():
             if new_category is not None:
                 category_item.category = new_category
             
-            updated_category = Category.query.get(category_id)
-            
-            updated_category.update()
+            category_item.update()
+            #updated_category = Category.query.get(category_id)
 
         except Exception as e:
             print(e)
-            abort(500)
+            abort(404)
         return jsonify({
             "success": True,
-            "updated category": updated_category.format()
+            "updated category": category_item.format()
         })
 
 
@@ -344,7 +343,7 @@ def create_app():
             
         except Exception as e:
             print(e)
-            resource_not_found(404)
+            abort(404)
         return jsonify({
             "success": True,
             "delete_id": delete_id,
@@ -388,38 +387,42 @@ def create_app():
     @app.route('/restaurants', methods=['POST'])
     @requires_auth("post:restaurants")
     def create_restaurant(token):
-        try:
-            body = request.get_json()
-            new_name = body.get('name')
-            new_city = body.get('city')
-            new_addr = body.get('address')
-            new_state = body.get('state')
-            new_r_image_link = body.get('r_image_link')
-            new_website = body.get('website')
+        # try:
+        body = request.get_json()
+        new_name = body.get('name')
+        new_city = body.get('city')
+        new_addr = body.get('address')
+        new_state = body.get('state')
+        new_r_image_link = body.get('r_image_link')
+        new_website = body.get('website')
 
+        if any(arg is None for arg in [new_name, new_city, new_addr, new_state, new_r_image_link, new_website]
+               )or'' in[new_name, new_city, new_addr, new_state, new_r_image_link, new_website]:
+            abort(400)
+        try:
             new_restaurant = Restaurant(name=new_name, city=new_city, state=new_state, address=new_addr, r_image_link=new_r_image_link, website=new_website)
             new_restaurant.insert()
+            
 
+            return jsonify({
+                "success": True,
+                "new_restaurant": new_restaurant.format()
+            })
         except Exception as e:
             print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "new_restaurant": new_restaurant.format()
-        })
+            abort(422)
     
     @app.route('/restaurants/<int:restaurant_id>', methods=['PATCH'])
     @requires_auth("patch:restaurants")
     def update_restaurant(token, restaurant_id):
+        body = request.get_json()
+        new_name = body.get('name')
+        new_city = body.get('city')
+        new_addr = body.get('address')
+        new_state = body.get('state')
+        new_r_image_link = body.get('r_image_link')
+        new_website = body.get('website')
         try:
-            body = request.get_json()
-            new_name = body.get('name')
-            new_city = body.get('city')
-            new_addr = body.get('address')
-            new_state = body.get('state')
-            new_r_image_link = body.get('r_image_link')
-            new_website = body.get('website')
-
             restaurant = Restaurant.query.get(restaurant_id)
 
             if new_name is not None:
@@ -437,25 +440,24 @@ def create_app():
 
             restaurant.update()
 
+            return jsonify({
+                "success": True,
+                "updated_restaurant": restaurant.format()
+            })
         except Exception as e:
-            print(e)
             abort(404)
-        return jsonify({
-            "success": True,
-            "updated_restaurant": restaurant.format()
-        })
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['GET'])
     def get_restaurant_by_id(restaurant_id):
         try:
             restaurant = Restaurant.query.get(restaurant_id)
+            return jsonify({
+                "success": True,
+                "restaurant_by_id": restaurant.format()
+            })
         except Exception as e:
             print(e)
             abort(404)
-        return jsonify({
-            "success": True,
-            "restaurant_by_id": restaurant.format()
-        })
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
     @requires_auth("delete:restaurants")
