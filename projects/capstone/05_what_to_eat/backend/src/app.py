@@ -7,19 +7,11 @@ from flask_cors import CORS
 
 from .database.models import setup_db, Dish, Restaurant, Category
 from .auth.auth import AuthError, requires_auth
-# from .database import models
 import random
-
-# debug
-print("Imported database from models")
-print("Before models.setup_db")
 
 def create_app():
     app = Flask(__name__)
     setup_db(app)
-
-    # debug
-    print("Finished running models.setup_db")
 
     CORS(app, resource={r"*/api/*": {"origins": "*"}})
 
@@ -37,140 +29,127 @@ def create_app():
     
     def get_formatted_dish(dish_id):
         formatted_dish = {}
-        try:
-            dish = Dish.query.get(dish_id)
-            if dish is None:
-                abort(404)
-        except Exception as e:
-            print(e)
+        dish = Dish.query.get(dish_id)
+        if dish is None:
             abort(404)
+        try:
+            dish_category = Category.query.get(dish.category_id)
+            dish_restaurant = Restaurant.query.get(dish.restaurant_id)
 
-        dish_category = Category.query.get(dish.category_id)
-        dish_restaurant = Restaurant.query.get(dish.restaurant_id)
-
-        formatted_dish = {
-            'id': dish.id,
-            'name': dish.name,
-            'restaurant_id': dish.restaurant_id,
-            'category_id': dish.category_id,
-            'rating': dish.rating,
-            'price': float(dish.price),
-            'image_link': dish.image_link or default_dish_image_link,
-            'restaurant_name': dish_restaurant.name,
-            'category': dish_category.category
-        }
-        return formatted_dish
+            formatted_dish = {
+                'id': dish.id,
+                'name': dish.name,
+                'restaurant_id': dish.restaurant_id,
+                'category_id': dish.category_id,
+                'rating': dish.rating,
+                'price': float(dish.price),
+                'image_link': dish.image_link or default_dish_image_link,
+                'restaurant_name': dish_restaurant.name,
+                'category': dish_category.category
+            }
+            return formatted_dish
+        except Exception:
+            abort(422)
 
     @app.route('/')
-    def hello_world():
-        return 'Hello, World!'
+    def hello_what_to_eat():
+        return 'Hello, What To Eat!'
 
     @app.route('/dishes', methods=['GET'])
     def get_dishes():
-        try:
-            all_dishes = Dish.query.order_by('id').all()
-            print(all_dishes)
-            formatted_all_dishes = [dish.format() for dish in all_dishes]
-        except Exception as e:
-            print(e)
+        all_dishes = Dish.query.order_by('id').all()
+        if all_dishes is None:
             abort(404)
-        return jsonify({
-            "success": True,
-            "dishes": formatted_all_dishes
-        })
+        try:
+            formatted_all_dishes = [dish.format() for dish in all_dishes]
+
+            return jsonify({
+                "success": True,
+                "dishes": formatted_all_dishes
+            })
+        except Exception:
+            abort(404)
 
     @app.route('/dishes', methods=['POST'])
     @requires_auth("post:dishes")
     def create_dish(token):
         body = request.get_json()
-        new_name = body.get('name')
-        new_restaurant_id = body.get('restaurant_id')
-        new_category_id = body.get('category_id')
-        new_rating = body.get('rating')
-        new_price = body.get('price')
-        new_image_link = body.get('image_link')
-        
-        new_dish = Dish(name=new_name, restaurant_id=new_restaurant_id, category_id=new_category_id, rating=new_rating, price=new_price, image_link=new_image_link)
-        new_dish.insert()
+        if body is None:
+            abort(400)
+        try:
+            new_name = body.get('name')
+            new_restaurant_id = body.get('restaurant_id')
+            new_category_id = body.get('category_id')
+            new_rating = body.get('rating')
+            new_price = body.get('price')
+            new_image_link = body.get('image_link')
+            
+            new_dish = Dish(name=new_name, restaurant_id=new_restaurant_id, category_id=new_category_id, rating=new_rating, price=new_price, image_link=new_image_link)
+            new_dish.insert()
 
-        all_dishes = Dish.query.order_by('id').all()
-        formatted_all_dishes = [dish.format() for dish in all_dishes]
+            all_dishes = Dish.query.order_by('id').all()
+            formatted_all_dishes = [dish.format() for dish in all_dishes]
 
-        return jsonify({
-            "success": True,
-            "new_dish": new_dish.format(),
-            "dishes": formatted_all_dishes
-        })
+            return jsonify({
+                "success": True,
+                "new_dish": new_dish.format(),
+                "dishes": formatted_all_dishes
+            })
+        except Exception:
+            abort(422)
     
     @app.route('/dishes/<int:dish_id>', methods=['GET'])
     def get_dish_item(dish_id):        
         formatted_dish = get_formatted_dish(dish_id)
-        if len(formatted_dish) is 0:
-            resource_not_found(e) 
-        # formatted_dish = {}
-        # try:
-        #     dish = Dish.query.get(dish_id)
-        #     if dish is None:
-        #         abort(404)
-        # except Exception as e:
-        #     print(e)
-        #     abort(404)
-
-        # dish_category = Category.query.get(dish.category_id)
-        # dish_restaurant = Restaurant.query.get(dish.restaurant_id)
-
-        # formatted_dish = {
-        #     'id': dish.id,
-        #     'name': dish.name,
-        #     'restaurant_id': dish.restaurant_id,
-        #     'category_id': dish.category_id,
-        #     'rating': dish.rating,
-        #     'price': float(dish.price),
-        #     'image_link': dish.image_link or default_dish_image_link,
-        #     'restaurant_name': dish_restaurant.name,
-        #     'category': dish_category.category
-        # }
+        if formatted_dish is None:
+            abort(404)
+   
         return jsonify({
                 "success": True,
                 "dish": formatted_dish
-            })
+        })
 
     @app.route('/dishes/<int:dish_id>', methods=['PATCH'])
     @requires_auth("patch:dishes")
     def update_dish(token, dish_id):
         body = request.get_json()
-        new_name = body.get('name')
-        new_restaurant_id = body.get('restaurant_id')
-        new_category_id = body.get('category_id')
-        new_rating = body.get('rating')
-        new_price = body.get('price')
-        new_image_link = body.get('image_link')
+        if body is None:
+            abort(400)
+        try:
+            new_name = body.get('name')
+            new_restaurant_id = body.get('restaurant_id')
+            new_category_id = body.get('category_id')
+            new_rating = body.get('rating')
+            new_price = body.get('price')
+            new_image_link = body.get('image_link')
 
-        dish = Dish.query.get(dish_id)
+            dish = Dish.query.get(dish_id)
 
-        if dish is None:
+            if dish is None:
+                abort(404)
+            if new_name is not None:
+                dish.name = new_name
+            if new_restaurant_id is not None:
+                dish.restaurant_id = new_restaurant_id
+            if new_category_id is not None:
+                dish.category_id = new_category_id
+            if new_rating is not None:
+                dish.rating = new_rating
+            if new_price is not None:
+                dish.price = new_price
+            if new_image_link is not None:
+                dish.image_link = new_image_link
+
+            dish.update()
+
+            new_dish = get_formatted_dish(dish_id)
+
+            return jsonify({
+                    "success": True,
+                    "dish": new_dish
+                })
+        except Exception:
             abort(404)
-        if new_name is not None:
-            dish.name = new_name
-        if new_restaurant_id is not None:
-            dish.restaurant_id = new_restaurant_id
-        if new_category_id is not None:
-            dish.category_id = new_category_id
-        if new_rating is not None:
-            dish.rating = new_rating
-        if new_price is not None:
-            dish.price = new_price
-        if new_image_link is not None:
-            dish.image_link = new_image_link
-
-        dish.update()
-
-        new_dish = get_formatted_dish(dish_id)
-
-        return jsonify({
-                "success": True,
-                "dish": new_dish
-            })
 
     @app.route('/dishes/<int:dish_id>', methods=['DELETE'])
     @requires_auth("delete:dishes")
@@ -191,135 +170,138 @@ def create_app():
     @app.route('/dishes/search', methods=['POST'])
     def search_dish():
         dishes = []
+        body = request.get_json()
+        if body is None:
+            abort(400)
         try:
-            body = request.get_json()
             search = body.get('search_term')
-            if search is not None:
-                search_results = Dish.query.filter(Dish.name.ilike("%" + search + "%"))
-                for result in search_results:
-                    dish = get_formatted_dish(result.id)
-                    dishes.append(dish)
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "dishes": dishes
-        })
+            if search is None:
+                abort(404)
+            search_results = Dish.query.filter(Dish.name.ilike("%" + search + "%"))
+            for result in search_results:
+                dish = get_formatted_dish(result.id)
+                dishes.append(dish)
+            return jsonify({
+                "success": True,
+                "dishes": dishes
+            })
+        except Exception:
+            abort(422)
     
     @app.route('/categories/<int:category_id>/dishes', methods=['GET'])
     def dishes_by_categories(category_id):
         dishes_by_categories = []
-        try:
-            dishes = Dish.query.filter_by(category_id=category_id).all()
-            if dishes is not None:
-                for d in dishes:
-                    # dish = get_formatted_dish(d.id)
-                    # dishes.append(dish)
-                    print(d.id)
-                    dish = get_formatted_dish(d.id)
-                    dishes_by_categories.append(dish)
-        except Exception as e:
-            print(e)
+        dishes = Dish.query.filter_by(category_id=category_id).all()
+        if dishes is None:
             abort(404)
-        return jsonify({
-            "success": True,
-            "dishes_by_categories": dishes_by_categories
-        })
+        try:
+            for d in dishes:
+                dish = get_formatted_dish(d.id)
+                dishes_by_categories.append(dish)
+            return jsonify({
+                "success": True,
+                "dishes_by_categories": dishes_by_categories
+            })
+        except Exception:
+            abort(422)
     
     @app.route('/dishes/try', methods=['POST'])
     def try_new_dishes():
         dishes_to_try = []
+        body = request.get_json()
+        if body is None:
+            abort(400)
+        previous_dishes = body.get('previous_dishes')
+        if len(previous_dishes) == 0:
+            abort(400)
+        new_category = body.get('new_category')
+        if len(new_category) == 0:
+            abort(400)
         try:
-            body = request.get_json()
-            previous_dishes = body.get('previous_dishes')
-            new_category = body.get('new_category')
-            if new_category is not None:
-                if new_category == 0:
-                    dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
-                    for d in dishes:
-                        dish = get_formatted_dish(d.id)
-                        dishes_to_try.append(dish)
-                else:
-                    dishes = Dish.query.filter(Dish.category_id==new_category, Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
-                    for d in dishes:
-                        dish = get_formatted_dish(d.id)
-                        dishes_to_try.append(dish)
-
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "dish to try": dishes_to_try[0]
-        })
+            if new_category == 0:
+                dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
+                for d in dishes:
+                    dish = get_formatted_dish(d.id)
+                    dishes_to_try.append(dish)
+            else:
+                dishes = Dish.query.filter(Dish.category_id==new_category, Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
+                for d in dishes:
+                    dish = get_formatted_dish(d.id)
+                    dishes_to_try.append(dish)
+            return jsonify({
+                "success": True,
+                "dish to try": dishes_to_try[0]
+            })
+        except Exception:
+            abort(422)
 
     @app.route('/categories', methods=['GET'])
     def get_categories():
-        try:
-            all_categories = Category.query.order_by('id').all()
-            formatted_all_categories = [category.format() for category in all_categories]
-        except Exception as e:
-            print(e)
+        all_categories = Category.query.order_by('id').all()
+        if all_categories is None:
             abort(404)
-        return jsonify({
-            "success": True,
-            "categories": formatted_all_categories
-        })
+        try:
+            formatted_all_categories = [category.format() for category in all_categories]
+
+            return jsonify({
+                "success": True,
+                "categories": formatted_all_categories
+            })
+        except Exception:
+            abort(422)
 
     @app.route('/categories', methods=['POST'])
     @requires_auth("post:categories")
     def create_category(token):
-        try:
             body = request.get_json()
+            if body is None:
+                abort(400)
             new_category = body.get('category')
-
-            category = Category(category=new_category)
-            category.insert()
-            categories = Category.query.order_by('id').all()
-            formatted_all_categories = [category.format() for category in categories]
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "categories": formatted_all_categories
-        })
+            if new_category is None:
+                abort(404)
+            try:
+                category = Category(category=new_category)
+                category.insert()
+                categories = Category.query.order_by('id').all()
+                if categories is None:
+                    abort(404)
+                formatted_all_categories = [category.format() for category in categories]
+                return jsonify({
+                    "success": True,
+                    "categories": formatted_all_categories
+                })
+            except Exception:
+                abort(422)
 
     @app.route('/categories/<int:category_id>', methods=['PATCH'])
     @requires_auth("patch:categories")
     def update_category(token, category_id):
-        try:
-            body = request.get_json()
-            new_category = body.get('category')
-
-            category_item = Category.query.get(category_id)
-
-            if new_category is not None:
-                category_item.category = new_category
-            
-            category_item.update()
-            #updated_category = Category.query.get(category_id)
-
-        except Exception as e:
-            print(e)
+        body = request.get_json()
+        if body is None:
+            abort(400)
+        new_category = body.get('category')
+        if new_category is None:
             abort(404)
-        return jsonify({
-            "success": True,
-            "updated category": category_item.format()
-        })
+        
+        category_item = Category.query.get(category_id)
+        if category_item is None:
+            abort(404)
+        try:
+            category_item.category = new_category
+            category_item.update()
+            return jsonify({
+                "success": True,
+                "updated category": category_item.format()
+            })
+        except Exception:
+            abort(422)
 
 
     @app.route('/categories/<int:category_id>', methods=['GET'])
     def get_category_by_id(category_id):
-        # try:
         category = Category.query.get(category_id)
-        print(category_id)
         if category is None:
-            return resource_not_found(404)
-        # except Exception as e:
-        #     print(e)
-        #     abort(404)
+            abort(404)
         return jsonify({
             "success": True,
             "category": category.format()
@@ -348,42 +330,41 @@ def create_app():
 
     @app.route('/restaurants', methods=['GET'])
     def get_restaurants():
-        try:
             all_restaurants = Restaurant.query.order_by('id').all()
-            formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "restaurants": formatted_all_restaurants
-        })
+            if all_restaurants is None:
+                abort(404)
+            try:
+                formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
+                return jsonify({
+                    "success": True,
+                    "restaurants": formatted_all_restaurants
+                })
+            except Exception:
+                abort(422)
 
     @app.route('/restaurants/<int:restaurant_id>/dishes', methods=['GET'])
     def dishes_by_restaurants(restaurant_id):
         dishes_by_restaurants = []
-        try:
-            dishes = Dish.query.filter_by(restaurant_id=restaurant_id).all()
-            if dishes is not None:
-                for d in dishes:
-                    # dish = get_formatted_dish(d.id)
-                    # dishes.append(dish)
-                    print(d.id)
-                    dish = get_formatted_dish(d.id)
-                    dishes_by_restaurants.append(dish)
-        except Exception as e:
-            print(e)
+        dishes = Dish.query.filter_by(restaurant_id=restaurant_id).all()
+        if dishes is None:
             abort(404)
-        return jsonify({
-            "success": True,
-            "dishes_by_restaurants": dishes_by_restaurants
-        })
+        try:
+            for d in dishes:
+                dish = get_formatted_dish(d.id)
+                dishes_by_restaurants.append(dish)
+            return jsonify({
+                "success": True,
+                "dishes_by_restaurants": dishes_by_restaurants
+            })
+        except Exception:
+            abort(422)
     
     @app.route('/restaurants', methods=['POST'])
     @requires_auth("post:restaurants")
     def create_restaurant(token):
-        # try:
         body = request.get_json()
+        if body is None:
+            abort(400)
         new_name = body.get('name')
         new_city = body.get('city')
         new_addr = body.get('address')
@@ -391,36 +372,40 @@ def create_app():
         new_r_image_link = body.get('r_image_link')
         new_website = body.get('website')
 
+        # new_r_image_link, new_website can be null
         if any(arg is None for arg in [new_name, new_city, new_addr, new_state, new_r_image_link, new_website]
-               )or'' in[new_name, new_city, new_addr, new_state, new_r_image_link, new_website]:
+               )or'' in[new_name, new_city, new_addr, new_state]:
             abort(400)
         try:
             new_restaurant = Restaurant(name=new_name, city=new_city, state=new_state, address=new_addr, r_image_link=new_r_image_link, website=new_website)
             new_restaurant.insert()
-            
 
             return jsonify({
                 "success": True,
                 "new_restaurant": new_restaurant.format()
             })
-        except Exception as e:
-            print(e)
+        except Exception:
             abort(422)
     
     @app.route('/restaurants/<int:restaurant_id>', methods=['PATCH'])
     @requires_auth("patch:restaurants")
     def update_restaurant(token, restaurant_id):
         body = request.get_json()
+        if body is None:
+            abort(400)
         new_name = body.get('name')
         new_city = body.get('city')
         new_addr = body.get('address')
         new_state = body.get('state')
         new_r_image_link = body.get('r_image_link')
         new_website = body.get('website')
+        
+        restaurant = Restaurant.query.get(restaurant_id)
+        if restaurant is None:
+            abort(404)
         try:
-            restaurant = Restaurant.query.get(restaurant_id)
 
-            if new_name is not None:
+            if new_name is not None and not '':
                 restaurant.name = new_name
             if new_city is not None:
                 restaurant.city = new_city
@@ -444,15 +429,14 @@ def create_app():
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['GET'])
     def get_restaurant_by_id(restaurant_id):
-        try:
-            restaurant = Restaurant.query.get(restaurant_id)
-            return jsonify({
-                "success": True,
-                "restaurant_by_id": restaurant.format()
-            })
-        except Exception as e:
-            print(e)
+        restaurant = Restaurant.query.get(restaurant_id)
+        if restaurant is None:
             abort(404)
+        return jsonify({
+            "success": True,
+            "restaurant_by_id": restaurant.format()
+        })
+    
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
     @requires_auth("delete:restaurants")
@@ -460,7 +444,6 @@ def create_app():
         restaurant = Restaurant.query.get(restaurant_id)
         if restaurant is None:
             abort(404)
-        
         try:
             deleted_id = restaurant_id
             restaurant.delete()
@@ -524,6 +507,14 @@ def create_app():
             "error": 401,
             "message": "Unauthorized error"
             }), 401
+    
+    @app.errorhandler(400)
+    def unauthorized_error(error):
+        return jsonify({
+            "success": False,
+            "error": 400,
+            "message": "Bad request"
+            }), 400
 
     if __name__ == '__main__':
         port = int(os.environ.get('PORT', 5000))
