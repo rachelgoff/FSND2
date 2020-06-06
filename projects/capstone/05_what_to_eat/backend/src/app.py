@@ -9,6 +9,7 @@ from .database.models import setup_db, Dish, Restaurant, Category
 from .auth.auth import AuthError, requires_auth
 import random
 
+
 def create_app():
     app = Flask(__name__)
     setup_db(app)
@@ -23,10 +24,10 @@ def create_app():
             'Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response
-    
+
     default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
     default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
-    
+
     def get_formatted_dish(dish_id):
         formatted_dish = {}
         dish = Dish.query.get(dish_id)
@@ -83,7 +84,7 @@ def create_app():
             new_rating = body.get('rating')
             new_price = body.get('price')
             new_image_link = body.get('image_link')
-            
+
             new_dish = Dish(name=new_name, restaurant_id=new_restaurant_id, category_id=new_category_id, rating=new_rating, price=new_price, image_link=new_image_link)
             new_dish.insert()
 
@@ -97,13 +98,13 @@ def create_app():
             })
         except Exception:
             abort(422)
-    
+
     @app.route('/dishes/<int:dish_id>', methods=['GET'])
-    def get_dish_item(dish_id):        
+    def get_dish_item(dish_id):
         formatted_dish = get_formatted_dish(dish_id)
         if formatted_dish is None:
             abort(404)
-   
+
         return jsonify({
                 "success": True,
                 "dish": formatted_dish
@@ -161,11 +162,11 @@ def create_app():
         try:
             dish.delete()
             return jsonify({
-                    "success": True,
-                    "deleted dish": delete_dish_id
+                "success": True,
+                "deleted dish": delete_dish_id
                 })
         except Exception:
-                abort(422)
+            abort(422)
 
     @app.route('/dishes/search', methods=['POST'])
     def search_dish():
@@ -187,7 +188,7 @@ def create_app():
             })
         except Exception:
             abort(422)
-    
+
     @app.route('/categories/<int:category_id>/dishes', methods=['GET'])
     def dishes_by_categories(category_id):
         dishes_by_categories = []
@@ -204,7 +205,7 @@ def create_app():
             })
         except Exception:
             abort(422)
-    
+
     @app.route('/dishes/try', methods=['POST'])
     def try_new_dishes():
         dishes_to_try = []
@@ -219,12 +220,12 @@ def create_app():
             abort(400)
         try:
             if new_category == 0:
-                dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
+                dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
                     dishes_to_try.append(dish)
             else:
-                dishes = Dish.query.filter(Dish.category_id==new_category, Dish.id.notin_(previous_dishes), Dish.rating>=3).order_by(func.random()).limit(1) # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
+                dishes = Dish.query.filter(Dish.category_id == new_category, Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
                     dishes_to_try.append(dish)
@@ -253,25 +254,25 @@ def create_app():
     @app.route('/categories', methods=['POST'])
     @requires_auth("post:categories")
     def create_category(token):
-            body = request.get_json()
-            if body is None:
-                abort(400)
-            new_category = body.get('category')
-            if new_category is None:
+        body = request.get_json()
+        if body is None:
+            abort(400)
+        new_category = body.get('category')
+        if new_category is None:
+            abort(404)
+        try:
+            category = Category(category=new_category)
+            category.insert()
+            categories = Category.query.order_by('id').all()
+            if categories is None:
                 abort(404)
-            try:
-                category = Category(category=new_category)
-                category.insert()
-                categories = Category.query.order_by('id').all()
-                if categories is None:
-                    abort(404)
-                formatted_all_categories = [category.format() for category in categories]
-                return jsonify({
-                    "success": True,
-                    "categories": formatted_all_categories
-                })
-            except Exception:
-                abort(422)
+            formatted_all_categories = [category.format() for category in categories]
+            return jsonify({
+                "success": True,
+                "categories": formatted_all_categories
+            })
+        except Exception:
+            abort(422)
 
     @app.route('/categories/<int:category_id>', methods=['PATCH'])
     @requires_auth("patch:categories")
@@ -282,7 +283,7 @@ def create_app():
         new_category = body.get('category')
         if new_category is None:
             abort(404)
-        
+
         category_item = Category.query.get(category_id)
         if category_item is None:
             abort(404)
@@ -295,7 +296,6 @@ def create_app():
             })
         except Exception:
             abort(422)
-
 
     @app.route('/categories/<int:category_id>', methods=['GET'])
     def get_category_by_id(category_id):
@@ -327,20 +327,19 @@ def create_app():
         except Exception:
             abort(422)
 
-
     @app.route('/restaurants', methods=['GET'])
     def get_restaurants():
-            all_restaurants = Restaurant.query.order_by('id').all()
-            if all_restaurants is None:
-                abort(404)
-            try:
-                formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
-                return jsonify({
-                    "success": True,
-                    "restaurants": formatted_all_restaurants
-                })
-            except Exception:
-                abort(422)
+        all_restaurants = Restaurant.query.order_by('id').all()
+        if all_restaurants is None:
+            abort(404)
+        try:
+            formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
+            return jsonify({
+                "success": True,
+                "restaurants": formatted_all_restaurants
+            })
+        except Exception:
+            abort(422)
 
     @app.route('/restaurants/<int:restaurant_id>/dishes', methods=['GET'])
     def dishes_by_restaurants(restaurant_id):
@@ -358,7 +357,7 @@ def create_app():
             })
         except Exception:
             abort(422)
-    
+
     @app.route('/restaurants', methods=['POST'])
     @requires_auth("post:restaurants")
     def create_restaurant(token):
@@ -373,8 +372,7 @@ def create_app():
         new_website = body.get('website')
 
         # new_r_image_link, new_website can be null
-        if any(arg is None for arg in [new_name, new_city, new_addr, new_state, new_r_image_link, new_website]
-               )or'' in[new_name, new_city, new_addr, new_state]:
+        if any(arg is None for arg in [new_name, new_city, new_addr, new_state, new_r_image_link, new_website]) or '' in [new_name, new_city, new_addr, new_state]:
             abort(400)
         try:
             new_restaurant = Restaurant(name=new_name, city=new_city, state=new_state, address=new_addr, r_image_link=new_r_image_link, website=new_website)
@@ -386,7 +384,7 @@ def create_app():
             })
         except Exception:
             abort(422)
-    
+
     @app.route('/restaurants/<int:restaurant_id>', methods=['PATCH'])
     @requires_auth("patch:restaurants")
     def update_restaurant(token, restaurant_id):
@@ -399,12 +397,11 @@ def create_app():
         new_state = body.get('state')
         new_r_image_link = body.get('r_image_link')
         new_website = body.get('website')
-        
+
         restaurant = Restaurant.query.get(restaurant_id)
         if restaurant is None:
             abort(404)
         try:
-
             if new_name is not None and not '':
                 restaurant.name = new_name
             if new_city is not None:
@@ -436,7 +433,6 @@ def create_app():
             "success": True,
             "restaurant_by_id": restaurant.format()
         })
-    
 
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
     @requires_auth("delete:restaurants")
@@ -459,10 +455,8 @@ def create_app():
             })
         except Exception:
             abort(422)
-  
-    
-    # Error Handling
 
+    # Error Handling
 
     @app.errorhandler(422)
     def unprocessable(error):
@@ -472,7 +466,6 @@ def create_app():
             "message": "unprocessable"
             }), 422
 
-
     @app.errorhandler(404)
     def resource_not_found(error):
         return jsonify({
@@ -481,24 +474,21 @@ def create_app():
             "message": "Resource not found"
             }), 404
 
-
     @app.errorhandler(500)
     def internal_server_error(error):
         return jsonify({
-        "success": False,
-        "error": 500,
-        "message": "Internal server error"
+            "success": False,
+            "error": 500,
+            "message": "Internal server error"
         }), 500
-
 
     @app.errorhandler(405)
     def method_not_allowed(error):
         return jsonify({
-        "success": False,
-        "error": 405,
-        "message": "Method not allowed"
+            "success": False,
+            "error": 405,
+            "message": "Method not allowed"
         }), 405
-
 
     @app.errorhandler(401)
     def unauthorized_error(error):
@@ -507,7 +497,7 @@ def create_app():
             "error": 401,
             "message": "Unauthorized error"
             }), 401
-    
+
     @app.errorhandler(400)
     def unauthorized_error(error):
         return jsonify({
