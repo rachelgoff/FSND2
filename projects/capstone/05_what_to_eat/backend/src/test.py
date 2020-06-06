@@ -63,24 +63,53 @@ class WhatToEatTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-
-    def test_404_add_categories_admin(self):
+    
+    def test_405_add_categories_admin(self):
         category_id = 1000
-        res = self.client().post('/categories' + str(category_id), json=self.new_categories)
+        res = self.client().post('/categories/' + str(category_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json=self.new_categories)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
+
+    def test_delete_dishes_admin(self):
+        dish_id = 19
+        res = self.client().delete('/dishes/' + str(dish_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_delete_dishes_admin(self):
+        dish_id = 1000
+        res = self.client().delete('/dishes/' + str(dish_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
     
     def test_delete_categories_admin(self):
-        category_id = 1
-        res = self.client().delete('/categories' + str(category_id), json=self.new_categories)
+        category_id = 10
+        res = self.client().delete('/categories/' + str(category_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
     
     def test_404_delete_categories_admin(self):
-        category_id = 1000
-        res = self.client().delete('/categories' + str(category_id), json=self.new_categories)
+        category_id = 10000
+        res = self.client().delete('/categories/' + str(category_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+    
+    def test_delete_restaurants_admin(self):
+        restaurant_id = 4
+        res = self.client().delete('/restaurants/' + str(restaurant_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        print(data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+    
+    def test_404_delete_restaurants_admin(self):
+        restaurant_id = 10000
+        res = self.client().delete('/restaurants/' + str(restaurant_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -90,7 +119,6 @@ class WhatToEatTestCase(unittest.TestCase):
     def test_get_categories_admin(self):
         res = self.client().get("/categories", headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'],True)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['categories'])
@@ -121,12 +149,12 @@ class WhatToEatTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
     
-    # def test_404_add_restaurants_admin(self):
-    #     res_id = 10000
-    #     res = self.client().post('/restaurants/' + str(res_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json=self.new_restaurants)
-    #     data = json.loads(res.data)
-    #     self.assertEqual(res.status_code, 404)
-    #     self.assertEqual(data['success'], False)
+    def test_405_add_restaurants_admin(self):
+        restaurant_id = 10000
+        res = self.client().post('/restaurants/' + str(restaurant_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json=self.new_restaurants)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
 
     def test_get_restaurants_admin(self):
         res = self.client().get("/restaurants", headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
@@ -148,12 +176,26 @@ class WhatToEatTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+    
+    def test_404_patch_restaurants_admin(self):
+        restaurant_id = 10000
+        res = self.client().patch('/restaurants/' + str(restaurant_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json={'city':'New York Patch Test'})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
 
     def test_add_dishes_admin(self):
         res = self.client().post('/dishes', headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json=self.new_dishes)
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+    
+    def test_405_add_dishes_admin(self):
+        dish_id = 10000
+        res = self.client().post('/dishes/' + str(dish_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json=self.new_dishes)
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 405)
+        self.assertEqual(data['success'], False)
     
     def test_get_dishes_admin(self):
         res = self.client().get("/dishes", headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
@@ -176,6 +218,13 @@ class WhatToEatTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+    
+    def test_404_patch_dishes_admin(self):
+        dish_id = 10000
+        res = self.client().patch('/dishes/' + str(dish_id), headers={"Content-Type": "application/json", "Authorization": "Bearer {}".format(ADMIN_TOKEN)}, json={'rating':5})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
     
     #     ### TEST USER ROLE
     # Test user post categories

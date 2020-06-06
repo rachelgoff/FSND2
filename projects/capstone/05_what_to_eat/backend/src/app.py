@@ -175,23 +175,18 @@ def create_app():
     @app.route('/dishes/<int:dish_id>', methods=['DELETE'])
     @requires_auth("delete:dishes")
     def delete_dish(token, dish_id):
+        delete_dish_id = dish_id
+        dish = Dish.query.get(dish_id)
+        if dish is None:
+            abort(404)
         try:
-            delete_dish_id = dish_id
-            dish = Dish.query.get(dish_id)
-            #print(dish)
-        # except Exception as e:
-        #     print(e)
-        #     abort(404)
-            print(dish)
-            if dish is None:
-                abort(404)
             dish.delete()
             return jsonify({
                     "success": True,
                     "deleted dish": delete_dish_id
                 })
-        except IndexError:
-             abort(404)
+        except Exception:
+                abort(422)
 
     @app.route('/dishes/search', methods=['POST'])
     def search_dish():
@@ -333,22 +328,22 @@ def create_app():
     @app.route('/categories/<int:category_id>', methods=['DELETE'])
     @requires_auth("delete:categories")
     def delete_category(token, category_id):
+        category = Category.query.get(category_id)
+        if category is None:
+            abort(404)
+        delete_id = category_id
         try:
-            category = Category.query.get(category_id)
-            delete_id = category_id
             category.delete()
-
             categories = Category.query.order_by('id').all()
             formatted_all_categories = [category.format() for category in categories]
-            
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "delete_id": delete_id,
-            "categories": formatted_all_categories
-        })
+
+            return jsonify({
+                "success": True,
+                "delete_id": delete_id,
+                "categories": formatted_all_categories
+            })
+        except Exception:
+            abort(422)
 
 
     @app.route('/restaurants', methods=['GET'])
@@ -462,21 +457,26 @@ def create_app():
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
     @requires_auth("delete:restaurants")
     def delete_restaurant_by_id(token, restaurant_id):
+        restaurant = Restaurant.query.get(restaurant_id)
+        if restaurant is None:
+            abort(404)
+        
         try:
-            restaurant = Restaurant.query.get(restaurant_id)
             deleted_id = restaurant_id
             restaurant.delete()
 
             all_restaurants = Restaurant.query.order_by('id').all()
+            if all_restaurants is None:
+                abort(404)
             formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
-        except Exception as e:
-            print(e)
-            abort(404)
-        return jsonify({
-            "success": True,
-            "deleted_restaurant_id": deleted_id,
-            "formatted_all_restaurants": formatted_all_restaurants
-        })
+            return jsonify({
+                "success": True,
+                "deleted_restaurant_id": deleted_id,
+                "formatted_all_restaurants": formatted_all_restaurants
+            })
+        except Exception:
+            abort(422)
+  
     
     # Error Handling
 
