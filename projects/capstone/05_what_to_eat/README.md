@@ -26,7 +26,8 @@ This will install all of the required packages which are selected within the `re
 
 ## Running the server
 
-From within the `./src` directory first ensure you are working using your created virtual environment.
+### Running the server from local host
+From within the `05_what_to_eat` directory (one level above `backend` directory) first ensure you are working using your created virtual environment.
 
 Each time you open a new terminal session, run:
 
@@ -34,20 +35,54 @@ Each time you open a new terminal session, run:
 DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
 ```
 
-## Todos
+or you can export the environment first:
+```bash
+export DATABASE_URL='postgresql://localhost:5432/dish' 
+export PGGSSENCMODE=disable 
+export FLASK_APP=backend/src/app.py 
+export FLASK_ENV=development 
+flask run
+```
 
-### Setup Auth0
+### Running the server from Heroku
+The app is deployed on Heroku. You can visit the app via: 
 
-### Implement server
+https://what-to-eat-by-rg.herokuapp.com/. 
 
-./src/auth/auth.py
-./src/app.py
+Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in What_to_eat_heroku_deployment.postman_collection.json. Feel free to download this file and import in Postman before testing APIs.
 
-### Auth0 link:
+### Retrieve tokens via Auth0
+Auth0 link:
 dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
 
+Admin login: cumulus166@gmail.com / password: Coffee123@@
+
+User login: cumulus189@gmail.com / password: Coffee123@@
+
 ### Test.py
+```bash
 $ cd $PROJECT_PATH/backend
 $ ls
 $ __init__.py   src
-$ python3 -m src.testls
+$ python3 -m src.test
+```
+## API endpoints
+### GET 'categories'
+Returns a list of categories:
+{
+    "categories": [
+        {
+            "category": "Mexican",
+            "id": 1
+        },
+        {
+            "category": "Mexican",
+            "id": 2
+        },
+        {
+            "category": "Mexican",
+            "id": 3
+        }
+    ],
+    "success": true
+}

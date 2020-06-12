@@ -4,9 +4,8 @@ venv
 *.pyc
 env/
 *.zip
-/migrations
+migrations/
 node_modules/
-/node_modules/
 
 *links
 *rachel.sh
