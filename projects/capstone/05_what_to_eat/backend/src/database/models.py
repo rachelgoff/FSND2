@@ -4,12 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import json
 
-database_name = "dish"
+#database_name = "dish"
 project_dir = os.path.dirname(os.path.abspath(__file__))
 # database_path = "postgresql://{}/{}".format('localhost:5432', database_name)
 
 default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
-default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
+#default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
 database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
