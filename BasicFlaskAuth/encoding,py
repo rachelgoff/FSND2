@@ -1,0 +1,9 @@
+import jwt
+import base64
+
+payload = {'school':'udacity'}
+algo = 'HS256' #HMAC-SHA 256
+secret = 'learning'
+
+encoded_jwt = jwt.encode(payload, secret, algorithm=algo)
+print(encoded_jwt)

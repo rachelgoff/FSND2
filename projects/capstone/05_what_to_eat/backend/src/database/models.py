@@ -1,14 +1,16 @@
 import os
 from sqlalchemy import Column, String, Integer, Numeric
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import json
 
 database_name = "dish"
 project_dir = os.path.dirname(os.path.abspath(__file__))
-# database_path = "postgresql://{}/{}".format(os.path.join(project_dir, database_name))
-database_path = "postgresql://{}/{}".format('localhost:5432', database_name)
+# database_path = "postgresql://{}/{}".format('localhost:5432', database_name)
+
 default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
 default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
+database_path = os.environ['DATABASE_URL']
 
 db = SQLAlchemy()
 
@@ -18,6 +20,7 @@ def setup_db(app, database_path=database_path):
     db.app = app
     db.init_app(app)
     db.create_all()
+    migrate = Migrate(app, db)
 
 class Dish(db.Model):
     __tablename__ = "dishes"

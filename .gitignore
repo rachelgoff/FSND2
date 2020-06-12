@@ -5,9 +5,12 @@ venv
 env/
 *.zip
 /migrations
-*package-lock.json
-/node_modules
+node_modules/
+/node_modules/
+
 *links
+*rachel.sh
+*rachel.py
 
 # OS generated files #
 ######################

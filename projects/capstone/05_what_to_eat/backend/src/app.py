@@ -5,8 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_cors import CORS
 
-from .database.models import setup_db, Dish, Restaurant, Category
-from .auth.auth import AuthError, requires_auth
+# from .database.models import setup_db, Dish, Restaurant, Category
+# from .auth.auth import AuthError, requires_auth
+from backend.src.database.models import setup_db, Dish, Restaurant, Category
+from backend.src.auth.auth import AuthError, requires_auth
 import random
 
 
@@ -26,7 +28,7 @@ def create_app():
         return response
 
     default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
-    default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
+    #default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
 
     def get_formatted_dish(dish_id):
         formatted_dish = {}
@@ -506,8 +508,13 @@ def create_app():
             "message": "Bad request"
             }), 400
 
-    if __name__ == '__main__':
-        port = int(os.environ.get('PORT', 5000))
-        app.run(host='127.0.0.1', port=port)
-        print("Started server on port 5000")
+    
     return app
+
+    app = create_app()
+    
+    if __name__ == '__main__':
+        #port = int(os.environ.get('PORT', 5000))
+        app.run()
+        #print("Started server on port 5000")
+    
