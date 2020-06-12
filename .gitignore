@@ -3,6 +3,10 @@ __pycache__
 venv
 *.pyc
 env/
+*.zip
+/migrations
+*package-lock.json
+/node_modules
 
 # OS generated files #
 ######################
