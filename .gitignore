@@ -7,6 +7,7 @@ env/
 /migrations
 *package-lock.json
 /node_modules
+*links
 
 # OS generated files #
 ######################
