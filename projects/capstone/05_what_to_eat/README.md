@@ -31,7 +31,7 @@ From within the `./src` directory first ensure you are working using your create
 Each time you open a new terminal session, run:
 
 ```bash
-PGGSSENCMODE=disable FLASK_APP=./src/app.py FLASK_DEBUG=TRUE flask run
+DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
 ```
 
 ## Todos
