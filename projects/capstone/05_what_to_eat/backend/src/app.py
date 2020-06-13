@@ -454,7 +454,7 @@ def create_app():
             return jsonify({
                 "success": True,
                 "deleted_restaurant_id": deleted_id,
-                "formatted_all_restaurants": formatted_all_restaurants
+                "restaurants_after_deletion": formatted_all_restaurants
             })
         except Exception:
             abort(422)

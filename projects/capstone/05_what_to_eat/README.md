@@ -69,9 +69,9 @@ $ python3 -m src.test
 ## API endpoints
 ### Category
 
-The category object describes the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection.
+The category object describes the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection. Only users with admin permissions can create, delete and update category object. Regular users without admin permissions can browse category information.
 
-#### GET 'categories'
+#### GET '/categories'
 - Fetches a list of categories from the existing category collection.
 - Return a list of objects with id and category key:value pairs.
 - No arguments required.
@@ -97,7 +97,7 @@ The category object describes the type of a dish. The API allows you to get, pos
 }
 ```
 
-#### GET 'categories/{category_id}'
+#### GET '/categories/{category_id}'
 - Retrieve a specified category by category_id from the category collection.
 - Requested arguments: **category_id**
 - Return an object with matched catory and a successful message.
@@ -117,7 +117,8 @@ The category object describes the type of a dish. The API allows you to get, pos
 }
 ```
 
-#### POST 'categories'
+#### POST '/categories'
+- Requires **Admin** authentication.
 - Create a new category in the existing category collection.
 - Return an object with an object of newly added catogry and a successful message.
 - No arguments required.
@@ -143,9 +144,10 @@ The category object describes the type of a dish. The API allows you to get, pos
 ```
 
 #### DELETE '/categories/{category_id}'
-- Delete a specified question based on the category_id
+- Requires **Admin** authentication.
+- Delete a specified category based on the category_id.
 - Request arguments: **category_id**
-- Returns: An object with the deleted catory id, the existing category collection and a successful message.
+- Returns: An object with the deleted category id, the existing category collection and a successful message.
 
 ##### Exmaple request:
 `DELETE /categories/3`
@@ -170,10 +172,11 @@ The category object describes the type of a dish. The API allows you to get, pos
 ```
 
 #### PATCH '/categories/{category_id}'
+- Requires **Admin** authentication.
 - Update a specified question based on the category_id
 - Request arguments: **category_id**
 - Body: Category to update to.
-- Returns: An object with the deleted catory id, the existing category collection and a successful message.
+- Returns: An category object with the updated category information and a successful message.
 
 ##### Exmaple request:
 `PATCH /categories/1`
@@ -194,3 +197,156 @@ The category object describes the type of a dish. The API allows you to get, pos
     }
 }
 ```
+
+### Restuarant
+
+The restaurant object describes restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
+
+#### GET '/restaurants'
+- Fetches a list of restaurants from the existing restaurant collection.
+- Return a list of restaurant objects with id, name, city, state, address, website and r_image_link key:value pairs.
+- No arguments required.
+
+##### Exmaple request:
+`GET /restaurants`
+
+##### Exmaple response:
+
+```javascript
+{
+    "restaurants": [
+        {
+            "address": "Sandwich Monkey address",
+            "city": "San Carlos",
+            "id": 1,
+            "name": "Sandwich Monkey",
+            "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+            "state": "CA",
+            "website": "www.sandwichmonkey.com"
+        }
+    ],
+    "success": true
+}
+```
+#### GET '/restaurants/{restaurant_id}'
+- Retrieve a specified restaurant by restaurant_id from the restaurant collection.
+- Requested arguments: **restaurant_id**
+- Return a matched restaurant object and a successful message.
+
+##### Exmaple request:
+`GET /restaurants/1`
+
+##### Exmaple response:
+
+```javascript
+{
+    "restaurant_by_id": {
+        "address": "Sandwich Monkey address",
+        "city": "San Carlos",
+        "id": 1,
+        "name": "Sandwich Monkey",
+        "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+        "state": "CA",
+        "website": "www.sandwichmonkey.com"
+    },
+    "success": true
+}
+```
+
+#### POST '/restaurants'
+- Requires **Admin** authentication.
+- Create a new restaurant in the existing restaurant collection.
+- Return an object with an object of newly added restaurant and a successful message.
+- No arguments required.
+
+##### Exmaple request:
+`POST /restaurants`
+
+```javascript
+{
+  "city": "San Carlos",
+  "name": "Hot Dog House",
+  "address": "Hot Dog House address",
+  "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+  "state": "CA",
+  "website": "www.hotdoghause.com"
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "new_restaurant": {
+        "address": "Hot Dog House address",
+        "city": "San Carlos",
+        "id": 2,
+        "name": "Hot Dog House",
+        "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+        "state": "CA",
+        "website": "www.hotdoghause.com"
+    },
+    "success": true
+}
+```
+
+#### DELETE '/restaurants/{restaurant_id}'
+- Requires **Admin** authentication.
+- Delete a specified restaurant based on the restaurant_id.
+- Request arguments: **restaurant_id**
+- Returns: An object with the deleted restaurant id, the existing restaurant collection after deletion and a successful message.
+
+##### Exmaple request:
+`DELETE /restaurants/2`
+
+##### Exmaple response:
+
+```javascript
+{
+    "deleted_restaurant_id": 2,
+    "restaurants_after_deletion": [
+        {
+            "address": "Sandwich Monkey address",
+            "city": "San Carlos",
+            "id": 1,
+            "name": "Sandwich Monkey",
+            "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+            "state": "CA",
+            "website": "www.sandwichmonkey.com"
+        }
+    ],
+    "success": true
+}
+```
+
+#### PATCH '/restaurants/{restaurant_id}'
+- Requires **Admin** authentication.
+- Update a specified restaurant based on the restaurant_id
+- Request arguments: **restaurant_id**
+- Body: Restaurant's attributes to update to.
+- Returns: An restaurant object with the updated attributes and a successful message.
+
+##### Exmaple request:
+`PATCH /restaurants/1`
+
+```javascript
+{
+  "city": "Foster City"
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "success": true,
+    "updated_restaurant": {
+        "address": "Sandwich Monkey address",
+        "city": "Foster City",
+        "id": 1,
+        "name": "Sandwich Monkey",
+        "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
+        "state": "CA",
+        "website": "www.sandwichmonkey.com"
+    }
+}
+```
+
