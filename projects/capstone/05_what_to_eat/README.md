@@ -76,6 +76,11 @@ The category object describes the type of a dish. The API allows you to get, pos
 - Return a list of objects with id and category key:value pairs.
 - No arguments required.
 
+##### Exmaple request:
+`GET /categories`
+
+##### Exmaple response:
+
 ```javascript
 {
     "categories": [
@@ -96,6 +101,11 @@ The category object describes the type of a dish. The API allows you to get, pos
 - Retrieve a specified category by category_id from the category collection.
 - Requested arguments: **category_id**
 - Return an object with matched catory and a successful message.
+
+##### Exmaple request:
+`GET /categories/1`
+
+##### Exmaple response:
 
 ```javascript
 {
