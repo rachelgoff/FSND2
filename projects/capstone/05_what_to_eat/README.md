@@ -27,21 +27,21 @@ This will install all of the required packages which are selected within the `re
 ## Running the server
 
 ### Running the server from local host
-From within the `05_what_to_eat` directory (one level above `backend` directory) first ensure you are working using your created virtual environment.
+From within the working directory (for example, mine is `05_what_to_eat` directory, which is one level above `backend` directory) first ensure you are working using your created virtual environment.
 
 Each time you open a new terminal session, run:
 
 ```bash
-DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
+$ DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
 ```
 
 or you can export the environment first:
 ```bash
-export DATABASE_URL='postgresql://localhost:5432/dish' 
-export PGGSSENCMODE=disable 
-export FLASK_APP=backend/src/app.py 
-export FLASK_ENV=development 
-flask run
+$ export DATABASE_URL='postgresql://localhost:5432/dish' 
+$ export PGGSSENCMODE=disable 
+$ export FLASK_APP=backend/src/app.py 
+$ export FLASK_ENV=development 
+$ flask run
 ```
 
 ### Running the server from Heroku
@@ -67,8 +67,15 @@ $ __init__.py   src
 $ python3 -m src.test
 ```
 ## API endpoints
-### GET 'categories'
-Returns a list of categories:
+### Category
+
+The category objects describe the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories.
+
+#### GET 'categories'
+- Fetches a list of categories from the existing category collection.
+- Return a list of objects with id and category key:value pairs.
+- No arguments required.
+
 {
     "categories": [
         {
@@ -76,13 +83,81 @@ Returns a list of categories:
             "id": 1
         },
         {
-            "category": "Mexican",
+            "category": "American",
             "id": 2
-        },
-        {
-            "category": "Mexican",
-            "id": 3
         }
     ],
     "success": true
 }
+
+#### GET 'categories/<int:category_id>'
+- Retrieve a specified category by category_id from the category collection.
+- Return an object with matched catory and a successful message.
+- Requested arguments: category_id
+
+{
+    "category": {
+        "category": "Mexican",
+        "id": 1
+    },
+    "success": true
+}
+
+#### POST 'categories'
+- Create a new category in the existing category collection.
+- Return an object with an object of newly added catogry and a successful message.
+- No arguments required.
+
+{
+    "new_category": {
+        "category": "Chinese",
+        "id": 3
+    },
+    "success": true
+}
+
+#### DELETE '/categories/<int:category_id>'
+- Delete a specified question based on the category_id
+- Request arguments: <int:category_id>
+- Returns: An object with the deleted catory id, the existing category collection and a successful message.
+
+{
+    "categories": [
+        {
+            "category": "Mexican",
+            "id": 1
+        },
+        {
+            "category": "American",
+            "id": 2
+        }
+    ],
+    "delete_id": 3,
+    "success": true
+}
+
+#### PATCH '/categories/<int:category_id>'
+- - Update a specified question based on the category_id
+- - Request arguments: <int:category_id>
+- Body: Category to update to.
+- Returns: An object with the deleted catory id, the existing category collection and a successful message.
+
+##### Request:
+`PATCH /categories/1`
+
+```javascript
+{
+	category: "Chinese"
+}
+```
+
+##### Response:
+```javascript
+{
+    "success": true,
+    "updated category": {
+        "category": "Chinese",
+        "id": 1
+    }
+}
+```

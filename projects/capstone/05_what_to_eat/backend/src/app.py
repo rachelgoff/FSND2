@@ -265,13 +265,14 @@ def create_app():
         try:
             category = Category(category=new_category)
             category.insert()
-            categories = Category.query.order_by('id').all()
-            if categories is None:
-                abort(404)
-            formatted_all_categories = [category.format() for category in categories]
+            # categories = Category.query.order_by('id').all()
+            # if categories is None:
+            #     abort(404)
+            # formatted_all_categories = [category.format() for category in categories]
             return jsonify({
                 "success": True,
-                "categories": formatted_all_categories
+                "new_category": category.format(),
+                # "categories": formatted_all_categories
             })
         except Exception:
             abort(422)
