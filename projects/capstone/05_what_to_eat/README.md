@@ -176,7 +176,7 @@ The category object describes the type of a dish. The API allows you to get, pos
 - Update a specified question based on the category_id
 - Request arguments: **category_id**
 - Body: Category to update to.
-- Returns: An category object with the updated category information and a successful message.
+- Returns: A category object with the updated category information and a successful message.
 
 ##### Exmaple request:
 `PATCH /categories/1`
@@ -323,7 +323,7 @@ The restaurant object describes restaurant with attributes as name, city, state,
 - Update a specified restaurant based on the restaurant_id
 - Request arguments: **restaurant_id**
 - Body: Restaurant's attributes to update to.
-- Returns: An restaurant object with the updated attributes and a successful message.
+- Returns: A restaurant object with the updated attributes and a successful message.
 
 ##### Exmaple request:
 `PATCH /restaurants/1`
