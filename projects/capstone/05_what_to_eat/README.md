@@ -76,6 +76,7 @@ The category object describes the type of a dish. The API allows you to get, pos
 - Return a list of objects with id and category key:value pairs.
 - No arguments required.
 
+```javascript
 {
     "categories": [
         {
@@ -89,12 +90,14 @@ The category object describes the type of a dish. The API allows you to get, pos
     ],
     "success": true
 }
+```
 
 #### GET 'categories/<int:category_id>'
 - Retrieve a specified category by category_id from the category collection.
 - Requested arguments: **category_id**
 - Return an object with matched catory and a successful message.
 
+```javascript
 {
     "category": {
         "category": "Mexican",
@@ -102,12 +105,14 @@ The category object describes the type of a dish. The API allows you to get, pos
     },
     "success": true
 }
+```
 
 #### POST 'categories'
 - Create a new category in the existing category collection.
 - Return an object with an object of newly added catogry and a successful message.
 - No arguments required.
 
+```javascript
 {
     "new_category": {
         "category": "Chinese",
@@ -115,12 +120,14 @@ The category object describes the type of a dish. The API allows you to get, pos
     },
     "success": true
 }
+```
 
 #### DELETE '/categories/<int:category_id>'
 - Delete a specified question based on the category_id
 - Request arguments: **category_id**
 - Returns: An object with the deleted catory id, the existing category collection and a successful message.
 
+```javascript
 {
     "categories": [
         {
@@ -135,6 +142,7 @@ The category object describes the type of a dish. The API allows you to get, pos
     "delete_id": 3,
     "success": true
 }
+```
 
 #### PATCH '/categories/<int:category_id>'
 - Update a specified question based on the category_id
