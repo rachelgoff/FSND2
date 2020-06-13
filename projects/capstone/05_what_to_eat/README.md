@@ -49,11 +49,11 @@ The app is deployed on Heroku. You can visit the app via:
 
 https://what-to-eat-by-rg.herokuapp.com/. 
 
-Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in What_to_eat_heroku_deployment.postman_collection.json. Feel free to download this file and import in Postman before testing APIs.
+Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json]: https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat.postman_collection.json. Feel free to download this file and import in Postman before testing APIs.
 
 ### Retrieve tokens via Auth0
 Auth0 link:
-dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
+https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
 
 Admin login: cumulus166@gmail.com / password: Coffee123@@
 

@@ -1,0 +1,1213 @@
+{
+	"info": {
+		"_postman_id": "f8999c6e-46de-4abe-9c1b-f5726cccfed0",
+		"name": "What_to_eat_heroku_deployment",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"BBQ Salad\",\n\t\"restaurant_id\": 1,\n\t\"category_id\": 2,\n\t\"rating\": 3,\n\t\"price\": 10.00,\n\t\"image_link\": null\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"category\": \"Japanese\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkxMTU3NTQxLCJleHAiOjE1OTEyNDM5NDEsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.g3uE8URFdXjMLp-amcVQJHrld5RsoBNa0HE_Wglo07LwtVBqvHI1AJmj8RiWy7Ww7Cclg9fvIxbxn5Co7zIbYC2w4S3wBLdSfvrHtQYo4vrWk7xp8VHhEq0QsU2IvTl4_t9xr0LRcbWiWaqYk5XyDv1jtvmRPCmyq1p2Zj-g_LUT69znNfu5hqqmhXHBJStfAP22huGaGobPNg-JJh6cxTgbqJ_lA55-8-hZ7Lv5AupnoTpwL-jh8e5lV8svUp-h6R2k1AQ-9n2oLO8lqvPjYj7nAkHFwTEOXUpUi48oty4dBubObCxnnu0rH5A17XTejQSqozht-EP1Ym1XfFIBGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/2",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/3",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/4",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/4",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"category_id\": 2\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/6",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/9",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"search_term\": \"Salad\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/search",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/1/dishes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/2/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"2",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/try",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"previous_dishes\": [4],\n\t\"new_category\":2\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/try",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"try"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"Mexican\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/1/dishes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/1/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"1",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\": \"San Carlos\",\n  \"name\": \"Hot Dog House\",\n  \"address\": \"Hot Dog House address\",\n  \"r_image_link\": \"https://unsplash.com/photos/26T6EAsQCiA\",\n  \"state\": \"CA\",\n  \"website\": \"www.hotdoghause.com\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/1",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\": \"Foster City\",\n  \"name\": \"Sandwich Monkey\",\n  \"address\": \"Test address\",\n  \"r_image_link\": \"https://unsplash.com/photos/26T6EAsQCiA\",\n  \"state\": \"CA\",\n  \"website\": \"www.sandwichmonkey.com\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/2",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/2",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "https://what-to-eat-by-rg.herokuapp.com/categories",
+							"protocol": "https",
+							"host": [
+								"what-to-eat-by-rg",
+								"herokuapp",
+								"com"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/1",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"category\": \"English\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/1",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkxMTU3NTQxLCJleHAiOjE1OTEyNDM5NDEsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.g3uE8URFdXjMLp-amcVQJHrld5RsoBNa0HE_Wglo07LwtVBqvHI1AJmj8RiWy7Ww7Cclg9fvIxbxn5Co7zIbYC2w4S3wBLdSfvrHtQYo4vrWk7xp8VHhEq0QsU2IvTl4_t9xr0LRcbWiWaqYk5XyDv1jtvmRPCmyq1p2Zj-g_LUT69znNfu5hqqmhXHBJStfAP22huGaGobPNg-JJh6cxTgbqJ_lA55-8-hZ7Lv5AupnoTpwL-jh8e5lV8svUp-h6R2k1AQ-9n2oLO8lqvPjYj7nAkHFwTEOXUpUi48oty4dBubObCxnnu0rH5A17XTejQSqozht-EP1Ym1XfFIBGA",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This is the admin role for what to eat.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMDY2NzA1LCJleHAiOjE1OTIxNTMxMDUsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.dXc_meOpYXEk5eE942wlKGFagNOtDi9PAWqFGg7ycNZycMoMg6uMdUDGcpv48357q0WFRhUJCyxw3D4UlBH3Rh-8ilxFV24b4PBZpqOUPSJw4C9IhPiYvXSgbvggZrwp5d8vyFk_M_nLCTcs2gSEVG6qTEufN-hSPLN0U-M86Z0gV7t7w2xhironGmPlHrpzusHmc8NOjy3XMiI49f1XhPhmdOOarkj5XpTwntfcCkefNy1AdUK2ALbYWGrLfwAauOrZRCdeWsdc7NRHyenyHFPRKk3FPIbHtjKSER7weCbF8YzpsdnOnm4KiQffJUcER6OStS8M8vQ64F9-OARzUQ",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "38d63370-d063-4514-93f1-f74b9b595a4c",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "12ffa6be-9e9b-4ef9-91ce-6bf918a6309d",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "{{WTE_URL}}/categories/1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"category\": \"Japanese\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\": \"Green Godness Salad\",\n\t\"restaurant_id\": 1,\n\t\"category_id\": 2,\n\t\"rating\": 3,\n\t\"price\": 10.00,\n\t\"image_link\": null\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/2",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/1",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/4",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/4",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"category_id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/4",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/6",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/7",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/search",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"search_term\": \"Salad\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/search",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"search"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories/1/dishes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories/2/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories",
+								"2",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes/try",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"previous_dishes\": [4],\n\t\"new_category\":2\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes/try",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes",
+								"try"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/dishes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"category\": \"Mexican\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/1/dishes",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/1/dishes",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"1",
+								"dishes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\": \"San Carlos\",\n  \"name\": \"Sandwich Monkey\",\n  \"address\": \"Test address\",\n  \"r_image_link\": \"https://unsplash.com/photos/26T6EAsQCiA\",\n  \"state\": \"CA\",\n  \"website\": \"www.sandwichmonkey.com\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/6",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"city\": \"Foster City\",\n  \"name\": \"Sandwich Monkey\",\n  \"address\": \"Test address\",\n  \"r_image_link\": \"https://unsplash.com/photos/26T6EAsQCiA\",\n  \"state\": \"CA\",\n  \"website\": \"www.sandwichmonkey.com\"\n}"
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/2",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/restaurants/6",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/restaurants/3",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"restaurants",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "{{WTE_URL}}/categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{WTE_URL}}/categories",
+							"host": [
+								"{{WTE_URL}}"
+							],
+							"path": [
+								"categories"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This is the user role for what to eat.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU5NTVhN2MzNDdlYjAwYzE3MThhM2MzIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMDY2NzgwLCJleHAiOjE1OTIxNTMxODAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiXX0.lDvAns2TR9dZTHvUzGXOjDNvTtRpjmUxkrQNdmIMBVSsvSW6iaGP2aftZ2erFHoyv-IVupwvfQaLDL5ZhQB3W9uWSg2FJWZ_C3toqUM3JWDHAd75i--yCY1_glaodj1oY2ZopdyK0SmMIjm0uH2L-IURAge2vntb97zj9_xKWNcdyLaK9DToYrJpVzW1Tc7iosLDJb2RcPo_dWV1eZKY_b7HPvOptJg4P7d_S11LHmNiHqdB3Swr2KjZzgeQONEHhZuiHsodzkMhQh0uMCBoNzfc_7DPR7GR38UuQ_tQCX2eQOI_52nBsmKfqTWUuMKrTgIXG-JLpRS88ku0d_vgpA",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "a1f2fa90-ad80-4cc1-a974-1179619dfd03",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "471c907f-967c-403a-bdc7-ecb57b65e797",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkxMDc3NjMyLCJleHAiOjE1OTExNjQwMzIsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.dXkBdy4gUwdNiCDtc1YVwdF9xT4XhxAHkFfNrmGseWA2aTZ7R4eznLItvunfQjUh4EiIhc0j0cx9SVrtD-cqWI3ydziTgKa68Xybm6ww1YRydCisMtsUypOs3mm79gQTpCY0bs7AFO-VqZ_jqjVVfHUqNWHqqTcerPqGZuUj75AevP6BWxa_z7CbR7ptZDno9K7bpPLBg1CJ7E_5fOHKpW7l7OeHVuD627vFHrkTqjVeZNVs9OqUn-9qXlx-ZVWewp_UxdoTVfxJ5MU6dzLxmZ0qHEx1qX-LEsysF3bGRcuoTiH019FXUk7jMGi8-yL3sWUO7aRKwaaJeFaR2qyB5Q",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "1e0e5241-4614-436a-a63c-2f2b106008e1",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "790c3891-9f61-4ae1-b6e7-72fb92b1d981",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "0711b0ad-b459-47af-83c0-b65abedcfe32",
+			"key": "WTE_URL",
+			"value": "http://127.0.0.1",
+			"type": "string"
+		}
+	]
+}
