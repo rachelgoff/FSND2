@@ -69,7 +69,7 @@ $ python3 -m src.test
 ## API endpoints
 ### Category
 
-The category objects describe the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories.
+The category object describes the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection.
 
 #### GET 'categories'
 - Fetches a list of categories from the existing category collection.
@@ -92,8 +92,8 @@ The category objects describe the type of a dish. The API allows you to get, pos
 
 #### GET 'categories/<int:category_id>'
 - Retrieve a specified category by category_id from the category collection.
+- Requested arguments: **category_id**
 - Return an object with matched catory and a successful message.
-- Requested arguments: category_id
 
 {
     "category": {
@@ -118,7 +118,7 @@ The category objects describe the type of a dish. The API allows you to get, pos
 
 #### DELETE '/categories/<int:category_id>'
 - Delete a specified question based on the category_id
-- Request arguments: <int:category_id>
+- Request arguments: **category_id**
 - Returns: An object with the deleted catory id, the existing category collection and a successful message.
 
 {
@@ -137,12 +137,12 @@ The category objects describe the type of a dish. The API allows you to get, pos
 }
 
 #### PATCH '/categories/<int:category_id>'
-- - Update a specified question based on the category_id
-- - Request arguments: <int:category_id>
+- Update a specified question based on the category_id
+- Request arguments: **category_id**
 - Body: Category to update to.
 - Returns: An object with the deleted catory id, the existing category collection and a successful message.
 
-##### Request:
+##### Exmaple request:
 `PATCH /categories/1`
 
 ```javascript
@@ -151,7 +151,7 @@ The category objects describe the type of a dish. The API allows you to get, pos
 }
 ```
 
-##### Response:
+##### Exmaple response:
 ```javascript
 {
     "success": true,
