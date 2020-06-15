@@ -4,7 +4,7 @@ This app works as a meal planner for users. It gives users suggestions based on 
 
 ## Virtual environment
 
-Virtual environment is highly recommended. Instructions for setting up virtual environment can be found at:[Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments).
+Virtual environment is highly recommended. Instructions for setting up virtual environment can be found at: [Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments).
 
 ## PIP Dependencies
 
@@ -68,15 +68,15 @@ User login: cumulus189@gmail.com / password: Coffee123@@
 ## Data modeling
 **model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **Category**, **Restaurant** and **Dish**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
 
-### Category
+#### Category
 
 The category object describes the type of a dish. 
 
-### Restuarant
+#### Restuarant
 
 The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
 
-### Dish
+#### Dish
 
 The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
 
