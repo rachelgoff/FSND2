@@ -70,19 +70,20 @@ User login: cumulus189@gmail.com / password: Coffee123@@
 
 ### Category
 
-The category object describes the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection. Only users with admin permissions can create, delete and update category object. Regular users without admin permissions can browse category information.
+The category object describes the type of a dish. 
 
 ### Restuarant
 
-The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
+The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
 
 ### Dish
 
-The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link . The API allows you to get, post, delete and update dishes. You can retrieve a single dish or a list of dishes from the existing dish collection. Only users with admin permissions can create, delete and update dish object. Regular users without admin permissions can browse dish information. These users can also search for dishes and get recommended new dishes.
+The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
 
 ## API endpoints
 
 ### Category
+The following API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection. Only users with admin permissions can create, delete and update category object. Regular users without admin permissions can browse category information.
 
 #### GET '/categories'
 - Fetches a list of categories from the existing category collection.
@@ -212,6 +213,7 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 ```
 
 ### Restuarant
+The following API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
 
 #### GET '/restaurants'
 - Fetches a list of restaurants from the existing restaurant collection.
@@ -362,6 +364,7 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 ```
 
 ### Dish
+The following API allows you to get, post, delete and update dishes. You can retrieve a single dish or a list of dishes from the existing dish collection. Only users with admin permissions can create, delete and update dish object. Regular users without admin permissions can browse dish information. These users can also search for dishes and get recommended new dishes.
 
 #### GET '/dishes'
 - Fetches a list of dishes from the existing dish collection.
