@@ -47,7 +47,7 @@ $ flask run
 or you can run `setup.sh` from the working directory. 
 ```bash
 $ chmod +x setup.sh // only need to run this command before using this script for the first time.
-$ ./setup.sh // It includes createdb step and run the server.
+$ ./setup.sh // It creates datebase dish first and then runs the server.
 ```
 
 ### Running the server from Heroku
@@ -66,12 +66,23 @@ Admin login: cumulus166@gmail.com / password: Coffee123@@
 User login: cumulus189@gmail.com / password: Coffee123@@
 
 ## Data modeling
-**model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: Category, Restaurant and Dish. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
+**model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **Category**, **Restaurant** and **Dish**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
 
-## API endpoints
 ### Category
 
 The category object describes the type of a dish. The API allows you to get, post, delete and update categories. You can retrieve a single category or a list of categories from the existing category collection. Only users with admin permissions can create, delete and update category object. Regular users without admin permissions can browse category information.
+
+### Restuarant
+
+The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
+
+### Dish
+
+The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link . The API allows you to get, post, delete and update dishes. You can retrieve a single dish or a list of dishes from the existing dish collection. Only users with admin permissions can create, delete and update dish object. Regular users without admin permissions can browse dish information. These users can also search for dishes and get recommended new dishes.
+
+## API endpoints
+
+### Category
 
 #### GET '/categories'
 - Fetches a list of categories from the existing category collection.
@@ -201,8 +212,6 @@ The category object describes the type of a dish. The API allows you to get, pos
 ```
 
 ### Restuarant
-
-The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
 
 #### GET '/restaurants'
 - Fetches a list of restaurants from the existing restaurant collection.
@@ -353,8 +362,6 @@ The restaurant object describes a restaurant with attributes as name, city, stat
 ```
 
 ### Dish
-
-The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link . The API allows you to get, post, delete and update dishes. You can retrieve a single dish or a list of dishes from the existing dish collection. Only users with admin permissions can create, delete and update dish object. Regular users without admin permissions can browse dish information.
 
 #### GET '/dishes'
 - Fetches a list of dishes from the existing dish collection.
@@ -656,10 +663,10 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 There are two ways to test the app. You can either use the test.py or Postman to run the test. 
 
 #### Test.py
-From within the working directory, run the following command.
+From within the working directory which is one level up from `backend` directory, run the following command.
 ```bash
-$ createdb dish_test // setup test db
-$ cd $PROJECT_PATH // the directory is one level up from `backend` subfolder
+$ createdb dish_test // setup test database
+$ cd $PROJECT_PATH
 $ python3 -m backend.src.test
 ```
 
