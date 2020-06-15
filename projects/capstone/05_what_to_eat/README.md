@@ -55,7 +55,7 @@ The app is deployed on Heroku. You can visit the app via:
 
 https://what-to-eat-by-rg.herokuapp.com/. 
 
-Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat.postman_collection.json). Feel free to download this file and import in Postman before testing APIs.
+Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this file and import in Postman before testing APIs.
 
 ### Retrieve tokens via Auth0
 Auth0 link:
@@ -674,7 +674,7 @@ $ python3 -m backend.src.test
 ```
 
 #### Use Postman to run testing
-Role related token has been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat.postman_collection.json).
+Role related token has been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
 1. Launch Postman.
 2. Import the above collection file to Postman.
 3. Click the arrow next to the collection name and click Run to start the Collection Runner.
