@@ -96,7 +96,7 @@ def create_app():
             return jsonify({
                 "success": True,
                 "new_dish": new_dish.format(),
-                "dishes": formatted_all_dishes
+                #"dishes": formatted_all_dishes
             })
         except Exception:
             abort(422)
@@ -165,7 +165,7 @@ def create_app():
             dish.delete()
             return jsonify({
                 "success": True,
-                "deleted dish": delete_dish_id
+                "deleted_dish_id": delete_dish_id
                 })
         except Exception:
             abort(422)
@@ -218,7 +218,7 @@ def create_app():
         if len(previous_dishes) == 0:
             abort(400)
         new_category = body.get('new_category')
-        if len(new_category) == 0:
+        if new_category is None:
             abort(400)
         try:
             if new_category == 0:
@@ -233,7 +233,7 @@ def create_app():
                     dishes_to_try.append(dish)
             return jsonify({
                 "success": True,
-                "dish to try": dishes_to_try[0]
+                "dish_to_try": dishes_to_try[0]
             })
         except Exception:
             abort(422)

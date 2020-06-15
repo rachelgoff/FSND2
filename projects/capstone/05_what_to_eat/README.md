@@ -60,10 +60,9 @@ Admin login: cumulus166@gmail.com / password: Coffee123@@
 User login: cumulus189@gmail.com / password: Coffee123@@
 
 ### Test.py
+From within the backend directory, run the following command.
 ```bash
 $ cd $PROJECT_PATH/backend
-$ ls
-$ __init__.py   src
 $ python3 -m src.test
 ```
 ## API endpoints
@@ -200,7 +199,7 @@ The category object describes the type of a dish. The API allows you to get, pos
 
 ### Restuarant
 
-The restaurant object describes restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
+The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration . The API allows you to get, post, delete and update restaurants. You can retrieve a single restaurant or a list of restaurants from the existing restaurant collection. Only users with admin permissions can create, delete and update restaurant object. Regular users without admin permissions can browse restaurant information.
 
 #### GET '/restaurants'
 - Fetches a list of restaurants from the existing restaurant collection.
@@ -350,3 +349,302 @@ The restaurant object describes restaurant with attributes as name, city, state,
 }
 ```
 
+### Dish
+
+The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link . The API allows you to get, post, delete and update dishes. You can retrieve a single dish or a list of dishes from the existing dish collection. Only users with admin permissions can create, delete and update dish object. Regular users without admin permissions can browse dish information.
+
+#### GET '/dishes'
+- Fetches a list of dishes from the existing dish collection.
+- Return a list of dish objects with id, name, restaurant_id, category_id, price, rating, image_link key:value pairs.
+- No arguments required.
+
+##### Exmaple request:
+`GET /dishes`
+
+##### Exmaple response:
+
+```javascript
+{
+    "dishes": [
+        {
+            "category_id": 2,
+            "id": 1,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "BBQ Salad",
+            "price": 10,
+            "rating": 4,
+            "restaurant_id": 1
+        },
+        {
+            "category_id": 2,
+            "id": 2,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "Cob Salad",
+            "price": 10,
+            "rating": 3,
+            "restaurant_id": 1
+        }
+    ],
+    "success": true
+}
+```
+
+#### GET '/dishes/{idsh_id}'
+- Retrieve a specified dish by dish_id from the dish collection.
+- Requested arguments: **dish_id**
+- Return an object with matched dish and a successful message.
+
+##### Exmaple request:
+`GET /dishes/1`
+
+##### Exmaple response:
+
+```javascript
+{
+    "dish": {
+        "category": "American",
+        "category_id": 2,
+        "id": 1,
+        "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+        "name": "BBQ Salad",
+        "price": 10,
+        "rating": 4,
+        "restaurant_id": 1,
+        "restaurant_name": "Sandwich Monkey"
+    },
+    "success": true
+}
+```
+
+#### POST '/dishes'
+- Requires **Admin** authentication.
+- Create a new dish in the existing dish collection.
+- Return an object with an object of newly added dish and a successful message.
+- No arguments required.
+
+##### Exmaple request:
+`POST /dishes`
+
+```javascript
+{
+	"name": "BBQ Hot Dog",
+	"restaurant_id": 2,
+	"category_id": 2,
+	"rating": 3,
+	"price": 6.00,
+	"image_link": null
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "new_dish": {
+        "category_id": 2,
+        "id": 3,
+        "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+        "name": "BBQ Hot Dog",
+        "price": 6,
+        "rating": 3,
+        "restaurant_id": 2
+    },
+    "success": true
+}
+```
+
+#### DELETE '/dishes/{dish_id}'
+- Requires **Admin** authentication.
+- Delete a specified dish based on the dish_id.
+- Request arguments: **dish_id**
+- Returns: An object with the deleted dish id and a successful message.
+
+##### Exmaple request:
+`DELETE /dishes/3`
+
+##### Exmaple response:
+
+```javascript
+{
+    "deleted_dish_id": 3,
+    "success": true
+}
+```
+
+#### PATCH '/dishes/{dish_id}'
+- Requires **Admin** authentication.
+- Update a specified dish based on the dish_id
+- Request arguments: **dish_id**
+- Body: Dish object's attributes to update to.
+- Returns: A dish object with the updated dish information and a successful message.
+
+##### Exmaple request:
+`PATCH /dishes/1`
+
+```javascript
+{
+	"rating": 5
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "dish": {
+        "category": "American",
+        "category_id": 2,
+        "id": 1,
+        "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+        "name": "BBQ Salad",
+        "price": 10,
+        "rating": 5,
+        "restaurant_id": 1,
+        "restaurant_name": "Sandwich Monkey"
+    },
+    "success": true
+}
+```
+
+#### GET '/categories/{category_id}/dishes'
+- Retrieve a list of dishes from the same category by category_id
+- Request arguments: **category_id**
+- Returns: A list of dishes grouped by a given category_id and a successful message.
+
+##### Exmaple request:
+`GET /categories/2/dishes`
+
+##### Exmaple response:
+```javascript
+{
+    "dishes_by_categories": [
+        {
+            "category": "American",
+            "category_id": 2,
+            "id": 1,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "BBQ Salad",
+            "price": 10,
+            "rating": 3,
+            "restaurant_id": 1,
+            "restaurant_name": "Steak House"
+        },
+        {
+            "category": "American",
+            "category_id": 2,
+            "id": 3,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "BBQ Hot Dog",
+            "price": 6,
+            "rating": 3,
+            "restaurant_id": 2,
+            "restaurant_name": "Hot Dog House"
+        }
+    ],
+    "success": true
+}
+```
+
+#### GET '/restaurants/{restaurant_id}/dishes'
+- Retrieve a list of dishes from the same restaurant by restaurant_id
+- Request arguments: **restaurant_id**
+- Returns: A list of dishes grouped by a given restaurant_id and a successful message.
+
+##### Exmaple request:
+`GET /restaurants/1/dishes`
+
+##### Exmaple response:
+```javascript
+{
+    "dishes_by_restaurants": [
+        {
+            "category": "American",
+            "category_id": 2,
+            "id": 3,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "BBQ Salad",
+            "price": 10,
+            "rating": 3,
+            "restaurant_id": 1,
+            "restaurant_name": "Sandwich Monkey"
+        },
+        {
+            "category": "American",
+            "category_id": 2,
+            "id": 8,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "Breakfast sandwich",
+            "price": 6,
+            "rating": 3,
+            "restaurant_id": 1,
+            "restaurant_name": "Sandwich Monkey"
+        }
+    ],
+    "success": true
+}
+```
+
+#### POST '/dishes/search'
+- Search one or a group of dishes by a query string
+- Return an object with matched dishes and a successful message.
+- No arguments required.
+
+##### Exmaple request:
+`POST /dishes/search`
+
+```javascript
+{
+   "search_term": "Sandwich"
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "dishes": [
+        {
+            "category": "American",
+            "category_id": 2,
+            "id": 8,
+            "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+            "name": "Breakfast sandwich",
+            "price": 6,
+            "rating": 3,
+            "restaurant_id": 1,
+            "restaurant_name": "Sandwich Monkey"
+        }
+    ],
+    "success": true
+}
+```
+
+#### POST '/dishes/try'
+- Fetch a recommended dish with the category that is specified by users and is not from the previous dishes. If no category is specified, then return a dish that is not from the previous dishes and the rating is equal to or greater than 3. If a category is specified, then return a dish that is from the specified category but not from the previous dishes, and the rating is equal to or greater than 3.
+- Return an object with the dish to try and a successful message.
+- No arguments required.
+
+##### Exmaple request:
+`POST /dishes/search`
+
+```javascript
+{
+	"previous_dishes": [4],
+	"new_category":2
+}
+```
+
+##### Exmaple response:
+```javascript
+{
+    "dish_to_try": {
+        "category": "American",
+        "category_id": 2,
+        "id": 6,
+        "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
+        "name": "BBQ Hot Dog",
+        "price": 6,
+        "rating": 3,
+        "restaurant_id": 3,
+        "restaurant_name": "Hot Dog House"
+    },
+    "success": true
+}
+```
