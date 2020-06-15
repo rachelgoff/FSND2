@@ -70,15 +70,15 @@ User login: cumulus189@gmail.com / password: Coffee123@@
 
 #### Category
 
-The category object describes the type of a dish. 
+A category object describes the type of a dish. 
 
 #### Restuarant
 
-The restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
+A restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
 
 #### Dish
 
-The category object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
+A dish object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
 
 ## API endpoints
 
