@@ -5,8 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import func
 from flask_cors import CORS
 
-# from .database.models import setup_db, Dish, Restaurant, Category
-# from .auth.auth import AuthError, requires_auth
 from backend.src.database.models import setup_db, Dish, Restaurant, Category
 from backend.src.auth.auth import AuthError, requires_auth
 import random
@@ -27,9 +25,6 @@ def create_app():
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response
 
-    default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
-    #default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
-
     def get_formatted_dish(dish_id):
         formatted_dish = {}
         dish = Dish.query.get(dish_id)
@@ -46,7 +41,7 @@ def create_app():
                 'category_id': dish.category_id,
                 'rating': dish.rating,
                 'price': float(dish.price),
-                'image_link': dish.image_link or default_dish_image_link,
+                'image_link': dish.image_link,
                 'restaurant_name': dish_restaurant.name,
                 'category': dish_category.category
             }

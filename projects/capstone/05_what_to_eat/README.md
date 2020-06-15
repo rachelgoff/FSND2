@@ -44,6 +44,12 @@ $ export FLASK_ENV=development
 $ flask run
 ```
 
+or you can run `setup.sh` from the working directory. 
+```bash
+$ chmod +x setup.sh // only need to run this command before using this script for the first time.
+$ ./setup.sh // It includes createdb step and run the server.
+```
+
 ### Running the server from Heroku
 The app is deployed on Heroku. You can visit the app via: 
 
@@ -59,7 +65,7 @@ Admin login: cumulus166@gmail.com / password: Coffee123@@
 
 User login: cumulus189@gmail.com / password: Coffee123@@
 
-### Data modeling
+## Data modeling
 **model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: Category, Restaurant and Dish. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
 
 ## API endpoints
@@ -646,14 +652,14 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 }
 ```
 
-### Testing
+## Testing
 There are two ways to test the app. You can either use the test.py or Postman to run the test. 
 
 #### Test.py
-From within the backend directory, run the following command.
+From within the working directory, run the following command.
 ```bash
-$ createdb dishes_test // setup test db
-$ cd $PROJECT_PATH // the directory is one level up from backend subfolder
+$ createdb dish_test // setup test db
+$ cd $PROJECT_PATH // the directory is one level up from `backend` subfolder
 $ python3 -m backend.src.test
 ```
 
