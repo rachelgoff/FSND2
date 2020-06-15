@@ -59,12 +59,9 @@ Admin login: cumulus166@gmail.com / password: Coffee123@@
 
 User login: cumulus189@gmail.com / password: Coffee123@@
 
-### Test.py
-From within the backend directory, run the following command.
-```bash
-$ cd $PROJECT_PATH/backend
-$ python3 -m src.test
-```
+### Data modeling
+**model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: Category, Restaurant and Dish. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
+
 ## API endpoints
 ### Category
 
@@ -389,7 +386,7 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 }
 ```
 
-#### GET '/dishes/{idsh_id}'
+#### GET '/dishes/{dish_id}'
 - Retrieve a specified dish by dish_id from the dish collection.
 - Requested arguments: **dish_id**
 - Return an object with matched dish and a successful message.
@@ -622,7 +619,7 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 - No arguments required.
 
 ##### Exmaple request:
-`POST /dishes/search`
+`POST /dishes/try`
 
 ```javascript
 {
@@ -648,3 +645,20 @@ The category object describes a dish with attributes as name, restaurant_id, cat
     "success": true
 }
 ```
+
+### Testing
+There are two ways to test the app. You can either use the test.py or Postman to test the app. 
+
+#### Test.py
+From within the backend directory, run the following command.
+```bash
+$ cd $PROJECT_PATH/backend
+$ python3 -m src.test
+```
+
+#### Use Postman to run testing
+Role related token has been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat.postman_collection.json).
+1. Launch Postman.
+2. Import the above collection file to Postman.
+3. Click the arrow next to the collection name and click Run to start the Collection Runner.
+4. Check the test results.
