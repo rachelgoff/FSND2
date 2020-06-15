@@ -647,13 +647,14 @@ The category object describes a dish with attributes as name, restaurant_id, cat
 ```
 
 ### Testing
-There are two ways to test the app. You can either use the test.py or Postman to test the app. 
+There are two ways to test the app. You can either use the test.py or Postman to run the test. 
 
 #### Test.py
 From within the backend directory, run the following command.
 ```bash
-$ cd $PROJECT_PATH/backend
-$ python3 -m src.test
+$ createdb dishes_test // setup test db
+$ cd $PROJECT_PATH // the directory is one level up from backend subfolder
+$ python3 -m backend.src.test
 ```
 
 #### Use Postman to run testing
