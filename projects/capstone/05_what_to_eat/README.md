@@ -46,7 +46,7 @@ $ flask run
 
 or you can run `setup.sh` from the working directory. 
 ```bash
-$ chmod +x setup.sh // only need to run this command before using this script for the first time.
+$ chmod +x setup.sh // You only need to run this command before using the script for the first time.
 $ ./setup.sh // It creates datebase dish first and then runs the server.
 ```
 
