@@ -58,16 +58,6 @@ https://what-to-eat-by-rg.herokuapp.com/.
 
 Please note that the frontend code is not available yet. In order to test the APIs, please use Postman with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this collection.json file and import in Postman before testing APIs.
 
-### Retrieve tokens via Auth0
-Authentication tokens included in the above collection.json file will expire in 24 hours. Once they expire, please use the following Auth0 link to retrieve the tokens accordingly. Valid tokens are required before using the app. Open Postman - What_to_eat_heroku_deployment - Admin - Edit - Authorization, update the old token with the new token in the Token section. Under User folder in Postman, follow the same steps to update User's token in Postman.
-
-**Auth0 link**:
-https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
-
-**Admin login**: cumulus166@gmail.com / password: Coffee123@@
-
-**User login**: cumulus189@gmail.com / password: Coffee123@@
-
 ## Data modeling
 **model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **categories**, **restaurants** and **dishes**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
 
@@ -665,3 +655,15 @@ Role related tokens have been added to the collection file [What_to_eat_heroku_d
 2. Import the above collection file to Postman.
 3. Click the arrow next to the collection name and click Run to start the Collection Runner.
 4. Check the test results.
+
+#### Retrieve tokens via Auth0
+Authentication tokens included in the above collection.json file will expire in 24 hours. Once they expire, please use the following Auth0 link to retrieve the tokens accordingly. 
+
+**Auth0 link**:
+https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
+
+**Admin login**: cumulus166@gmail.com / password: Coffee123@@
+
+**User login**: cumulus189@gmail.com / password: Coffee123@@
+
+Valid tokens are required before using the app. Open Postman -> What_to_eat_heroku_deployment -> Admin -> Edit -> Authorization tab, update the old token with the new token in the Token section. Under User folder in Postman, follow the same steps to update User's token in Postman. Then you should be able test the app in different roles.
