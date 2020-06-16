@@ -159,20 +159,19 @@
 							"raw": ""
 						},
 						"url": {
-							"raw": "{{WTE_URL}}/dishes/4",
+							"raw": "{{WTE_URL}}/dishes",
 							"host": [
 								"{{WTE_URL}}"
 							],
 							"path": [
-								"dishes",
-								"4"
+								"dishes"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "{{WTE_URL}}/dishes/4",
+					"name": "{{WTE_URL}}/dishes/2",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -194,7 +193,7 @@
 					"response": []
 				},
 				{
-					"name": "{{WTE_URL}}/dishes/4",
+					"name": "{{WTE_URL}}/dishes/3",
 					"request": {
 						"method": "PATCH",
 						"header": [
@@ -207,16 +206,16 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n   \"category_id\": 2\n}"
+							"raw": "{\n   \"rating\": 4\n}"
 						},
 						"url": {
-							"raw": "{{WTE_URL}}/dishes/4",
+							"raw": "{{WTE_URL}}/dishes/3",
 							"host": [
 								"{{WTE_URL}}"
 							],
 							"path": [
 								"dishes",
-								"4"
+								"3"
 							]
 						}
 					},
@@ -274,7 +273,7 @@
 					"response": []
 				},
 				{
-					"name": "{{WTE_URL}}/categories/1/dishes",
+					"name": "{{WTE_URL}}/categories/2/dishes",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -304,7 +303,7 @@
 					"response": []
 				},
 				{
-					"name": "{{WTE_URL}}/dishes/try",
+					"name": "{{WTE_URL}}/dishes/recommended",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -596,7 +595,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMDY2NzA1LCJleHAiOjE1OTIxNTMxMDUsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.dXc_meOpYXEk5eE942wlKGFagNOtDi9PAWqFGg7ycNZycMoMg6uMdUDGcpv48357q0WFRhUJCyxw3D4UlBH3Rh-8ilxFV24b4PBZpqOUPSJw4C9IhPiYvXSgbvggZrwp5d8vyFk_M_nLCTcs2gSEVG6qTEufN-hSPLN0U-M86Z0gV7t7w2xhironGmPlHrpzusHmc8NOjy3XMiI49f1XhPhmdOOarkj5XpTwntfcCkefNy1AdUK2ALbYWGrLfwAauOrZRCdeWsdc7NRHyenyHFPRKk3FPIbHtjKSER7weCbF8YzpsdnOnm4KiQffJUcER6OStS8M8vQ64F9-OARzUQ",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMjgwMzI1LCJleHAiOjE1OTIzNjY3MjUsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.J2UktkPEjhAvf5Ass8sNQPSHLsHCo2fmmIrBZVyX5EiHggiGsHmozCPoqER1J3FiBNK2QZXNNqjlZVyNTixJlfh_zyLMfB0n2H94ha-qCl9d1VvviEvN5YLI4h0BY5LFNKGYPQVCQ-l4FWjYDyWlctGSnJ1lG4nA9lztVC4XDJ725v5XcuBQGKVo34uHJbBg3CMFhDAxJyNbhg9vga_NVnDgR7IO_XvNee6kRod5EwmmvVz6RXhEW--jbXCi22581aTbgLIy7dqR2OaqTgcqjt9f8POAAasTAvIFDF4_QjM8OHsqm9JsnPplPaRAWE12ipBcuiVotEDsZQSws6uDow",
 						"type": "string"
 					}
 				]
@@ -913,15 +912,15 @@
 					"response": []
 				},
 				{
-					"name": "{{WTE_URL}}/dishes/try",
+					"name": "{{WTE_URL}}/dishes/recommended",
 					"request": {
 						"method": "POST",
 						"header": [
 							{
 								"key": "Content-Type",
 								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
+								"type": "text",
+								"value": "application/json"
 							}
 						],
 						"body": {
@@ -929,13 +928,13 @@
 							"raw": "{\n\t\"previous_dishes\": [4],\n\t\"new_category\":2\n}"
 						},
 						"url": {
-							"raw": "{{WTE_URL}}/dishes/try",
+							"raw": "{{WTE_URL}}/dishes/recommended",
 							"host": [
 								"{{WTE_URL}}"
 							],
 							"path": [
 								"dishes",
-								"try"
+								"recommended"
 							]
 						}
 					},
@@ -1141,7 +1140,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU5NTVhN2MzNDdlYjAwYzE3MThhM2MzIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMDY2NzgwLCJleHAiOjE1OTIxNTMxODAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiXX0.lDvAns2TR9dZTHvUzGXOjDNvTtRpjmUxkrQNdmIMBVSsvSW6iaGP2aftZ2erFHoyv-IVupwvfQaLDL5ZhQB3W9uWSg2FJWZ_C3toqUM3JWDHAd75i--yCY1_glaodj1oY2ZopdyK0SmMIjm0uH2L-IURAge2vntb97zj9_xKWNcdyLaK9DToYrJpVzW1Tc7iosLDJb2RcPo_dWV1eZKY_b7HPvOptJg4P7d_S11LHmNiHqdB3Swr2KjZzgeQONEHhZuiHsodzkMhQh0uMCBoNzfc_7DPR7GR38UuQ_tQCX2eQOI_52nBsmKfqTWUuMKrTgIXG-JLpRS88ku0d_vgpA",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU5NTVhN2MzNDdlYjAwYzE3MThhM2MzIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyMjgwMzY2LCJleHAiOjE1OTIzNjY3NjYsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiXX0.l2VMwUKVodiDprqUWFpZGhAbMlc_jgpHV9rGkUvGIwWIb-yhl9huQ-VXdDBn8DNIzTWH7SKO6JmKJEpSGi79zr6Ws3SykeaPI61lPPgqXIOaTYGDVZiOIpwD7Jh_SkmW458fMYJm6Q71G2MV2e1cKi5dEhbMjhV3RC-x8C08GpEqIthNaZGv0a0Cr5KarLKPZzs33ZV7WFDyLGN5okODgaXyxVWxi30Iwj6_0dlsrpQGrTROP_7XwLgpEgEatPXQWYl0855rIQsULrB9NGo2DnmDPzGJ3lpF25CkEYY81aQTwDad5IAmM-FlJ6mAjw1dghiNlLf_rdWugwk0Wq4zwA",
 						"type": "string"
 					}
 				]
@@ -1204,7 +1203,7 @@
 	],
 	"variable": [
 		{
-			"id": "0711b0ad-b459-47af-83c0-b65abedcfe32",
+			"id": "3825efef-1e8c-467d-bf48-8e60d5bf8afe",
 			"key": "WTE_URL",
 			"value": "http://127.0.0.1",
 			"type": "string"
