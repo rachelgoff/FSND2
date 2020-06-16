@@ -64,11 +64,11 @@ Please note that the frontend code is not available yet. In order to test the AP
 
 #### Category
 
-A Category object describes the category of a dish such as Mexican.
+A Category object describes the `category` of a dish such as Mexican.
 
 #### Restuarant
 
-A Restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
+A Restaurant object describes a restaurant with attributes as `name`, `city`, `state`, `address`, `r_image_link` and `website` infomration.
 
 #### Dish
 
@@ -81,7 +81,7 @@ The following API allows you to get, post, delete and update categories. You can
 
 #### GET '/categories'
 - Fetches a list of categories from the existing category collection.
-- No arguments required.
+- No request arguments are required.
 - Returns a list of id and category pairs.
 
 ##### Exmaple request:
@@ -106,8 +106,8 @@ The following API allows you to get, post, delete and update categories. You can
 ```
 
 #### GET '/categories/{category_id}'
-- Retrieves a specified category by category_id from the category collection.
-- Request arguments: **category_id**
+- Retrieves a specified category by `category_id` from the category collection.
+- Request arguments: `**category_id**`
 - Returns an object with matched category and success status.
 
 ##### Exmaple request:
@@ -132,7 +132,7 @@ The following API allows you to get, post, delete and update categories. You can
 - Data in the body is required.
 - Returns a newly added category and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `POST /categories`
 
 ```javascript
@@ -154,9 +154,9 @@ The following API allows you to get, post, delete and update categories. You can
 
 #### DELETE '/categories/{category_id}'
 - Requires **Admin** authentication.
-- Deletes a specified category based on the category_id.
-- Request arguments: **category_id**
-- Returns the deleted category id and success status.
+- Deletes a specified category based on the `category_id`.
+- Request arguments: `**category_id**`
+- Returns the `deleted_category_id` and success status.
 
 ##### Exmaple request:
 `DELETE /categories/3`
@@ -172,12 +172,12 @@ The following API allows you to get, post, delete and update categories. You can
 
 #### PATCH '/categories/{category_id}'
 - Requires **Admin** authentication.
-- Updates a specified question based on the category_id
-- Request arguments: **category_id**
+- Updates a specified question based on the `category_id`
+- Request arguments: `**category_id**`
 - Data in the body is required.
 - Returns an updated category information and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `PATCH /categories/1`
 
 ```javascript
@@ -189,11 +189,11 @@ The following API allows you to get, post, delete and update categories. You can
 ##### Exmaple response:
 ```javascript
 {
-    "success": true,
     "updated category": {
         "category": "Chinese",
         "id": 1
-    }
+    },
+    "success": true
 }
 ```
 
@@ -202,8 +202,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 #### GET '/restaurants'
 - Fetches a list of restaurants from the existing restaurant collection.
-- No arguments are required.
-- Returns a list of restaurants with id, name, city, state, address, website and r_image_link key:value pairs and success status.
+- No request arguments are required.
+- Returns a list of restaurants including `id`, `name`, `city`, `state`, `address`, `website` and `r_image_link` key:value pairs and success status.
 
 ##### Exmaple request:
 `GET /restaurants`
@@ -227,8 +227,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
 }
 ```
 #### GET '/restaurants/{restaurant_id}'
-- Retrieves a specified restaurant by restaurant_id from the restaurant collection.
-- Request arguments: **restaurant_id**
+- Retrieves a specified restaurant by `restaurant_id` from the restaurant collection.
+- Request arguments: `**restaurant_id**`
 - Returns a matched restaurant object and success status.
 
 ##### Exmaple request:
@@ -258,7 +258,7 @@ The following API allows you to get, post, delete and update restaurants. You ca
 - Data in the body is required.
 - Returns a newly added restaurant and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `POST /restaurants`
 
 ```javascript
@@ -290,9 +290,9 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 #### DELETE '/restaurants/{restaurant_id}'
 - Requires **Admin** authentication.
-- Deletes a specified restaurant based on the restaurant_id.
-- Request arguments: **restaurant_id**
-- Returns the deleted restaurant id and success status.
+- Deletes a specified restaurant based on the `restaurant_id`.
+- Request arguments: `**restaurant_id**`
+- Returns the `deleted_restaurant_id` and success status.
 
 ##### Exmaple request:
 `DELETE /restaurants/2`
@@ -308,12 +308,12 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 #### PATCH '/restaurants/{restaurant_id}'
 - Requires **Admin** authentication.
-- Updates a specified restaurant based on the restaurant_id
-- Request arguments: **restaurant_id**
-- Data in the body is required and it includes restaurant's attributes to update to.
-- Returns a restaurant object with the updated attributes and success status.
+- Updates a specified restaurant based on the `restaurant_id`
+- Request arguments: `**restaurant_id**`
+- Data in the body is required and includes the restaurant's attributes to update.
+- Returns a restaurant with the updated attributes and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `PATCH /restaurants/1`
 
 ```javascript
@@ -325,7 +325,6 @@ The following API allows you to get, post, delete and update restaurants. You ca
 ##### Exmaple response:
 ```javascript
 {
-    "success": true,
     "updated_restaurant": {
         "address": "Sandwich Monkey address",
         "city": "Foster City",
@@ -334,7 +333,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
         "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
         "state": "CA",
         "website": "www.sandwichmonkey.com"
-    }
+    },
+    "success": true
 }
 ```
 
@@ -344,7 +344,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 #### GET '/dishes'
 - Fetches a list of dishes from the existing dish collection.
 - No request arguments are required.
-- Returns a list of dishes id, name, restaurant_id, category_id, price, rating, image_link key:value pairs and success status.
+- Returns a list of dishes including `id`, `name`, `restaurant_id`, `category_id`, `price`, `rating`, `image_link` key:value pairs and success status.
 
 ##### Exmaple request:
 `GET /dishes`
@@ -378,8 +378,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ```
 
 #### GET '/dishes/{dish_id}'
-- Retrieves a specified dish by dish_id from the dish collection.
-- Request arguments: **dish_id**
+- Retrieves a specified dish by `dish_id` from the dish collection.
+- Request arguments: `**dish_id**`
 - Returns a matched dish and success status.
 
 ##### Exmaple request:
@@ -411,7 +411,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 - Data in the body is required.
 - Returns a newly added dish and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `POST /dishes`
 
 ```javascript
@@ -443,9 +443,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### DELETE '/dishes/{dish_id}'
 - Requires **Admin** authentication.
-- Deletes a specified dish based on the dish_id.
-- Request arguments: **dish_id**
-- Returns the deleted dish id and success status.
+- Deletes a specified dish based on the `dish_id`.
+- Request arguments: `**dish_id**`
+- Returns the `deleted_dish_id` and success status.
 
 ##### Exmaple request:
 `DELETE /dishes/3`
@@ -461,12 +461,12 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### PATCH '/dishes/{dish_id}'
 - Requires **Admin** authentication.
-- Update a specified dish based on the dish_id
-- Request arguments: **dish_id**
-- Data in the body is required and includes dish's attributes to update to.
+- Update a specified dish based on the `dish_id`
+- Request arguments: `**dish_id**`
+- Data in the body is required and includes the dish's attributes to update.
 - Returns a dish object with the updated dish information and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `PATCH /dishes/1`
 
 ```javascript
@@ -494,9 +494,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ```
 
 #### GET '/categories/{category_id}/dishes'
-- Retrieves a list of dishes from the same category by category_id
-- Request arguments: **category_id**
-- Returns a list of dishes grouped by a given category_id and success status.
+- Retrieves a list of dishes from the same category by `category_id`
+- Request arguments: `**category_id**`
+- Returns a list of dishes grouped by a given `category_id` and success status.
 
 ##### Exmaple request:
 `GET /categories/2/dishes`
@@ -533,9 +533,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ```
 
 #### GET '/restaurants/{restaurant_id}/dishes'
-- Retrieves a list of dishes from the same restaurant by restaurant_id
-- Request arguments: **restaurant_id**
-- Returns a list of dishes grouped by a given restaurant_id and success status.
+- Retrieves a list of dishes from the same restaurant by `restaurant_id`
+- Request arguments: `**restaurant_id**`
+- Returns a list of dishes grouped by a given `restaurant_id` and success status.
 
 ##### Exmaple request:
 `GET /restaurants/1/dishes`
@@ -574,10 +574,10 @@ The following API allows you to get, post, delete and update dishes. You can ret
 #### POST '/dishes/search'
 - Searchs one or a group of dishes by a query string
 - No request arguments are required.
-- Data in the body is required and includes "search_term" as the key.
+- Data in the body is required and includes `search_term` as the key.
 - Returns an object with matched dishes and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the body:
 `POST /dishes/search`
 
 ```javascript
@@ -606,13 +606,13 @@ The following API allows you to get, post, delete and update dishes. You can ret
 }
 ```
 
-#### POST '/dishes/try'
-- Fetches a recommended dish with the category that is specified by users and is not from the previous dishes. If no category is specified, then return a dish that is not from the previous dishes and the rating is equal to or greater than 3. If a category is specified, then return a dish that is from the specified category but not from the previous dishes, and the rating is equal to or greater than 3.
+#### POST '/dishes/recommended'
+- Fetches a recommended dish with the category that is specified by users and is not from the provided list of the previous dish ids. If no category is specified, then return a dish that is not from the previous dishes and the rating is equal to or greater than 3. If a category is specified, then return a dish that is from the specified category but not from the previous dishes, and the rating is equal to or greater than 3.
 - No request arguments are required.
-- Data in the body is required and includes a list of previous dish id and a new catogery id which are provided by users.
+- Data in the body is required and includes a list of previous dish ids and a new catogery id which are provided by users.
 - Returns an object with the dish to try and success status.
 
-##### Exmaple request:
+##### Exmaple request with data in the bdoy:
 `POST /dishes/try`
 
 ```javascript
@@ -644,17 +644,19 @@ The following API allows you to get, post, delete and update dishes. You can ret
 There are two ways to test the app. You can either use test.py or Postman to test APIs. 
 
 #### Test.py
-Go to the working directory, run the following command.
+Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the following command.
+
 ```bash
 $ createdb dish_test
 $ python3 -m backend.src.test
 ```
 
-#### Use Postman to run testing
+#### Use Postman to test
 Role related tokens have been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
 1. Launch Postman.
 2. Import the above collection file to Postman.
-3. Click the arrow next to the collection name and click Run to start the Collection Runner.
+3. Click the arrow next to the collection name and click Run button.
+4. Click Run What_to_eat_heroku_deployment to start the Collection Runner.
 4. Check the test results.
 
 #### Retrieve tokens via Auth0
