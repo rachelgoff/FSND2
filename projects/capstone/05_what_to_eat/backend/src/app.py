@@ -203,9 +203,9 @@ def create_app():
         except Exception:
             abort(422)
 
-    @app.route('/dishes/try', methods=['POST'])
-    def try_new_dishes():
-        dishes_to_try = []
+    @app.route('/dishes/recommended', methods=['POST'])
+    def recommend_new_dishes():
+        recommended_dishes = []
         body = request.get_json()
         if body is None:
             abort(400)
@@ -220,15 +220,15 @@ def create_app():
                 dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
-                    dishes_to_try.append(dish)
+                    recommended_dishes.append(dish)
             else:
                 dishes = Dish.query.filter(Dish.category_id == new_category, Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
-                    dishes_to_try.append(dish)
+                    recommended_dishes.append(dish)
             return jsonify({
                 "success": True,
-                "dish_to_try": dishes_to_try[0]
+                "recommended_dish": recommended_dishes[0]
             })
         except Exception:
             abort(422)
