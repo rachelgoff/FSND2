@@ -314,13 +314,13 @@ def create_app():
         delete_id = category_id
         try:
             category.delete()
-            categories = Category.query.order_by('id').all()
-            formatted_all_categories = [category.format() for category in categories]
+            # categories = Category.query.order_by('id').all()
+            # formatted_all_categories = [category.format() for category in categories]
 
             return jsonify({
                 "success": True,
-                "delete_id": delete_id,
-                "categories": formatted_all_categories
+                "delete_category_id": delete_id,
+                # "categories": formatted_all_categories
             })
         except Exception:
             abort(422)
@@ -442,14 +442,14 @@ def create_app():
             deleted_id = restaurant_id
             restaurant.delete()
 
-            all_restaurants = Restaurant.query.order_by('id').all()
-            if all_restaurants is None:
-                abort(404)
-            formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
+            # all_restaurants = Restaurant.query.order_by('id').all()
+            # if all_restaurants is None:
+            #     abort(404)
+            # # formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
             return jsonify({
                 "success": True,
                 "deleted_restaurant_id": deleted_id,
-                "restaurants_after_deletion": formatted_all_restaurants
+                # "restaurants_after_deletion": formatted_all_restaurants
             })
         except Exception:
             abort(422)

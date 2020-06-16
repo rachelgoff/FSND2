@@ -1,6 +1,6 @@
-# Welcome to What To Eat Backend
+# Welcome to the What To Eat Backend
 
-This app works as a meal planner for users. It gives users suggestions based on their previous favorite take-out food items from various restaurants. It saves users time and energy to plan their meals. Especially when the restaurants are not fully opened with their sitting down area during this particular situation, you will spend lots of time on eating at home. What to eat app will plan your meals with the food you used to love. Using What to eat, your favorite food is just one button away. In the current version, users will be able to view the recommended dishes. Ordering feature will be available in the future versions.
+This app works as a meal planner for users. It gives users suggestions based on their previous favorite take-out food items from various restaurants. It saves users' time and energy to plan their meals. Especially when the restaurants are not fully opened with their sitting down area during this particular situation, users will spend lots of time on eating at home. The What To Eat app will plan users' meals with the food they used to love. Using What To Eat, your favorite food is just one button away. In the current version, users will be able to view the recommended dishes. Ordering feature will be available in the future versions.
 
 ## Virtual environment
 
@@ -24,12 +24,13 @@ This will install all of the required packages which are selected within the `re
 
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
 
+## Working Directory
+Go to the directory where you check out the [repository](https://github.com/rachelgoff/FSND2) which includes What To Eat backend code. The working directory is under `/FSND2/projects/capstone/05_what_to_eat`.
+
 ## Running the server
 
-### Running the server from local host
-From within the working directory (for example, mine is `05_what_to_eat` directory, which is one level above `backend` directory) first ensure you are working using your created virtual environment.
-
-Each time you open a new terminal session, run:
+### Running the server from localhost
+Make sure you are working using your created virtual environment before you start running the server. Go to the working directory, then run the following command:
 
 ```bash
 $ DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
@@ -46,39 +47,41 @@ $ flask run
 
 or you can run `setup.sh` from the working directory. 
 ```bash
-$ chmod +x setup.sh // You only need to run this command before using the script for the first time.
-$ ./setup.sh // It creates datebase dish first and then runs the server.
+$ chmod +x setup.sh
+$ ./setup.sh
 ```
 
-### Running the server from Heroku
-The app is deployed on Heroku. You can visit the app via: 
+### Deployment on Heroku
+The app's backend server is deployed on Heroku. You can visit and interact with the app's backend server via: 
 
 https://what-to-eat-by-rg.herokuapp.com/. 
 
-Please note that the frontend code is not available yet. In order to test the APIs, please use Postman or curl methods with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this file and import in Postman before testing APIs.
+Please note that the frontend code is not available yet. In order to test the APIs, please use Postman with proper authentication information. For Postman, authentication token has been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this collection.json file and import in Postman before testing APIs.
 
 ### Retrieve tokens via Auth0
-Auth0 link:
+Authentication tokens included in the above collection.json file will expire in 24 hours. Once they expire, please use the following Auth0 link to retrieve the tokens accordingly. Valid tokens are required before using the app. Open Postman - What_to_eat_heroku_deployment - Admin - Edit - Authorization, update the old token with the new token in the Token section. Under User folder in Postman, follow the same steps to update User's token in Postman.
+
+**Auth0 link**:
 https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
 
-Admin login: cumulus166@gmail.com / password: Coffee123@@
+**Admin login**: cumulus166@gmail.com / password: Coffee123@@
 
-User login: cumulus189@gmail.com / password: Coffee123@@
+**User login**: cumulus189@gmail.com / password: Coffee123@@
 
 ## Data modeling
-**model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **Category**, **Restaurant** and **Dish**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
+**model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **categories**, **restaurants** and **dishes**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
 
 #### Category
 
-A category object describes the type of a dish. 
+A Category object describes the type of a dish. 
 
 #### Restuarant
 
-A restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
+A Restaurant object describes a restaurant with attributes as name, city, state, address, image link and website infomration.
 
 #### Dish
 
-A dish object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
+A Dish object describes a dish with attributes as name, restaurant_id, category_id, price, rating and image link.
 
 ## API endpoints
 
@@ -87,8 +90,8 @@ The following API allows you to get, post, delete and update categories. You can
 
 #### GET '/categories'
 - Fetches a list of categories from the existing category collection.
-- Returns a list of objects with id and category key:value pairs.
 - No arguments required.
+- Returns a list of id and category pairs.
 
 ##### Exmaple request:
 `GET /categories`
@@ -113,8 +116,8 @@ The following API allows you to get, post, delete and update categories. You can
 
 #### GET '/categories/{category_id}'
 - Retrieves a specified category by category_id from the category collection.
-- Requested arguments: **category_id**
-- Returns an object with matched catory and a successful message.
+- Request arguments: **category_id**
+- Returns an object with matched category and a success message.
 
 ##### Exmaple request:
 `GET /categories/1`
@@ -134,8 +137,9 @@ The following API allows you to get, post, delete and update categories. You can
 #### POST '/categories'
 - Requires **Admin** authentication.
 - Creates a new category in the existing category collection.
-- Returns an object with an object of newly added catogry and a successful message.
-- No arguments required.
+- No request arguments are required.
+- Data in the body is required.
+- Returns a newly added category and a success message.
 
 ##### Exmaple request:
 `POST /categories`
@@ -160,8 +164,8 @@ The following API allows you to get, post, delete and update categories. You can
 #### DELETE '/categories/{category_id}'
 - Requires **Admin** authentication.
 - Deletes a specified category based on the category_id.
-- Requested arguments: **category_id**
-- Returns: An object with the deleted category id, the existing category collection and a successful message.
+- Request arguments: **category_id**
+- Returns the deleted category id and a success message.
 
 ##### Exmaple request:
 `DELETE /categories/3`
@@ -170,17 +174,7 @@ The following API allows you to get, post, delete and update categories. You can
 
 ```javascript
 {
-    "categories": [
-        {
-            "category": "Mexican",
-            "id": 1
-        },
-        {
-            "category": "American",
-            "id": 2
-        }
-    ],
-    "delete_id": 3,
+    "delete_category_id": 3,
     "success": true
 }
 ```
@@ -188,9 +182,9 @@ The following API allows you to get, post, delete and update categories. You can
 #### PATCH '/categories/{category_id}'
 - Requires **Admin** authentication.
 - Updates a specified question based on the category_id
-- Requested arguments: **category_id**
-- Body: Category to update to.
-- Returns: A category object with the updated category information and a successful message.
+- Request arguments: **category_id**
+- Data in the body is required.
+- Returns an updated category information and a success message.
 
 ##### Exmaple request:
 `PATCH /categories/1`
@@ -217,8 +211,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 #### GET '/restaurants'
 - Fetches a list of restaurants from the existing restaurant collection.
-- Returns a list of restaurant objects with id, name, city, state, address, website and r_image_link key:value pairs.
-- No arguments required.
+- No arguments are required.
+- Returns a list of restaurants with id, name, city, state, address, website and r_image_link key:value pairs and a success message.
 
 ##### Exmaple request:
 `GET /restaurants`
@@ -243,8 +237,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
 ```
 #### GET '/restaurants/{restaurant_id}'
 - Retrieves a specified restaurant by restaurant_id from the restaurant collection.
-- Requested arguments: **restaurant_id**
-- Returns a matched restaurant object and a successful message.
+- Request arguments: **restaurant_id**
+- Returns a matched restaurant object and a success message.
 
 ##### Exmaple request:
 `GET /restaurants/1`
@@ -269,8 +263,9 @@ The following API allows you to get, post, delete and update restaurants. You ca
 #### POST '/restaurants'
 - Requires **Admin** authentication.
 - Creates a new restaurant in the existing restaurant collection.
-- Returns an object with an object of newly added restaurant and a successful message.
-- No arguments required.
+- No request arguments are required.
+- Data in the body is required.
+- Returns a newly added restaurant and a success message.
 
 ##### Exmaple request:
 `POST /restaurants`
@@ -305,8 +300,8 @@ The following API allows you to get, post, delete and update restaurants. You ca
 #### DELETE '/restaurants/{restaurant_id}'
 - Requires **Admin** authentication.
 - Deletes a specified restaurant based on the restaurant_id.
-- Requested arguments: **restaurant_id**
-- Returns: An object with the deleted restaurant id, the existing restaurant collection after deletion and a successful message.
+- Request arguments: **restaurant_id**
+- Returns the deleted restaurant id and a success message.
 
 ##### Exmaple request:
 `DELETE /restaurants/2`
@@ -316,17 +311,6 @@ The following API allows you to get, post, delete and update restaurants. You ca
 ```javascript
 {
     "deleted_restaurant_id": 2,
-    "restaurants_after_deletion": [
-        {
-            "address": "Sandwich Monkey address",
-            "city": "San Carlos",
-            "id": 1,
-            "name": "Sandwich Monkey",
-            "r_image_link": "https://unsplash.com/photos/26T6EAsQCiA",
-            "state": "CA",
-            "website": "www.sandwichmonkey.com"
-        }
-    ],
     "success": true
 }
 ```
@@ -334,9 +318,9 @@ The following API allows you to get, post, delete and update restaurants. You ca
 #### PATCH '/restaurants/{restaurant_id}'
 - Requires **Admin** authentication.
 - Updates a specified restaurant based on the restaurant_id
-- Requests arguments: **restaurant_id**
-- Body: Restaurant's attributes to update to.
-- Returns: A restaurant object with the updated attributes and a successful message.
+- Request arguments: **restaurant_id**
+- Data in the body is required and it includes restaurant's attributes to update to.
+- Returns a restaurant object with the updated attributes and a success message.
 
 ##### Exmaple request:
 `PATCH /restaurants/1`
@@ -368,8 +352,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### GET '/dishes'
 - Fetches a list of dishes from the existing dish collection.
-- Returns a list of dish objects with id, name, restaurant_id, category_id, price, rating, image_link key:value pairs.
-- No arguments required.
+- No request arguments are required.
+- Returns a list of dishes id, name, restaurant_id, category_id, price, rating, image_link key:value pairs and a success message.
 
 ##### Exmaple request:
 `GET /dishes`
@@ -404,8 +388,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### GET '/dishes/{dish_id}'
 - Retrieves a specified dish by dish_id from the dish collection.
-- Requested arguments: **dish_id**
-- Returns an object with matched dish and a successful message.
+- Request arguments: **dish_id**
+- Returns a matched dish and a success message.
 
 ##### Exmaple request:
 `GET /dishes/1`
@@ -432,8 +416,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 #### POST '/dishes'
 - Requires **Admin** authentication.
 - Creates a new dish in the existing dish collection.
-- Returns an object with an object of newly added dish and a successful message.
-- No arguments required.
+- No request arguments are required.
+- Data in the body is required.
+- Returns a newly added dish and a success message.
 
 ##### Exmaple request:
 `POST /dishes`
@@ -468,8 +453,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 #### DELETE '/dishes/{dish_id}'
 - Requires **Admin** authentication.
 - Deletes a specified dish based on the dish_id.
-- Requests arguments: **dish_id**
-- Returns: An object with the deleted dish id and a successful message.
+- Request arguments: **dish_id**
+- Returns the deleted dish id and a success message.
 
 ##### Exmaple request:
 `DELETE /dishes/3`
@@ -487,8 +472,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 - Requires **Admin** authentication.
 - Update a specified dish based on the dish_id
 - Request arguments: **dish_id**
-- Body: Dish object's attributes to update to.
-- Returns: A dish object with the updated dish information and a successful message.
+- Data in the body is required and includes dish's attributes to update to.
+- Returns a dish object with the updated dish information and a success message.
 
 ##### Exmaple request:
 `PATCH /dishes/1`
@@ -519,8 +504,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### GET '/categories/{category_id}/dishes'
 - Retrieves a list of dishes from the same category by category_id
-- Requests arguments: **category_id**
-- Returns: A list of dishes grouped by a given category_id and a successful message.
+- Request arguments: **category_id**
+- Returns a list of dishes grouped by a given category_id and a success message.
 
 ##### Exmaple request:
 `GET /categories/2/dishes`
@@ -558,8 +543,8 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### GET '/restaurants/{restaurant_id}/dishes'
 - Retrieves a list of dishes from the same restaurant by restaurant_id
-- Requests arguments: **restaurant_id**
-- Returns: A list of dishes grouped by a given restaurant_id and a successful message.
+- Request arguments: **restaurant_id**
+- Returns a list of dishes grouped by a given restaurant_id and a success message.
 
 ##### Exmaple request:
 `GET /restaurants/1/dishes`
@@ -597,8 +582,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### POST '/dishes/search'
 - Searchs one or a group of dishes by a query string
-- Returns an object with matched dishes and a successful message.
-- No arguments required.
+- No request arguments are required.
+- Data in the body is required and includes "search_term" as the key.
+- Returns an object with matched dishes and a success message.
 
 ##### Exmaple request:
 `POST /dishes/search`
@@ -631,8 +617,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 #### POST '/dishes/try'
 - Fetches a recommended dish with the category that is specified by users and is not from the previous dishes. If no category is specified, then return a dish that is not from the previous dishes and the rating is equal to or greater than 3. If a category is specified, then return a dish that is from the specified category but not from the previous dishes, and the rating is equal to or greater than 3.
-- Returns an object with the dish to try and a successful message.
-- No arguments required.
+- No request arguments are required.
+- Data in the body is required and includes a list of previous dish id and a new catogery id which are provided by users.
+- Returns an object with the dish to try and a success message.
 
 ##### Exmaple request:
 `POST /dishes/try`
@@ -663,18 +650,17 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ```
 
 ## Testing
-There are two ways to test the app. You can either use the test.py or Postman to run the test. 
+There are two ways to test the app. You can either use test.py or Postman to test APIs. 
 
 #### Test.py
-From within the working directory which is one level up from `backend` directory, run the following command.
+Go to the working directory, run the following command.
 ```bash
-$ createdb dish_test // setup test database
-$ cd $PROJECT_PATH
+$ createdb dish_test
 $ python3 -m backend.src.test
 ```
 
 #### Use Postman to run testing
-Role related token has been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
+Role related tokens have been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
 1. Launch Postman.
 2. Import the above collection file to Postman.
 3. Click the arrow next to the collection name and click Run to start the Collection Runner.
