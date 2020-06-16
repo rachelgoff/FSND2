@@ -13,21 +13,19 @@ API_AUDIENCE = 'Dishes'
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
-
-
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
         self.status_code = status_code
 
-
-# Auth Header
+'''
+Auth Header
+'''
 
 '''
 get_token_auth_header() method
 
 '''
-
 
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
@@ -66,11 +64,7 @@ def get_token_auth_header():
 
 '''
 check_permissions(permission, payload) method
-@INPUTS
-    permission: string permission (i.e. 'post:drink')
-    payload: decoded jwt payload
 '''
-
 
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
@@ -89,10 +83,7 @@ def check_permissions(permission, payload):
 
 '''
 verify_decode_jwt(token) method
-@INPUTS
-    token: a json web token (string)
 '''
-
 
 def verify_decode_jwt(token):
     jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
@@ -149,11 +140,7 @@ def verify_decode_jwt(token):
 
 '''
 @requires_auth(permission) decorator method
-@INPUTS
-    permission: string permission (i.e. 'post:drink')
 '''
-
-
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)

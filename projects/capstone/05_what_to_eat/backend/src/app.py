@@ -14,8 +14,15 @@ def create_app():
     app = Flask(__name__)
     setup_db(app)
 
+    '''
+    Set up CORS. Allow '*' for origins. 
+    '''
     CORS(app, resource={r"*/api/*": {"origins": "*"}})
 
+
+    '''
+    Use the after_request decorator to set Access-Control-Allow.
+    '''
     @app.after_request
     def after_request(response):
         response.headers.add(
@@ -53,6 +60,9 @@ def create_app():
     def hello_what_to_eat():
         return 'Hello, What To Eat!'
 
+    '''
+    GET /dishes
+    '''
     @app.route('/dishes', methods=['GET'])
     def get_dishes():
         all_dishes = Dish.query.order_by('id').all()
@@ -96,6 +106,9 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /dishes/<dish_id>
+    '''
     @app.route('/dishes/<int:dish_id>', methods=['GET'])
     def get_dish_item(dish_id):
         formatted_dish = get_formatted_dish(dish_id)
@@ -107,6 +120,10 @@ def create_app():
                 "dish": formatted_dish
         })
 
+    '''
+    PATCH /dishes/<dish_id>
+    It requrires 'patch:dishes" permission.
+    '''
     @app.route('/dishes/<int:dish_id>', methods=['PATCH'])
     @requires_auth("patch:dishes")
     def update_dish(token, dish_id):
@@ -149,6 +166,10 @@ def create_app():
         except Exception:
             abort(404)
 
+    '''
+    DELETE /dishes/<dish_id>
+    It requrires 'delete:dishes" permission.
+    '''
     @app.route('/dishes/<int:dish_id>', methods=['DELETE'])
     @requires_auth("delete:dishes")
     def delete_dish(token, dish_id):
@@ -165,6 +186,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    POST /dishes/search
+    It returns dishes that match search query.
+    '''
     @app.route('/dishes/search', methods=['POST'])
     def search_dish():
         dishes = []
@@ -186,6 +211,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /categories/<category_id>/dishes
+    It returns a list of dishes grouped by the same category.
+    '''
     @app.route('/categories/<int:category_id>/dishes', methods=['GET'])
     def dishes_by_categories(category_id):
         dishes_by_categories = []
@@ -203,6 +232,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    POST /dishes/recommended
+    It returned a recommended dish with the category that is specified by users and is not from the provided list of the previous dish ids.
+    '''
     @app.route('/dishes/recommended', methods=['POST'])
     def recommend_new_dishes():
         recommended_dishes = []
@@ -233,6 +266,9 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /categories
+    '''
     @app.route('/categories', methods=['GET'])
     def get_categories():
         all_categories = Category.query.order_by('id').all()
@@ -248,6 +284,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    POST /categories
+    It requires 'post:categories' permission.
+    '''
     @app.route('/categories', methods=['POST'])
     @requires_auth("post:categories")
     def create_category(token):
@@ -272,6 +312,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    PATCH /categories/<category_id>
+    It requires 'patch:categories' permission.
+    '''
     @app.route('/categories/<int:category_id>', methods=['PATCH'])
     @requires_auth("patch:categories")
     def update_category(token, category_id):
@@ -295,6 +339,9 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /categories/<category_id>
+    '''
     @app.route('/categories/<int:category_id>', methods=['GET'])
     def get_category_by_id(category_id):
         category = Category.query.get(category_id)
@@ -305,6 +352,10 @@ def create_app():
             "category": category.format()
         })
 
+    '''
+    DELETE /categories/<category_id>
+    It requires 'delete:categories' permission.
+    '''
     @app.route('/categories/<int:category_id>', methods=['DELETE'])
     @requires_auth("delete:categories")
     def delete_category(token, category_id):
@@ -325,6 +376,9 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /restaurants
+    '''
     @app.route('/restaurants', methods=['GET'])
     def get_restaurants():
         all_restaurants = Restaurant.query.order_by('id').all()
@@ -339,6 +393,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    GET /restaurants/<restaurant_id>/dishes
+    It returns a list of dishes from the same restaurant.
+    '''
     @app.route('/restaurants/<int:restaurant_id>/dishes', methods=['GET'])
     def dishes_by_restaurants(restaurant_id):
         dishes_by_restaurants = []
@@ -356,6 +414,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    POST /restaurants
+    It requires 'post:restaurants' permission.
+    '''
     @app.route('/restaurants', methods=['POST'])
     @requires_auth("post:restaurants")
     def create_restaurant(token):
@@ -383,6 +445,10 @@ def create_app():
         except Exception:
             abort(422)
 
+    '''
+    PATCH /restaurants/<restaurant_id>
+    It requires 'patch:restaurants' permission.
+    '''
     @app.route('/restaurants/<int:restaurant_id>', methods=['PATCH'])
     @requires_auth("patch:restaurants")
     def update_restaurant(token, restaurant_id):
@@ -422,6 +488,10 @@ def create_app():
         except Exception as e:
             abort(404)
 
+
+    '''
+    GET /restaurants/<restaurant_id>
+    '''
     @app.route('/restaurants/<int:restaurant_id>', methods=['GET'])
     def get_restaurant_by_id(restaurant_id):
         restaurant = Restaurant.query.get(restaurant_id)
@@ -432,6 +502,11 @@ def create_app():
             "restaurant_by_id": restaurant.format()
         })
 
+
+    '''
+    DELETE /restaurants/<restaurant_id>
+    It requires 'delete:restaurants' permission.
+    '''
     @app.route('/restaurants/<int:restaurant_id>', methods=['DELETE'])
     @requires_auth("delete:restaurants")
     def delete_restaurant_by_id(token, restaurant_id):
@@ -453,9 +528,10 @@ def create_app():
             })
         except Exception:
             abort(422)
-
-    # Error Handling
-
+            
+    '''
+    Error Handling
+    '''
     @app.errorhandler(422)
     def unprocessable(error):
         return jsonify({

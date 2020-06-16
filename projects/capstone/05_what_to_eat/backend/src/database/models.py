@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import json
 
-#database_name = "dish"
+# database_name = "dish"
 project_dir = os.path.dirname(os.path.abspath(__file__))
 # database_path = "postgresql://{}/{}".format('localhost:5432', database_name)
 database_path = os.environ['DATABASE_URL']
@@ -13,6 +13,9 @@ default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
 
 db = SQLAlchemy()
 
+'''
+setup_db(app) binds a flask application and a SQLAlchemy service.
+'''
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -21,6 +24,9 @@ def setup_db(app, database_path=database_path):
     db.create_all()
     migrate = Migrate(app, db)
 
+'''
+Dish Model
+'''
 class Dish(db.Model):
     __tablename__ = "dishes"
 
@@ -62,7 +68,10 @@ class Dish(db.Model):
             'image_link': self.image_link or default_dish_image_link
         }
 
-# Food category
+
+'''
+Category Model
+'''
 class Category(db.Model):
     __tablename__ = "categories"
     id = Column(Integer, primary_key=True)
@@ -89,6 +98,9 @@ class Category(db.Model):
             "category": self.category
         }
 
+'''
+Restaurant Model
+'''
 class Restaurant(db.Model):
     __tablename__ = "restaurants"
     id = Column(Integer, primary_key=True)
