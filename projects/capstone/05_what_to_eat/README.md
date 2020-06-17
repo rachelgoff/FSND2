@@ -648,6 +648,9 @@ Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the fo
 
 ```bash
 $ createdb dish_test
+$ export DATABASE_URL="postgresql://localhost:5432/dish_test"
+$ export ADMIN_TOKEN=""  // Refer to the **Retrieve tokens via Auth0 section** to get the right tokens to export.
+$ export USER_TOKEN=""
 $ python3 -m backend.src.test
 ```
 
