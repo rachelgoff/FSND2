@@ -10,12 +10,13 @@ project_dir = os.path.dirname(os.path.abspath(__file__))
 database_path = os.environ['DATABASE_URL']
 default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
 default_restaurant_image_link = "https://unsplash.com/photos/26T6EAsQCiA"
-
 db = SQLAlchemy()
 
 '''
 setup_db(app) binds a flask application and a SQLAlchemy service.
 '''
+
+
 def setup_db(app, database_path=database_path):
     app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -24,21 +25,27 @@ def setup_db(app, database_path=database_path):
     db.create_all()
     migrate = Migrate(app, db)
 
+
 '''
 Dish Model
 '''
+
+
 class Dish(db.Model):
     __tablename__ = "dishes"
 
     id = Column(Integer, primary_key=True)
     name = Column(String(120), nullable=False)
-    restaurant_id = Column(Integer, db.ForeignKey('restaurants.id'), nullable=False)
-    category_id = Column(Integer, db.ForeignKey('categories.id'), nullable=False)
+    restaurant_id = Column(
+        Integer, db.ForeignKey('restaurants.id'), nullable=False)
+    category_id = Column(
+        Integer, db.ForeignKey('categories.id'), nullable=False)
     rating = Column(Integer)
-    price = Column(Numeric(10,2))
+    price = Column(Numeric(10, 2))
     image_link = Column(String(500))
 
-    def __init__(self, name, restaurant_id, category_id, rating, price, image_link):
+    def __init__(
+            self, name, restaurant_id, category_id, rating, price, image_link):
         self.name = name
         self.restaurant_id = restaurant_id
         self.category_id = category_id
@@ -49,7 +56,7 @@ class Dish(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def update(self):
         db.session.commit()
 
@@ -72,6 +79,8 @@ class Dish(db.Model):
 '''
 Category Model
 '''
+
+
 class Category(db.Model):
     __tablename__ = "categories"
     id = Column(Integer, primary_key=True)
@@ -80,27 +89,30 @@ class Category(db.Model):
 
     def __init__(self, category):
         self.category = category
-    
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def update(self):
         db.session.commit()
 
     def delete(self):
         db.session.delete(self)
         db.session.commit()
-    
+
     def format(self):
         return {
             "id": self.id,
             "category": self.category
         }
 
+
 '''
 Restaurant Model
 '''
+
+
 class Restaurant(db.Model):
     __tablename__ = "restaurants"
     id = Column(Integer, primary_key=True)
@@ -110,7 +122,8 @@ class Restaurant(db.Model):
     address = Column(String(180), nullable=False)
     website = Column(String(120), nullable=False)
     r_image_link = Column(String(500))
-    dishes = db.relationship("Dish", backref=db.backref('restaurant', lazy=True))
+    dishes = db.relationship("Dish", backref=db.backref(
+        'restaurant', lazy=True))
 
     def __init__(self, name, city, state, address, website, r_image_link):
         self.name = name
@@ -123,7 +136,7 @@ class Restaurant(db.Model):
     def insert(self):
         db.session.add(self)
         db.session.commit()
-    
+
     def update(self):
         db.session.commit()
 
