@@ -333,17 +333,6 @@ class WhatToEatTestCase(unittest.TestCase):
     '''
     TEST USER ROLE
     '''
-    '''
-    Test User post categories
-    '''
-    def test_403__add_categories_user(self):
-        res = self.client().post('/categories', headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(USER_TOKEN)},
-            json=self.new_categories)
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 403)
-        self.assertEqual(data['success'], False)
 
     '''
     Test User get categories
