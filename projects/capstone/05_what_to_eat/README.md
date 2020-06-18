@@ -655,6 +655,12 @@ $ export ADMIN_TOKEN=""  // Refer to the Retrieve tokens via Auth0 section below
 $ export USER_TOKEN=""
 $ python3 -m backend.src.test
 ```
+or you can run:
+
+```bash
+$ chmod +x test_setup.sh
+$ ./test_setup.sh
+```
 
 #### Use Postman to test
 Role related tokens have been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
