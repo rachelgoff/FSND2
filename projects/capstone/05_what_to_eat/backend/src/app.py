@@ -15,10 +15,9 @@ def create_app():
     setup_db(app)
 
     '''
-    Set up CORS. Allow '*' for origins. 
+    Set up CORS. Allow '*' for origins.
     '''
     CORS(app, resource={r"*/api/*": {"origins": "*"}})
-
 
     '''
     Use the after_request decorator to set Access-Control-Allow.
@@ -26,9 +25,11 @@ def create_app():
     @app.after_request
     def after_request(response):
         response.headers.add(
-            'Access-Control-Allow-Headers', 'Content-Type, Authorization, true')
+            'Access-Control-Allow-Headers',
+            'Content-Type, Authorization, true')
         response.headers.add(
-            'Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS')
+            'Access-Control-Allow-Methods',
+            'GET, POST, PATCH, DELETE, OPTIONS')
         response.headers.add('Access-Control-Allow-Credentials', 'true')
         return response
 
@@ -92,7 +93,10 @@ def create_app():
             new_price = body.get('price')
             new_image_link = body.get('image_link')
 
-            new_dish = Dish(name=new_name, restaurant_id=new_restaurant_id, category_id=new_category_id, rating=new_rating, price=new_price, image_link=new_image_link)
+            new_dish = Dish(
+                name=new_name, restaurant_id=new_restaurant_id,
+                category_id=new_category_id, rating=new_rating,
+                price=new_price, image_link=new_image_link)
             new_dish.insert()
 
             all_dishes = Dish.query.order_by('id').all()
@@ -100,8 +104,7 @@ def create_app():
 
             return jsonify({
                 "success": True,
-                "new_dish": new_dish.format(),
-                #"dishes": formatted_all_dishes
+                "new_dish": new_dish.format()
             })
         except Exception:
             abort(422)
@@ -200,7 +203,8 @@ def create_app():
             search = body.get('search_term')
             if search is None:
                 abort(404)
-            search_results = Dish.query.filter(Dish.name.ilike("%" + search + "%"))
+            search_results = Dish.query.filter(
+                Dish.name.ilike("%" + search + "%"))
             for result in search_results:
                 dish = get_formatted_dish(result.id)
                 dishes.append(dish)
@@ -234,7 +238,9 @@ def create_app():
 
     '''
     POST /dishes/recommended
-    It returned a recommended dish with the category that is specified by users and is not from the provided list of the previous dish ids.
+    It returned a recommended dish with the category
+    that is specified by users and is not from
+    the provided list of the previous dish ids.
     '''
     @app.route('/dishes/recommended', methods=['POST'])
     def recommend_new_dishes():
@@ -249,13 +255,24 @@ def create_app():
         if new_category is None:
             abort(400)
         try:
+            # if not specify a category, then recommend a dish
+            # that is not from previous dishes and
+            # ratings is greater than or equal to 3.
             if new_category == 0:
-                dishes = Dish.query.filter(Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # if not specify a category, then recommend a dish that is not from previous dishes and ratings is greater than or equal to 3.
+                dishes = Dish.query.filter(Dish.id.notin_(
+                    previous_dishes), Dish.rating >= 3).order_by(
+                        func.random()).limit(1)
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
                     recommended_dishes.append(dish)
             else:
-                dishes = Dish.query.filter(Dish.category_id == new_category, Dish.id.notin_(previous_dishes), Dish.rating >= 3).order_by(func.random()).limit(1)  # If specify a category, then recommend a dish that is from this category, not from previous dishes and ratings is greater than or equal to 3.
+                # If users specify a category, then recommend a dish
+                # that is from this category, not from previous dishes
+                # and ratings is greater than or equal to 3.
+                dishes = Dish.query.filter(
+                    Dish.category_id == new_category, Dish.id.notin_(
+                        previous_dishes), Dish.rating >= 3).order_by(
+                            func.random()).limit(1)
                 for d in dishes:
                     dish = get_formatted_dish(d.id)
                     recommended_dishes.append(dish)
@@ -275,7 +292,8 @@ def create_app():
         if all_categories is None:
             abort(404)
         try:
-            formatted_all_categories = [category.format() for category in all_categories]
+            formatted_all_categories = [
+                category.format() for category in all_categories]
 
             return jsonify({
                 "success": True,
@@ -300,14 +318,10 @@ def create_app():
         try:
             category = Category(category=new_category)
             category.insert()
-            # categories = Category.query.order_by('id').all()
-            # if categories is None:
-            #     abort(404)
-            # formatted_all_categories = [category.format() for category in categories]
+
             return jsonify({
                 "success": True,
-                "new_category": category.format(),
-                # "categories": formatted_all_categories
+                "new_category": category.format()
             })
         except Exception:
             abort(422)
@@ -365,13 +379,10 @@ def create_app():
         delete_id = category_id
         try:
             category.delete()
-            # categories = Category.query.order_by('id').all()
-            # formatted_all_categories = [category.format() for category in categories]
 
             return jsonify({
                 "success": True,
                 "delete_category_id": delete_id,
-                # "categories": formatted_all_categories
             })
         except Exception:
             abort(422)
@@ -385,7 +396,8 @@ def create_app():
         if all_restaurants is None:
             abort(404)
         try:
-            formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
+            formatted_all_restaurants = [
+                restaurant.format() for restaurant in all_restaurants]
             return jsonify({
                 "success": True,
                 "restaurants": formatted_all_restaurants
@@ -432,10 +444,16 @@ def create_app():
         new_website = body.get('website')
 
         # new_r_image_link, new_website can be null
-        if any(arg is None for arg in [new_name, new_city, new_addr, new_state, new_r_image_link, new_website]) or '' in [new_name, new_city, new_addr, new_state]:
+        if any(arg is None for arg in [
+            new_name, new_city, new_addr,
+            new_state, new_r_image_link, new_website
+                ]) or '' in [new_name, new_city, new_addr, new_state]:
             abort(400)
         try:
-            new_restaurant = Restaurant(name=new_name, city=new_city, state=new_state, address=new_addr, r_image_link=new_r_image_link, website=new_website)
+            new_restaurant = Restaurant(
+                name=new_name, city=new_city, state=new_state,
+                address=new_addr, r_image_link=new_r_image_link,
+                website=new_website)
             new_restaurant.insert()
 
             return jsonify({
@@ -488,7 +506,6 @@ def create_app():
         except Exception as e:
             abort(404)
 
-
     '''
     GET /restaurants/<restaurant_id>
     '''
@@ -501,7 +518,6 @@ def create_app():
             "success": True,
             "restaurant_by_id": restaurant.format()
         })
-
 
     '''
     DELETE /restaurants/<restaurant_id>
@@ -517,18 +533,13 @@ def create_app():
             deleted_id = restaurant_id
             restaurant.delete()
 
-            # all_restaurants = Restaurant.query.order_by('id').all()
-            # if all_restaurants is None:
-            #     abort(404)
-            # # formatted_all_restaurants = [restaurant.format() for restaurant in all_restaurants]
             return jsonify({
                 "success": True,
                 "deleted_restaurant_id": deleted_id,
-                # "restaurants_after_deletion": formatted_all_restaurants
             })
         except Exception:
             abort(422)
-            
+
     '''
     Error Handling
     '''
@@ -580,13 +591,11 @@ def create_app():
             "message": "Bad request"
             }), 400
 
-    
     return app
 
     app = create_app()
-    
+
     if __name__ == '__main__':
-        #port = int(os.environ.get('PORT', 5000))
+        # port = int(os.environ.get('PORT', 5000))
         app.run()
-        #print("Started server on port 5000")
-    
+        # print("Started server on port 5000")
