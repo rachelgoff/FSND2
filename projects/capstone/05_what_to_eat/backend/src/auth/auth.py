@@ -22,11 +22,6 @@ class AuthError(Exception):
 Auth Header
 '''
 
-'''
-get_token_auth_header() method
-
-'''
-
 def get_token_auth_header():
     """Obtains the Access Token from the Authorization Header
     """
@@ -61,11 +56,6 @@ def get_token_auth_header():
     token = parts[1]
     return token
 
-
-'''
-check_permissions(permission, payload) method
-'''
-
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
@@ -79,11 +69,6 @@ def check_permissions(permission, payload):
             'description': 'Permission not found.'
         }, 403)
     return True
-
-
-'''
-verify_decode_jwt(token) method
-'''
 
 def verify_decode_jwt(token):
     jsonurl = urlopen("https://"+AUTH0_DOMAIN+"/.well-known/jwks.json")
@@ -137,10 +122,6 @@ def verify_decode_jwt(token):
                 'description': 'Unable to find the appropriate key.'
             }, 400)
 
-
-'''
-@requires_auth(permission) decorator method
-'''
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)
