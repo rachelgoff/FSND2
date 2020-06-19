@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from .app import create_app
 from .database.models import setup_db, Dish, Restaurant, Category
 
+
 ADMIN_TOKEN = os.environ['ADMIN_TOKEN']
 USER_TOKEN = os.environ['USER_TOKEN']
 
@@ -15,6 +16,12 @@ This class represents the What To Eat test case.
 
 
 class WhatToEatTestCase(unittest.TestCase):
+    # Define global variables which can be accessed in each test function locally. 
+    # So the newly created ids can be re-used in the update and delete function test.
+    global_category_id = 42
+    global_restaurant_id = 42
+    global_dish_id = 42
+    
     def setUp(self):
         # Define test variables and initialize app.
         self.app = create_app()
@@ -33,7 +40,7 @@ class WhatToEatTestCase(unittest.TestCase):
         # Prepare new_dishes, new_categories and new_restaurants for testing.
         self.new_dishes = {
             "category": "Asian",
-            "category_id": 2,
+            "category_id": 1,
             "id": 4,
             "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
             "name": "Star bird Sandwich",
@@ -74,6 +81,7 @@ class WhatToEatTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
+        WhatToEatTestCase.global_category_id = data['new_category']['id']
 
     def test_405_add_categories_admin(self):
         category_id = 1000
@@ -86,72 +94,6 @@ class WhatToEatTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     '''
-    Test Admin delete dishes
-    '''
-    def test_delete_dishes_admin(self):
-        dish_id = 19
-        res = self.client().delete('/dishes/' + str(dish_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-
-    def test_404_delete_dishes_admin(self):
-        dish_id = 1000
-        res = self.client().delete('/dishes/' + str(dish_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-
-    '''
-    Test Admin delete categories
-    '''
-    def test_delete_categories_admin(self):
-        category_id = 10
-        res = self.client().delete('/categories/' + str(category_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-
-    def test_404_delete_categories_admin(self):
-        category_id = 10000
-        res = self.client().delete('/categories/' + str(category_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-
-    '''
-    Test Admin delete restaurants
-    '''
-    def test_delete_restaurants_admin(self):
-        restaurant_id = 4
-        res = self.client().delete('/restaurants/' + str(
-            restaurant_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        print(data)
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-
-    def test_404_delete_restaurants_admin(self):
-        restaurant_id = 10000
-        res = self.client().delete('/restaurants/' + str(
-            restaurant_id), headers={
-            "Content-Type": "application/json",
-            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
-        data = json.loads(res.data)
-        self.assertEqual(res.status_code, 404)
-        self.assertEqual(data['success'], False)
-
-    '''
     Test Admin get categories
     '''
     def test_get_categories_admin(self):
@@ -159,9 +101,10 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
+        print(data)
         self.assertEqual(data['success'], True)
         self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['categories'])
+        self.assertTrue(data['category'])
 
     def test_404_get_categories_admin(self):
         res = self.client().get("/categories/10000", headers={
@@ -175,7 +118,7 @@ class WhatToEatTestCase(unittest.TestCase):
     Test Admin patch categories
     '''
     def test_patch_category_admin(self):
-        category_id = 1
+        category_id = WhatToEatTestCase.global_category_id
         res = self.client().patch('/categories/' + str(category_id), headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
@@ -203,6 +146,7 @@ class WhatToEatTestCase(unittest.TestCase):
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
             json=self.new_restaurants)
         data = json.loads(res.data)
+        WhatToEatTestCase.global_restaurant_id = data['new_restaurant']['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -242,7 +186,7 @@ class WhatToEatTestCase(unittest.TestCase):
     Test Admin patch restaurants
     '''
     def test_patch_restaurants_admin(self):
-        restaurant_id = 1
+        restaurant_id = WhatToEatTestCase.global_restaurant_id
         res = self.client().patch('/restaurants/' + str(
             restaurant_id), headers={
             "Content-Type": "application/json",
@@ -267,11 +211,27 @@ class WhatToEatTestCase(unittest.TestCase):
     Test Admin add dishes
     '''
     def test_add_dishes_admin(self):
+        # Category object is required before creating dishes
+        res = self.client().post('/categories', headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
+            json=self.new_categories)
+        data = json.loads(res.data)
+        print(data['new_category']['id'])
+        
+        # Restaurant object is required before creating dishes 
+        res = self.client().post('/restaurants', headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
+            json=self.new_restaurants)
+
+        # Create a dish
         res = self.client().post('/dishes', headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
             json=self.new_dishes)
         data = json.loads(res.data)
+        WhatToEatTestCase.global_dish_id = data['new_dish']['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -303,7 +263,6 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'], False)
         self.assertEqual(res.status_code, 404)
 
@@ -311,7 +270,7 @@ class WhatToEatTestCase(unittest.TestCase):
     Test Admin patch dishes
     '''
     def test_patch_dishes_admin(self):
-        dish_id = 5
+        dish_id = WhatToEatTestCase.global_dish_id
         res = self.client().patch('/dishes/' + str(dish_id), headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
@@ -331,6 +290,79 @@ class WhatToEatTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
 
     '''
+    Test Admin delete dishes
+    '''
+    def test_remove_dishes_admin(self):
+        dish_id = WhatToEatTestCase.global_dish_id
+        res = self.client().delete('/dishes/' + str(dish_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_remove_dishes_admin(self):
+        dish_id = 1000
+        res = self.client().delete('/dishes/' + str(dish_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    '''
+    Test Admin delete categories
+    '''
+    def test_remove_categories_admin(self): # Using remove in the test case name so it will execute after patch operation.
+        # category_id = WhatToEatTestCase.global_category_id
+        res = self.client().post('/categories', headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
+            json=self.new_categories)
+        data = json.loads(res.data)
+
+        category_id = data['new_category']['id']
+        res = self.client().delete('/categories/' + str(category_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_remove_categories_admin(self):
+        category_id = 10000
+        res = self.client().delete('/categories/' + str(category_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    '''
+    Test Admin delete restaurants
+    '''
+    def test_remove_restaurants_admin(self):
+        restaurant_id = WhatToEatTestCase.global_restaurant_id
+        res = self.client().delete('/restaurants/' + str(
+            restaurant_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 200)
+        self.assertEqual(data['success'], True)
+
+    def test_404_remove_restaurants_admin(self):
+        restaurant_id = 10000
+        res = self.client().delete('/restaurants/' + str(
+            restaurant_id), headers={
+            "Content-Type": "application/json",
+            "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
+        data = json.loads(res.data)
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+
+    '''
     TEST USER ROLE
     '''
 
@@ -342,7 +374,6 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(USER_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'], True)
         self.assertEqual(res.status_code, 200)
         self.assertTrue(data['categories'])
@@ -356,7 +387,6 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(USER_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'], False)
         self.assertEqual(res.status_code, 404)
 
@@ -398,7 +428,6 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(USER_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'], False)
         self.assertEqual(res.status_code, 404)
 
