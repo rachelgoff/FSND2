@@ -37,7 +37,7 @@ This will install all of the required packages which are selected within the `re
 
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
 
-- [PostgresSQL](https://www.postgresql.org/download/)is a powerful, open source object-relational database system.
+- [PostgresSQL](https://www.postgresql.org/download/) is a powerful, open source object-relational database system.
 
 ## Working Directory
 Go to the directory where you check out the [repository](https://github.com/rachelgoff/FSND2) which includes What To Eat backend code. The working directory is under `FSND2/projects/capstone/05_what_to_eat`.
