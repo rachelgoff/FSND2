@@ -41,7 +41,7 @@ class WhatToEatTestCase(unittest.TestCase):
 
         # Prepare new_dishes, new_categories and new_restaurants for testing.
         self.new_dishes = {
-            "category": "Asian",
+            "name": "Asian",
             "category_id": 1,
             "id": 4,
             "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
@@ -53,7 +53,7 @@ class WhatToEatTestCase(unittest.TestCase):
         }
 
         self.new_categories = {
-            "category": "Mexican"
+            "name": "Mexican"
         }
 
         self.new_restaurants = {
@@ -103,10 +103,9 @@ class WhatToEatTestCase(unittest.TestCase):
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
         data = json.loads(res.data)
-        print(data)
         self.assertEqual(data['success'], True)
         self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['category'])
+        self.assertTrue(data['categories'])
 
     def test_404_get_categories_admin(self):
         res = self.client().get("/categories/10000", headers={
@@ -124,7 +123,7 @@ class WhatToEatTestCase(unittest.TestCase):
         res = self.client().patch('/categories/' + str(category_id), headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
-            json={'category': 'Spanish'})
+            json={'name': 'Spanish'})
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
@@ -134,7 +133,7 @@ class WhatToEatTestCase(unittest.TestCase):
         res = self.client().patch('/categories/' + str(category_id), headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
-            json={'category': 'Spanish'})
+            json={'name': 'Spanish'})
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
@@ -219,7 +218,6 @@ class WhatToEatTestCase(unittest.TestCase):
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
             json=self.new_categories)
         data = json.loads(res.data)
-        print(data['new_category']['id'])
 
         # Restaurant object is required before creating dishes
         res = self.client().post('/restaurants', headers={

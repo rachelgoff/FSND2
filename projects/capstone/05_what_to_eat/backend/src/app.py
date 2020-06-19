@@ -51,7 +51,7 @@ def create_app():
                 'price': float(dish.price),
                 'image_link': dish.image_link,
                 'restaurant_name': dish_restaurant.name,
-                'category': dish_category.category
+                'category_name': dish_category.name
             }
             return formatted_dish
         except Exception:
@@ -312,11 +312,11 @@ def create_app():
         body = request.get_json()
         if body is None:
             abort(400)
-        new_category = body.get('category')
-        if new_category is None:
+        new_name = body.get('name')
+        if new_name is None:
             abort(404)
         try:
-            category = Category(category=new_category)
+            category = Category(name=new_name)
             category.insert()
 
             return jsonify({
@@ -336,19 +336,19 @@ def create_app():
         body = request.get_json()
         if body is None:
             abort(400)
-        new_category = body.get('category')
-        if new_category is None:
+        new_name = body.get('name')
+        if new_name is None:
             abort(404)
 
         category_item = Category.query.get(category_id)
         if category_item is None:
             abort(404)
         try:
-            category_item.category = new_category
+            category_item.name = new_name
             category_item.update()
             return jsonify({
                 "success": True,
-                "updated category": category_item.format()
+                "updated_category": category_item.format()
             })
         except Exception:
             abort(422)

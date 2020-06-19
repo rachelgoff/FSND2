@@ -84,11 +84,11 @@ Category Model
 class Category(db.Model):
     __tablename__ = "categories"
     id = Column(Integer, primary_key=True)
-    category = Column(String(50), nullable=False)
+    name = Column(String(50), nullable=False)
     dishes = db.relationship("Dish", backref=db.backref('category', lazy=True))
 
-    def __init__(self, category):
-        self.category = category
+    def __init__(self, name):
+        self.name = name
 
     def insert(self):
         db.session.add(self)
@@ -104,7 +104,7 @@ class Category(db.Model):
     def format(self):
         return {
             "id": self.id,
-            "category": self.category
+            "name": self.name
         }
 
 
