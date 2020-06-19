@@ -16,12 +16,14 @@ This class represents the What To Eat test case.
 
 
 class WhatToEatTestCase(unittest.TestCase):
-    # Define global variables which can be accessed in each test function locally. 
-    # So the newly created ids can be re-used in the update and delete function test.
+    # Define global variables which can be accessed
+    # in each test function locally. So the newly
+    # created ids can be re-used in the
+    # update and delete function test.
     global_category_id = 42
     global_restaurant_id = 42
     global_dish_id = 42
-    
+
     def setUp(self):
         # Define test variables and initialize app.
         self.app = create_app()
@@ -218,8 +220,8 @@ class WhatToEatTestCase(unittest.TestCase):
             json=self.new_categories)
         data = json.loads(res.data)
         print(data['new_category']['id'])
-        
-        # Restaurant object is required before creating dishes 
+
+        # Restaurant object is required before creating dishes
         res = self.client().post('/restaurants', headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
@@ -313,7 +315,9 @@ class WhatToEatTestCase(unittest.TestCase):
     '''
     Test Admin delete categories
     '''
-    def test_remove_categories_admin(self): # Using remove in the test case name so it will execute after patch operation.
+    def test_remove_categories_admin(self):
+        # Using remove in the test case name
+        # so it will execute after patch operation.
         # category_id = WhatToEatTestCase.global_category_id
         res = self.client().post('/categories', headers={
             "Content-Type": "application/json",
