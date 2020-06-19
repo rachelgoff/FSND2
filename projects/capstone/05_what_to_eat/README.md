@@ -6,6 +6,19 @@ This app works as a meal planner for users. It gives users suggestions based on 
 
 Virtual environment is highly recommended. Instructions for setting up virtual environment can be found at: [Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments).
 
+Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, and set up virtual environment on MacOS and Linux by following the steps below. Other platforms please refer to the link above.
+
+```bash
+$ python3 -m pip install --user virtualenv
+$ python3 -m venv env
+$ source env/bin/activate
+```
+
+To deactivate a virutal environment:
+```bash
+$ deactivate
+```
+
 ## PIP Dependencies
 
 Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
@@ -24,19 +37,16 @@ This will install all of the required packages which are selected within the `re
 
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
 
+- [PostgresSQL](https://www.postgresql.org/download/)is a powerful, open source object-relational database system.
+
 ## Working Directory
 Go to the directory where you check out the [repository](https://github.com/rachelgoff/FSND2) which includes What To Eat backend code. The working directory is under `FSND2/projects/capstone/05_what_to_eat`.
 
 ## Running the server
 
 ### Running the server from localhost
-Make sure you are working using your created virtual environment before you start running the server. Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, then run the following command:
+Make sure you are working using your created virtual environment and **PostgreSQL** is running before you start running the server. Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, then run the following command:
 
-```bash
-$ DATABASE_URL='postgresql://localhost:5432/dish' PGGSSENCMODE=disable FLASK_APP=backend/src/app.py FLASK_ENV=development flask run
-```
-
-or you can export the environment first:
 ```bash
 $ createdb dish
 $ export DATABASE_URL='postgresql://localhost:5432/dish' 
@@ -674,10 +684,17 @@ Role related tokens have been added to the collection file [What_to_eat_heroku_d
 Authentication tokens included in the above collection.json file will expire in 24 hours. Once they expire, please use the following Auth0 link to retrieve the tokens accordingly. 
 
 **Auth0 link**:
-https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:8080/login
+https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:5000/login
 
 **Admin login**: cumulus166@gmail.com / password: Coffee123@@
 
 **User login**: cumulus189@gmail.com / password: Coffee123@@
+
+Make sure you clear the browser cache before you login with link above. After you login, you will see the following link as the browser address. The token is the value of "access_token". So copy the value between "access_token=" and "&expires_in=86400&token_type=Bearer". That's the token we use in Postman and test_setup.sh.
+
+For example, the token we are looking for is "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA".
+
+It's from the link:
+https://127.0.0.1:5000/login#access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA&expires_in=86400&token_type=Bearer
 
 Valid tokens are required before using the app. Open Postman -> What_to_eat_heroku_deployment -> Admin -> Edit -> Authorization tab, update the old token with the new token in the Token section. Under User folder in Postman, follow the same steps to update User's token in Postman. Then you should be able test the app in different roles.
