@@ -6,7 +6,7 @@ This app works as a meal planner for users. It gives users suggestions based on 
 
 Virtual environment is highly recommended. Instructions for setting up virtual environment can be found at: [Installing packages using pip and virtual environments](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments).
 
-Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, and set up virtual environment on MacOS and Linux by following the steps below. Other platforms please refer to the link above.
+Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, and set up virtual environment on MacOS and Linux by following the steps below. For other platforms, please refer to the link above.
 
 ```bash
 $ python3 -m pip install --user virtualenv
@@ -48,7 +48,11 @@ Go to the directory where you check out the [repository](https://github.com/rach
 Make sure you are working using your created virtual environment and **PostgreSQL** is running before you start running the server. Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, then run the following command:
 
 ```bash
-$ createdb dish
+$ DATABASE_NAME='dish'
+$ if ! psql -lqt | cut -d \| -f 1 | grep -qw $DATABASE_NAME; then
+$    echo "A database with the name $DBNAME does not exist."
+$    createdb $DATABASE_NAME
+$ fi
 $ export DATABASE_URL='postgresql://localhost:5432/dish' 
 $ export PGGSSENCMODE=disable 
 $ export FLASK_APP=backend/src/app.py 
@@ -69,7 +73,7 @@ https://what-to-eat-by-rg.herokuapp.com/.
 
 Please note that the frontend code is not available yet. In order to test the APIs, please use Postman with proper authentication information. For Postman, the authentication tokens have been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this collection.json file and import it in Postman before testing APIs. 
 
-To import the collection.json file, you can launch Postman - click Import button on the top left corner - Choose Files - Import. After that, if you want to test APIs with Heroku deployment, you can switch the Postman environment to **What_to_eat_Heroku** on the top right corner in Postman. Or if you want to test APIs on localhost, you can switch the Postman environment to **Local** in Postman.
+To import the collection.json file, you can launch Postman - click Import button on the top left corner - Choose Files - Import. The default host is set to http://127.0.0.1:5000 in the collection variables. If you want to test APIs with Heroku deployment, you can update the collection variable `WTE_URL` to https://what-to-eat-by-rg.herokuapp.com/.
 
 ## Data modeling
 **model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **categories**, **restaurants** and **dishes**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
@@ -91,12 +95,12 @@ A Dish object describes a dish with attributes as `name`, `restaurant_id`, `cate
 ### User
 * Users can view lists of categories, restaurants and dishes via `GET /categories`, `GET /restaurants`, `GET /dishes` respectively.
 * Users can view a list of dishes from a specified category via `GET /categories/{category_id}/dishes`.
-* Users can view a list of dishes from a specified restaurants via `GET /restaurants/{restaurant_id}/dishes`.
+* Users can view a list of dishes from a specified restaurant via `GET /restaurants/{restaurant_id}/dishes`.
 * Users can search dishes using search terms via `POST /dishes/search`. The search is case insesitive. For example, when users search "Sandwich", they will see either "Sandwich" or "sandwiches" in the search result.
 * Users can browse recommended dishes via `POST /dishes/recommended`. Users will need to privode the previous dishes they had, and optionally a new dish category the users would like to try. Then users can view a recommend dish which is not from the previous dish list. If no new dish category is specified, the app will recommend a dish from any category but not from the previous dish list. All the recommended dishes rating is equal to or greater than 3. 
 
 ### Admin
-* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section as how to retrive admin token.
+* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section below which mentions how to retrive admin token.
 * All the use cases above apply to Admin users.
 * Admin users can create a new category, a new restaurant and a new dish via `POST /categories`, `POST /restaurants`, `POST /dishes` respectively. Please note that because of the relationship, a category and a restaurant have to be created first before creating a dish.
 * Admin users can delete a cateogry, a restaurant and a dish via `DELETE /categories/{category_id}`, `DELETE /restaurants/{restaurant_id}`, `DELETE /dishes/{dish_id}` respectively.
@@ -708,9 +712,9 @@ https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client
 
 Make sure you clear the browser cache before you login with link above. After you login, you will see the following link as the browser address. The token is the value of "access_token". So copy the value between "access_token=" and "&expires_in=86400&token_type=Bearer". That's the token we use in Postman and test_setup.sh.
 
-For example, the token we are looking for is "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA".
+For example, the token we are looking for is "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA",
 
-It's from the link:
+which is from the link:
 https://127.0.0.1:5000/login#access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA&expires_in=86400&token_type=Bearer
 
 Valid tokens are required before using the app. Open Postman -> What_to_eat_heroku_deployment -> Admin -> Edit -> Authorization tab, update the old token with the new token in the Token section. Under User folder in Postman, follow the same steps to update User's token in Postman. Then you should be able test the app in different roles.
