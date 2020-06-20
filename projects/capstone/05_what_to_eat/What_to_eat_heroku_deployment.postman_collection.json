@@ -113,7 +113,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n   \"category\": \"English\"\n}"
+									"raw": "{\n   \"name\": \"American\"\n}"
 								},
 								"url": {
 									"raw": "{{WTE_URL}}/categories/1",
@@ -129,7 +129,7 @@
 							"response": []
 						},
 						{
-							"name": "{{WTE_URL}}/categories/2",
+							"name": "{{WTE_URL}}/categories/1",
 							"request": {
 								"method": "DELETE",
 								"header": [
@@ -377,13 +377,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{WTE_URL}}/dishes/4",
+									"raw": "{{WTE_URL}}/dishes/1",
 									"host": [
 										"{{WTE_URL}}"
 									],
 									"path": [
 										"dishes",
-										"4"
+										"1"
 									]
 								}
 							},
@@ -435,6 +435,35 @@
 									"path": [
 										"dishes",
 										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "{{WTE_URL}}/dishes/search",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n   \"search_term\": \"Salad\"\n}"
+								},
+								"url": {
+									"raw": "{{WTE_URL}}/dishes/search",
+									"host": [
+										"{{WTE_URL}}"
+									],
+									"path": [
+										"dishes",
+										"search"
 									]
 								}
 							},
@@ -501,35 +530,6 @@
 							"response": []
 						},
 						{
-							"name": "{{WTE_URL}}/dishes/search",
-							"request": {
-								"method": "POST",
-								"header": [
-									{
-										"key": "Content-Type",
-										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
-									}
-								],
-								"body": {
-									"mode": "raw",
-									"raw": "{\n   \"search_term\": \"Salad\"\n}"
-								},
-								"url": {
-									"raw": "{{WTE_URL}}/dishes/search",
-									"host": [
-										"{{WTE_URL}}"
-									],
-									"path": [
-										"dishes",
-										"search"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "{{WTE_URL}}/dishes/recommended",
 							"request": {
 								"method": "POST",
@@ -543,16 +543,16 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"previous_dishes\": [4],\n\t\"new_category\":2\n}"
+									"raw": "{\n\t\"previous_dishes\": [1],\n\t\"new_category\":1\n}"
 								},
 								"url": {
-									"raw": "{{WTE_URL}}/dishes/try",
+									"raw": "{{WTE_URL}}/dishes/recommended",
 									"host": [
 										"{{WTE_URL}}"
 									],
 									"path": [
 										"dishes",
-										"try"
+										"recommended"
 									]
 								}
 							},
@@ -562,7 +562,7 @@
 					"_postman_isSubFolder": true
 				},
 				{
-					"name": "{{WTE_URL}}",
+					"name": "{{WTE_URL}}/",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -589,7 +589,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNTkxOTg0LCJleHAiOjE1OTI2NzgzODQsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.D68apLqsZjBbsD3oeHegGh2GYRnkT0TtPRNvPHZr12XnImPHiuVZegDes-eSJJ9g7hhny5J4UNrwmEY3UmdOGtgbsGYTynWRVm9GUH9ah8g7shpl_hj3EtGrLVTx1eg6yWxmVQxVCwHHP5Plg8W_7nE1uiret6nArusx9PaLY_1QFBq8oOS7N4z_Tfq0QiyyxHZ5R1Lm-p-nf83yOQ24tDwB8h81cIsqpR5KWDUk2VbgZbqfG707cIzEdYJxrXlrkfreGeZibWZ8HRwCpW-bjr5EWmr4AD5-6Hrfv7yinyWltYGw5BsbLWY1f-g8xqcmZ1kukbSSM_BQqoEzYxlI5w",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjI3NTk5LCJleHAiOjE1OTI3MTM5OTksImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.jSylt8oUhsqvXmwybs1RMQdcSouv8xAMeXsoCUUgdwkzoXzmNefETBeflc4OF7nNQ6ElNH-XeeJHtY8GQBOxEoi-g6xklTRsqrMrIu7EMFwzhRYumUz0w_DK1U3PCbZvRBqgF4H_pUC9Unxlt-Xu_P-6lNQAdWxfSPOE-r0V5XHKNQBKtAUn3JekfBprmVzhnBOYEwAcGokzlIg8pAN-7SAP5-8MLRA9B73DbxAexi5Y16hc1b9lHPOMPb0GoqYeKBSuwFcJF0QsuqgK_bTINRmrS93Bij0aI4YJSJV8Z27j_hGuldqubSY_Uculojqqc5M8NN8vzEgFzniytgmDYQ",
 						"type": "string"
 					}
 				]
@@ -741,15 +741,15 @@
 							"response": []
 						},
 						{
-							"name": "{{WTE_URL}}/categories/2",
+							"name": "{{WTE_URL}}/categories/1",
 							"request": {
 								"method": "DELETE",
 								"header": [
 									{
 										"key": "Content-Type",
 										"name": "Content-Type",
-										"value": "application/json",
-										"type": "text"
+										"type": "text",
+										"value": "application/json"
 									}
 								],
 								"body": {
@@ -757,13 +757,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{WTE_URL}}/categories/3",
+									"raw": "{{WTE_URL}}/categories/1",
 									"host": [
 										"{{WTE_URL}}"
 									],
 									"path": [
 										"categories",
-										"3"
+										"1"
 									]
 								}
 							},
@@ -989,13 +989,13 @@
 									"raw": ""
 								},
 								"url": {
-									"raw": "{{WTE_URL}}/dishes/4",
+									"raw": "{{WTE_URL}}/dishes/1",
 									"host": [
 										"{{WTE_URL}}"
 									],
 									"path": [
 										"dishes",
-										"4"
+										"1"
 									]
 								}
 							},
@@ -1155,16 +1155,16 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n\t\"previous_dishes\": [4],\n\t\"new_category\":2\n}"
+									"raw": "{\n\t\"previous_dishes\": [1],\n\t\"new_category\":1\n}"
 								},
 								"url": {
-									"raw": "{{WTE_URL}}/dishes/try",
+									"raw": "{{WTE_URL}}/dishes/recommended",
 									"host": [
 										"{{WTE_URL}}"
 									],
 									"path": [
 										"dishes",
-										"try"
+										"recommended"
 									]
 								}
 							},
@@ -1172,27 +1172,6 @@
 						}
 					],
 					"_postman_isSubFolder": true
-				},
-				{
-					"name": "{{WTE_URL}}",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
-						"url": {
-							"raw": "{{WTE_URL}}/",
-							"host": [
-								"{{WTE_URL}}"
-							],
-							"path": [
-								""
-							]
-						}
-					},
-					"response": []
 				}
 			],
 			"description": "This is the user role for what to eat.",
@@ -1201,7 +1180,7 @@
 				"bearer": [
 					{
 						"key": "token",
-						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU5NTVhN2MzNDdlYjAwYzE3MThhM2MzIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNTkyMDI3LCJleHAiOjE1OTI2Nzg0MjcsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiXX0.dUFfwvhV9MJnDx2-u7BtX5PUs17BxYxUOxX5Z-VZTOFl6L5TQSlsROx1yU1ZXklPMOsvky0y8WXhRS329pyffAg2OCSxlITpd1aC55DVBzmi7TqimwCHbUXAqKcklEY2TJCWTxOGR7O0cP74ujhy7zenPQhHLH5kpDO4huYmfHBClMPMvihSYSG1u29lRWM54ZrkK3nNpFu28yIJIB4jzLLfT59aIzejQ3OHfT04itb9LU8hbk7zFyGHp1YVQlT6UGs6B7jGDKHXCgsGe3RILQL-u8Yl-JbU1jdfwMKnAXfMvoDX5yP8tgcsBXW4wpnyHMmwoZtvjkUOJF0ERJCywQ",
+						"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU5NTVhN2MzNDdlYjAwYzE3MThhM2MzIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjI3NjM5LCJleHAiOjE1OTI3MTQwMzksImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiXX0.amfVf2r47wBN9vx65LSzwgZDDhxxCNN_31vdiiS24q_Ae-PjcPSfY14cs6xE16L-TAWhipPmOsYV4-8Hp05QdcG6aPC8vXWQiuuJAOrHTFj_xpCINnMkeJuuJNeVqvQqKwa83BXam3FEfU9awQPYE9Y5Ws2c0a2MwX8hOENeM_vTUSRjUWpMNMaVvIBwZ_h_NFJYmYpSU7Xyx06C-QIPBdsNx9cfzRDx7LSoSGOzqTisqRX9gIXJHlx1AOk_Xm5qK0QuCeo2QUy9swhrazFGWRCOM0HM_ZZqkkw9re6u6mI6EgzwgZWoH1wipekDw40IsUCo1XlGr0LyxPVkeLsotw",
 						"type": "string"
 					}
 				]
@@ -1264,9 +1243,9 @@
 	],
 	"variable": [
 		{
-			"id": "b34ca22a-ad7a-45de-9375-530b268c13cb",
+			"id": "2926b1ac-be8a-41a4-b331-6ef0829eda41",
 			"key": "WTE_URL",
-			"value": "http://127.0.0.1",
+			"value": "http://127.0.0.1:5000",
 			"type": "string"
 		}
 	]
