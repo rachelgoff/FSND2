@@ -86,6 +86,22 @@ A Restaurant object describes a restaurant with attributes as `name`, `city`, `s
 
 A Dish object describes a dish with attributes as `name`, `restaurant_id`, `category_id`, `price`, `rating` and `image_link`.
 
+## API use cases
+
+### User
+* Users can view lists of categories, restaurants and dishes via `GET /categories`, `GET /restaurants`, `GET /dishes` respectively.
+* Users can view a list of dishes from a specified category via `GET /categories/{category_id}/dishes`.
+* Users can view a list of dishes from a specified restaurants via `GET /restaurants/{restaurant_id}/dishes`.
+* Users can search dishes using search terms via `POST /dishes/search`. The search is case insesitive. For example, when users search "Sandwich", they will see either "Sandwich" or "sandwiches" in the search result.
+* Users can browse recommended dishes via `POST /dishes/recommended`. Users will need to privode the previous dishes they had, and optionally a new dish category the users would like to try. Then users can view a recommend dish which is not from the previous dish list. If no new dish category is specified, the app will recommend a dish from any category but not from the previous dish list. All the recommended dishes rating is equal to or greater than 3. 
+
+### Admin
+* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section as how to retrive admin token.
+* All the use cases above apply to Admin users.
+* Admin users can create a new category, a new restaurant and a new dish via `POST /categories`, `POST /restaurants`, `POST /dishes` respectively. Please note that because of the relationship, a category and a restaurant have to be created first before creating a dish.
+* Admin users can delete a cateogry, a restaurant and a dish via `DELETE /categories/{category_id}`, `DELETE /restaurants/{restaurant_id}`, `DELETE /dishes/{dish_id}` respectively.
+* Admin users can update a cateogry, a restaurant and a dish via `PATCH /categories/{category_id}`, `PATCH /restaurants/{restaurant_id}`, `PATCH /dishes/{dish_id}` respectively.
+
 ## API endpoints
 
 ### Category
