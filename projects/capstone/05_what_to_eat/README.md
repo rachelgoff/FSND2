@@ -21,7 +21,7 @@ $ deactivate
 
 ## PIP Dependencies
 
-Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
+Once you have your virtual environment setup and running, install dependencies by naviging to the `FSND2/projects/capstone/05_what_to_eat` directory and running:
 
 ```bash
 $ pip install -r requirements.txt
@@ -80,7 +80,7 @@ A Dish object describes a dish with attributes as `name`, `restaurant_id`, `cate
 ## API use cases
 
 ### Admin
-* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section below which mentions how to retrive admin token. Please note that Admin users have to create categories, restaurants and dishes before users can view the related content in the app.
+* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section below which mentions how to retrive admin token. Please note that Admin users have to create categories, restaurants and dishes first before users can view the related content in the app.
 * Admin users can create a new category, a new restaurant and a new dish via `POST /categories`, `POST /restaurants`, `POST /dishes` respectively. Please note that because of the relationship, a category and a restaurant have to be created first before creating a dish.
 * Admin users can delete a cateogry, a restaurant and a dish via `DELETE /categories/{category_id}`, `DELETE /restaurants/{restaurant_id}`, `DELETE /dishes/{dish_id}` respectively.
 * Admin users can update a cateogry, a restaurant and a dish via `PATCH /categories/{category_id}`, `PATCH /restaurants/{restaurant_id}`, `PATCH /dishes/{dish_id}` respectively.
