@@ -667,7 +667,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 ## Testing
 
-#### Test.py
+### Test.py
 In order to test the backend server, go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the following command.
 
 ```bash
@@ -675,7 +675,7 @@ $ chmod +x test_setup.sh
 $ ./test_setup.sh
 ```
 
-#### Retrieve tokens via Auth0
+### Retrieve tokens via Auth0
 Authentication tokens included in **test_setup.sh** and [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json) will expire in **24** hours. Once the tokens expire, please use the following Auth0 link to retrieve the updated tokens accordingly. 
 
 **Auth0 link**:
