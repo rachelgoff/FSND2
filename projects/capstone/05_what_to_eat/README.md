@@ -60,7 +60,7 @@ https://what-to-eat-by-rg.herokuapp.com/.
 
 Please note that the frontend code is not available yet. In order to test the APIs, please use Postman with proper authentication information. For Postman, the authentication tokens have been included in [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json). Feel free to download this collection.json file and import it in Postman before testing APIs. 
 
-To import the collection.json file, you can launch Postman - click Import button on the top left corner - Choose Files - Import. The default host is set to http://127.0.0.1:5000 in the collection variables. If you want to test APIs with Heroku deployment, you can update the collection variable `WTE_URL` to https://what-to-eat-by-rg.herokuapp.com/ in Postman.
+To import the collection.json file, you can launch Postman - click Import button on the top left corner - Choose Files - Import. The default host is set to http://127.0.0.1:5000 in the collection variables. If you want to test APIs with Heroku deployment, you can update the collection variable `WTE_URL` to https://what-to-eat-by-rg.herokuapp.com in Postman.
 
 ## Data modeling
 **model.py** includes database schema and helper functions such as insert, update, delete and format functions. There are three tables created in the database: **categories**, **restaurants** and **dishes**. Only Admin users can create, update and delete entries from the tables. Regular users can only view the entries in the three tables. Users can also search for dishes and get recommended new dishes. 
