@@ -9,6 +9,8 @@ from backend.src.database.models import setup_db, Dish, Restaurant, Category
 from backend.src.auth.auth import AuthError, requires_auth
 import random
 
+default_dish_image_link = "https://unsplash.com/photos/1Rm9GLHV0UA"
+
 
 def create_app():
     app = Flask(__name__)
@@ -49,7 +51,7 @@ def create_app():
                 'category_id': dish.category_id,
                 'rating': dish.rating,
                 'price': float(dish.price),
-                'image_link': dish.image_link,
+                'image_link': dish.image_link or default_dish_image_link,
                 'restaurant_name': dish_restaurant.name,
                 'category_name': dish_category.name
             }
@@ -99,12 +101,9 @@ def create_app():
                 price=new_price, image_link=new_image_link)
             new_dish.insert()
 
-            all_dishes = Dish.query.order_by('id').all()
-            formatted_all_dishes = [dish.format() for dish in all_dishes]
-
             return jsonify({
                 "success": True,
-                "new_dish": new_dish.format()
+                "dish": new_dish.format()
             })
         except Exception:
             abort(422)
@@ -178,14 +177,17 @@ def create_app():
     def delete_dish(token, dish_id):
         delete_dish_id = dish_id
         dish = Dish.query.get(dish_id)
+        formatted_deleted_dish = {
+            "id": delete_dish_id
+        }
         if dish is None:
             abort(404)
         try:
             dish.delete()
             return jsonify({
                 "success": True,
-                "deleted_dish_id": delete_dish_id
-                })
+                "dish": formatted_deleted_dish
+            })
         except Exception:
             abort(422)
 
@@ -231,7 +233,7 @@ def create_app():
                 dishes_by_categories.append(dish)
             return jsonify({
                 "success": True,
-                "dishes_by_categories": dishes_by_categories
+                "dishes": dishes_by_categories
             })
         except Exception:
             abort(422)
@@ -278,7 +280,7 @@ def create_app():
                     recommended_dishes.append(dish)
             return jsonify({
                 "success": True,
-                "recommended_dish": recommended_dishes[0]
+                "dish": recommended_dishes[0]
             })
         except Exception:
             abort(422)
@@ -321,7 +323,7 @@ def create_app():
 
             return jsonify({
                 "success": True,
-                "new_category": category.format()
+                "category": category.format()
             })
         except Exception:
             abort(422)
@@ -348,7 +350,7 @@ def create_app():
             category_item.update()
             return jsonify({
                 "success": True,
-                "updated_category": category_item.format()
+                "category": category_item.format()
             })
         except Exception:
             abort(422)
@@ -377,12 +379,15 @@ def create_app():
         if category is None:
             abort(404)
         delete_id = category_id
+        formatted_deleted_id = {
+            "id": delete_id
+        }
         try:
             category.delete()
 
             return jsonify({
                 "success": True,
-                "delete_category_id": delete_id,
+                "category": formatted_deleted_id
             })
         except Exception:
             abort(422)
@@ -421,7 +426,7 @@ def create_app():
                 dishes_by_restaurants.append(dish)
             return jsonify({
                 "success": True,
-                "dishes_by_restaurants": dishes_by_restaurants
+                "dishes": dishes_by_restaurants
             })
         except Exception:
             abort(422)
@@ -458,7 +463,7 @@ def create_app():
 
             return jsonify({
                 "success": True,
-                "new_restaurant": new_restaurant.format()
+                "restaurant": new_restaurant.format()
             })
         except Exception:
             abort(422)
@@ -501,7 +506,7 @@ def create_app():
 
             return jsonify({
                 "success": True,
-                "updated_restaurant": restaurant.format()
+                "restaurant": restaurant.format()
             })
         except Exception as e:
             abort(404)
@@ -532,10 +537,13 @@ def create_app():
         try:
             deleted_id = restaurant_id
             restaurant.delete()
+            formatted_deleted_id = {
+                "id": deleted_id
+            }
 
             return jsonify({
                 "success": True,
-                "deleted_restaurant_id": deleted_id,
+                "restaurant": formatted_deleted_id
             })
         except Exception:
             abort(422)

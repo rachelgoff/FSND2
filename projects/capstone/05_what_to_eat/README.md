@@ -24,7 +24,7 @@ $ deactivate
 Once you have your virtual environment setup and running, install dependencies by naviging to the `/backend` directory and running:
 
 ```bash
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 This will install all of the required packages which are selected within the `requirements.txt` file.
@@ -45,20 +45,7 @@ Go to the directory where you check out the [repository](https://github.com/rach
 ## Running the server
 
 ### Running the server from localhost
-Make sure you are working using your created virtual environment and **PostgreSQL** is running before you start running the server. Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, then run the following command:
-
-```bash
-$ DATABASE_NAME='dish'
-$ if ! psql -lqt | cut -d \| -f 1 | grep -qw $DATABASE_NAME; then
-$    echo "A database with the name $DBNAME does not exist."
-$    createdb $DATABASE_NAME
-$ fi
-$ export DATABASE_URL='postgresql://localhost:5432/dish' 
-$ export PGGSSENCMODE=disable 
-$ export FLASK_APP=backend/src/app.py 
-$ export FLASK_ENV=development 
-$ flask run
-```
+Make sure you are working using your created virtual environment and **PostgreSQL** is running on port 5432 before you start running the server. Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, then run the following command:
 
 or you can run `setup.sh` from the working directory. 
 ```bash
@@ -92,19 +79,19 @@ A Dish object describes a dish with attributes as `name`, `restaurant_id`, `cate
 
 ## API use cases
 
+### Admin
+* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section below which mentions how to retrive admin token. Please note that Admin users have to create categories, restaurants and dishes before users can view the related content in the app.
+* Admin users can create a new category, a new restaurant and a new dish via `POST /categories`, `POST /restaurants`, `POST /dishes` respectively. Please note that because of the relationship, a category and a restaurant have to be created first before creating a dish.
+* Admin users can delete a cateogry, a restaurant and a dish via `DELETE /categories/{category_id}`, `DELETE /restaurants/{restaurant_id}`, `DELETE /dishes/{dish_id}` respectively.
+* Admin users can update a cateogry, a restaurant and a dish via `PATCH /categories/{category_id}`, `PATCH /restaurants/{restaurant_id}`, `PATCH /dishes/{dish_id}` respectively.
+* All the users' use cases below apply to Admin users.
+
 ### User
 * Users can view lists of categories, restaurants and dishes via `GET /categories`, `GET /restaurants`, `GET /dishes` respectively.
 * Users can view a list of dishes from a specified category via `GET /categories/{category_id}/dishes`.
 * Users can view a list of dishes from a specified restaurant via `GET /restaurants/{restaurant_id}/dishes`.
 * Users can search dishes using search terms via `POST /dishes/search`. The search is case insesitive. For example, when users search "Sandwich", they will see either "Sandwich" or "sandwiches" in the search result.
 * Users can browse recommended dishes via `POST /dishes/recommended`. Users will need to privode the previous dishes they had, and optionally a new dish category the users would like to try. Then users can view a recommend dish which is not from the previous dish list. If no new dish category is specified, the app will recommend a dish from any category but not from the previous dish list. All the recommended dishes rating is equal to or greater than 3. 
-
-### Admin
-* Only users with **admin token** have all the admin permissions. Refer to **Retrieve tokens via Auth0** section below which mentions how to retrive admin token.
-* All the use cases above apply to Admin users.
-* Admin users can create a new category, a new restaurant and a new dish via `POST /categories`, `POST /restaurants`, `POST /dishes` respectively. Please note that because of the relationship, a category and a restaurant have to be created first before creating a dish.
-* Admin users can delete a cateogry, a restaurant and a dish via `DELETE /categories/{category_id}`, `DELETE /restaurants/{restaurant_id}`, `DELETE /dishes/{dish_id}` respectively.
-* Admin users can update a cateogry, a restaurant and a dish via `PATCH /categories/{category_id}`, `PATCH /restaurants/{restaurant_id}`, `PATCH /dishes/{dish_id}` respectively.
 
 ## API endpoints
 
@@ -125,12 +112,12 @@ The following API allows you to get, post, delete and update categories. You can
 {
     "categories": [
         {
-            "category": "Mexican",
-            "id": 1
+            "id": 1,
+            "name": "Mexican"
         },
         {
-            "category": "American",
-            "id": 2
+            "id": 2,
+            "name": "American"
         }
     ],
     "success": true
@@ -150,8 +137,8 @@ The following API allows you to get, post, delete and update categories. You can
 ```javascript
 {
     "category": {
-        "category": "Mexican",
-        "id": 1
+        "id": 1,
+        "name": "Mexican"
     },
     "success": true
 }
@@ -169,16 +156,16 @@ The following API allows you to get, post, delete and update categories. You can
 
 ```javascript
 {
-	"category": "Chinese"
+	"name": "Chinese"
 }
 ```
 
 ##### Exmaple response:
 ```javascript
 {
-    "new_category": {
-        "category": "Chinese",
-        "id": 3
+    "category": {
+        "id": 3,
+        "name": "Chinese"
     },
     "success": true
 }
@@ -188,7 +175,7 @@ The following API allows you to get, post, delete and update categories. You can
 - Requires **Admin** authentication.
 - Deletes a specified category based on the `category_id`.
 - Request arguments: `category_id`
-- Returns the `deleted_category_id` and success status.
+- Returns the deleted `category` and success status.
 
 ##### Exmaple request:
 `DELETE /categories/3`
@@ -197,7 +184,9 @@ The following API allows you to get, post, delete and update categories. You can
 
 ```javascript
 {
-    "delete_category_id": 3,
+    "category": {
+        "id": 3
+    },
     "success": true
 }
 ```
@@ -214,16 +203,16 @@ The following API allows you to get, post, delete and update categories. You can
 
 ```javascript
 {
-	"category": "Chinese"
+	"name": "Chinese"
 }
 ```
 
 ##### Exmaple response:
 ```javascript
 {
-    "updated category": {
-        "category": "Chinese",
-        "id": 1
+    "category": {
+        "id": 1,
+        "name": "Chinese"
     },
     "success": true
 }
@@ -270,7 +259,7 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 ```javascript
 {
-    "restaurant_by_id": {
+    "restaurant": {
         "address": "Sandwich Monkey address",
         "city": "San Carlos",
         "id": 1,
@@ -307,7 +296,7 @@ The following API allows you to get, post, delete and update restaurants. You ca
 ##### Exmaple response:
 ```javascript
 {
-    "new_restaurant": {
+    "restaurant": {
         "address": "Hot Dog House address",
         "city": "San Carlos",
         "id": 2,
@@ -324,7 +313,7 @@ The following API allows you to get, post, delete and update restaurants. You ca
 - Requires **Admin** authentication.
 - Deletes a specified restaurant based on the `restaurant_id`.
 - Request arguments: `restaurant_id`
-- Returns the `deleted_restaurant_id` and success status.
+- Returns the deleted `restaurant` and success status.
 
 ##### Exmaple request:
 `DELETE /restaurants/2`
@@ -333,7 +322,9 @@ The following API allows you to get, post, delete and update restaurants. You ca
 
 ```javascript
 {
-    "deleted_restaurant_id": 2,
+    "restaurant": {
+        "id": 2
+    },
     "success": true
 }
 ```
@@ -357,7 +348,7 @@ The following API allows you to get, post, delete and update restaurants. You ca
 ##### Exmaple response:
 ```javascript
 {
-    "updated_restaurant": {
+    "restaurant": {
         "address": "Sandwich Monkey address",
         "city": "Foster City",
         "id": 1,
@@ -460,7 +451,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ##### Exmaple response:
 ```javascript
 {
-    "new_dish": {
+    "dish": {
         "category_id": 2,
         "id": 3,
         "image_link": "https://unsplash.com/photos/1Rm9GLHV0UA",
@@ -477,7 +468,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 - Requires **Admin** authentication.
 - Deletes a specified dish based on the `dish_id`.
 - Request arguments: `dish_id`
-- Returns the `deleted_dish_id` and success status.
+- Returns the deleted `dish` and success status.
 
 ##### Exmaple request:
 `DELETE /dishes/3`
@@ -486,7 +477,9 @@ The following API allows you to get, post, delete and update dishes. You can ret
 
 ```javascript
 {
-    "deleted_dish_id": 3,
+    "dish": {
+        "id": 3
+    },
     "success": true
 }
 ```
@@ -536,7 +529,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ##### Exmaple response:
 ```javascript
 {
-    "dishes_by_categories": [
+    "dishes": [
         {
             "category": "American",
             "category_id": 2,
@@ -575,7 +568,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ##### Exmaple response:
 ```javascript
 {
-    "dishes_by_restaurants": [
+    "dishes": [
         {
             "category": "American",
             "category_id": 2,
@@ -642,7 +635,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 - Fetches a recommended dish with the category that is specified by users and is not from the provided list of the previous dish ids. If no category is specified, then return a dish that is not from the previous dishes and the rating is equal to or greater than 3. If a category is specified, then return a dish that is from the specified category but not from the previous dishes, and the rating is equal to or greater than 3.
 - No request arguments are required.
 - Data in the body is required and includes a list of previous `dish_id` and a new `catogery_id` which are provided by users.
-- Returns an object with the dish to try and success status.
+- Returns a recommended dish and success status.
 
 ##### Exmaple request with data in the bdoy:
 `POST /dishes/recommended`
@@ -657,7 +650,7 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ##### Exmaple response:
 ```javascript
 {
-    "recommended_dish": {
+    "dish": {
         "category": "American",
         "category_id": 2,
         "id": 6,
@@ -677,15 +670,6 @@ There are two ways to test the app. You can either use test.py or Postman to tes
 
 #### Test.py
 Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the following command.
-
-```bash
-$ createdb dish_test
-$ export DATABASE_URL="postgresql://localhost:5432/dish_test"
-$ export ADMIN_TOKEN=""  // Refer to the Retrieve tokens via Auth0 section below to get the right tokens.
-$ export USER_TOKEN=""
-$ python3 -m backend.src.test
-```
-or you can run:
 
 ```bash
 $ chmod +x test_setup.sh
@@ -712,7 +696,7 @@ https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client
 
 Make sure you clear the browser cache before you login with link above. After you login, you will see the following link as the browser address. The token is the value of "access_token". So copy the value between "access_token=" and "&expires_in=86400&token_type=Bearer". That's the token we use in Postman and test_setup.sh.
 
-For example, the token we are looking for is "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA",
+For example, the token we are looking for is `eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA`,
 
 which is from the link:
 https://127.0.0.1:5000/login#access_token=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik56RXpNemt6UmtFMVFrTkdSREF5TkRJek1Ea3hSRGhFT1RJNFJFWTJNek5HUWtaRFJUY3dSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi1hdXRoMi5hdXRoMC5jb20vIiwic3ViIjoiYXV0aDB8NWU2NDg2NDVjNmRiYzkwZDNkZTJkMDdjIiwiYXVkIjoiRGlzaGVzIiwiaWF0IjoxNTkyNjAzODEwLCJleHAiOjE1OTI2OTAyMTAsImF6cCI6ImVDYzRCdGM2RU9OY1VMYTFzY0VXaUlCMzJ4M1BaeEJkIiwic2NvcGUiOiIiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6Y2F0ZWdvcmllcyIsImRlbGV0ZTpkaXNoZXMiLCJkZWxldGU6cmVzdGF1cmFudHMiLCJnZXQ6Y2F0ZWdvcmllcyIsImdldDpkaXNoZXMiLCJnZXQ6cmVzdGF1cmFudHMiLCJwYXRjaDpjYXRlZ29yaWVzIiwicGF0Y2g6ZGlzaGVzIiwicGF0Y2g6cmVzdGF1cmFudHMiLCJwb3N0OmNhdGVnb3JpZXMiLCJwb3N0OmRpc2hlcyIsInBvc3Q6cmVzdGF1cmFudHMiXX0.ft2me_AL3-ByK2l0wK2PrHbD7Ml8T7Jc-gKsu9tOhyDcB5EqqNbGRdgT_phgZ2dTeD0NUvndbsa7UJdFFDJ_JkvCA7dntQeXgw5tZ-OfBPiI5q0E5dij78D1zd6h9ysRSVvc9qwaENCwovFmWE_OvKIsP0Bqeb2RSiLrATVupFa_JSY8tNP2m9fCKtTFP-C0l5iJa6VU_kC-NpRHrOjBr8peXJ0zPqqiNyzDHdn8nDNkCNuF3a3jV_GMbrr5Ek8OVtzuHBO4wJEG-n1905vlhHbrHbNER2Lmw8Lwzka8zi2QMRGcIbjdYKcj0xfoMLKpVtcu-s2-LBNbxTQ93jG4NA&expires_in=86400&token_type=Bearer
