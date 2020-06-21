@@ -83,7 +83,7 @@ class WhatToEatTestCase(unittest.TestCase):
         data = json.loads(res.data)
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
-        WhatToEatTestCase.global_category_id = data['new_category']['id']
+        WhatToEatTestCase.global_category_id = data['category']['id']
 
     def test_405_add_categories_admin(self):
         category_id = 1000
@@ -147,7 +147,7 @@ class WhatToEatTestCase(unittest.TestCase):
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
             json=self.new_restaurants)
         data = json.loads(res.data)
-        WhatToEatTestCase.global_restaurant_id = data['new_restaurant']['id']
+        WhatToEatTestCase.global_restaurant_id = data['restaurant']['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -231,7 +231,7 @@ class WhatToEatTestCase(unittest.TestCase):
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)},
             json=self.new_dishes)
         data = json.loads(res.data)
-        WhatToEatTestCase.global_dish_id = data['new_dish']['id']
+        WhatToEatTestCase.global_dish_id = data['dish']['id']
         self.assertEqual(res.status_code, 200)
         self.assertEqual(data['success'], True)
 
@@ -323,7 +323,7 @@ class WhatToEatTestCase(unittest.TestCase):
             json=self.new_categories)
         data = json.loads(res.data)
 
-        category_id = data['new_category']['id']
+        category_id = data['category']['id']
         res = self.client().delete('/categories/' + str(category_id), headers={
             "Content-Type": "application/json",
             "Authorization": "Bearer {}".format(ADMIN_TOKEN)})
