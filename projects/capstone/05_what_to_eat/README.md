@@ -666,26 +666,17 @@ The following API allows you to get, post, delete and update dishes. You can ret
 ```
 
 ## Testing
-There are two ways to test the app. You can either use test.py or Postman to test APIs. 
 
 #### Test.py
-Go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the following command.
+In order to test the backend server, go to the working directory `FSND2/projects/capstone/05_what_to_eat`, run the following command.
 
 ```bash
 $ chmod +x test_setup.sh
 $ ./test_setup.sh
 ```
 
-#### Use Postman to test
-Role related tokens have been added to the collection file [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json).
-1. Launch Postman.
-2. Import the above collection file to Postman.
-3. Click the arrow next to the collection name and click Run button.
-4. Click Run What_to_eat_heroku_deployment to start the Collection Runner.
-4. Check the test results.
-
 #### Retrieve tokens via Auth0
-Authentication tokens included in the above collection.json file will expire in 24 hours. Once they expire, please use the following Auth0 link to retrieve the tokens accordingly. 
+Authentication tokens included in **test_setup.sh** and [What_to_eat_heroku_deployment.postman_collection.json](https://github.com/rachelgoff/FSND2/blob/master/projects/capstone/05_what_to_eat/What_to_eat_heroku_deployment.postman_collection.json) will expire in **24** hours. Once the tokens expire, please use the following Auth0 link to retrieve the updated tokens accordingly. 
 
 **Auth0 link**:
 https://dev-auth2.auth0.com/authorize?audience=Dishes&response_type=token&client_id=eCc4Btc6EONcULa1scEWiIB32x3PZxBd&redirect_uri=https://127.0.0.1:5000/login
